@@ -1,0 +1,148 @@
+package fc.aloesmanager;
+
+import java.util.ArrayList;
+import java.sql.*;
+
+public class Secteur {
+
+    private String specialite;
+    private int etage;
+    public String nom;
+    private ArrayList<Lit> listeLits;
+
+    public Secteur() {
+        this.specialite = null;
+        this.etage = 0;
+        this.nom = null;
+        this.listeLits = new ArrayList();
+    }
+
+    public Secteur(String specialite, int etage, String nom) {
+        this.specialite = specialite;
+        this.etage = etage;
+        this.nom = nom;
+        this.listeLits = new ArrayList(); //j'ai un problème dans la lecture des résultats de la BD pour créer des secteurs avec leurs listes de lit. Solution: faire une liste de secteurs possibles
+    }
+
+    public Secteur(String specialite, int etage, String nom, ArrayList<Lit> listeLits) {
+        this.specialite = specialite;
+        this.etage = etage;
+        this.nom = nom;
+        this.listeLits = listeLits;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void ajouterLit(Lit lit) {
+        listeLits.add(lit);
+    }
+
+    //Récupère les informations du secteur lié à un lit
+    public Secteur informationsSecteur(Lit lit) { //ne marche que si le lit existe bien évidemment
+        Secteur secteur = new Secteur();
+        Connection con = null;
+        PreparedStatement rechercheSecteur = null;
+        ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
+
+        //-----------Connexion
+        //Chargement du pilote
+        try {
+            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
+        } catch (java.lang.ClassNotFoundException e) {
+            System.out.println("Erreur: Class Not Found");
+        }
+
+        //-----------Etablissement de la connexion
+        try {
+            //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
+            String base1 = "SIH";
+            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+        } catch (java.sql.SQLException e) {
+            do {
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //----------- Requêtes
+        //Requête 1: informations du DMA
+        try {
+            rechercheSecteur = con.prepareStatement("SELECT * FROM SECTEUR join LIT on (nom_secteur = nom) WHERE num_lit = ?");
+            rechercheSecteur.setString(1, lit.getNumeroLit());
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = rechercheSecteur.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        String r_specialite = null;
+        String r_nom = null;
+        int r_etage = 0;
+
+        try {
+            while (resultats_bd.next()) {
+                //Informations du patient
+                r_specialite = resultats_bd.getString("specialite");
+                r_nom = resultats_bd.getString("nom");
+                r_etage = resultats_bd.getInt("etage");
+
+            }
+
+            //Création du secteur
+            secteur = new Secteur(r_specialite, r_etage, r_nom);
+
+            //Fermeture des résultats des requêtes
+            resultats_bd.close();
+
+            System.out.println(r_specialite);
+            System.out.println(r_nom);
+
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+        
+        return secteur;
+    }
+
+    //TEST
+    public static void main(String[] args) {
+        //Test unitaire de la fonction
+        Lit lit = new Lit(false, "101P");
+        Secteur secteur = new Secteur();
+        secteur.informationsSecteur(lit);
+        
+        //Test d'intégration avec la classe DMA
+        DossierMedicoAdministratif dma = new DossierMedicoAdministratif();
+        
+        Date date1 = new Date(55, 9, 28);
+        secteur.informationsSecteur(dma.localiserUnPatient("Gates", "Bill", date1)); //ça marche
+
+    }
+}
