@@ -5,12 +5,28 @@
  */
 package fc.aloesmanager;
 
-import java.sql.*;
-
 /**
  *
  * @author Thao
  */
 public enum Examen {
+    hematologie("hematologie"),
+    biologie("biologie"),
+    anatomopathologie("anatomopathologie"),
+    radiologie("radiologie"),
+    anesthesie("anesthesie");
+
+    // attributs de l'énum
+    private String libelle;
+
+    // constructeur
+    private Examen(String libelle) {
+        this.libelle = libelle;
+    }
     
+    //retourne le libellé
+    public String getLibelle(){
+        return libelle;
+    }
 }
+
