@@ -360,6 +360,8 @@ public class DMclinique {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            
+              //------------------ Ajout des résultats  ------------------
         }
     }
 
