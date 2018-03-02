@@ -10,17 +10,6 @@ public abstract class Resultat {
     private String observations;
     private String id;
     private String nrpps;
-
-     /**
-     * Constructeur
-     */
-    public Resultat(String CR, Date date, String obs, String id, String nrpps){
-        this.compteRendu = CR;
-        this.date = date;
-        this.observations = obs;      
-        this.id = id;
-        this.nrpps = nrpps;
-    }
     
     /**
      * Retourne le compte-rendu
