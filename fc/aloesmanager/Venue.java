@@ -12,6 +12,9 @@ public abstract class Venue {
     protected String lettreSortie;
     protected PH PHrespo;
 
+    /**
+     * Création d'une venue
+     */
     public void creerUneVenue(String IPP, String numSejour, Date dateEntree, PH PHrespo) {
         //L'interface envoie des informations
         //Ma méthode implique que l'interface a cherché le médecin et a retourné un PH (à adapter si ça ne vous convient pas)
@@ -84,6 +87,9 @@ public abstract class Venue {
         }
     }
 
+    /**
+     * Création d'un numéro de séjour
+     */
     public static String creerUnNumSejour() {
         //Ajout de l'année et du mois
         String numSejour = Integer.toString(LocalDateTime.now().getYear()).substring(2, 4);
