@@ -4,20 +4,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Date;
-import org.w3c.dom.Document;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 public class DossierMedicoAdministratif {
 
     private String IPP;
     private String nom;
     private String prenom;
-    private int idSIR;
+    private String idSIR;
     private String sexe;
     private Date dateNaissance;
     private String nom_proche;
@@ -71,7 +69,7 @@ public class DossierMedicoAdministratif {
         return this.medTraitant;
     }
 
-    public DossierMedicoAdministratif rechercherUnDMA(String ipp) {
+    public void rechercherUnDMA(String ipp) { //c'est l'identifiant de connexion de la personne connectée. Elle est stockée dans une instance de Connexion
         Connection con = null;
         PreparedStatement rechercheIPP = null;
         PreparedStatement rechercheIDSIR = null;
@@ -93,9 +91,9 @@ public class DossierMedicoAdministratif {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -117,7 +115,7 @@ public class DossierMedicoAdministratif {
 
         //Requête 2: récupérer l'idSIR s'il existe
         try {
-            rechercheIDSIR = con.prepareStatement("SELECT idSIR FROM correspondanceDMA_SIR where IPP =  ?");
+            rechercheIDSIR = con.prepareStatement("SELECT idSIR FROM CorrespondanceDMA_SIR where IPP =  ?");
             rechercheIDSIR.setString(1, ipp);
         } catch (Exception e) {
             System.out.println("Erreur de requête 2");
@@ -125,7 +123,7 @@ public class DossierMedicoAdministratif {
 
         //Requête 3: récupérer le médecin traitant s'il existe
         try {
-            rechercheMedTt = con.prepareStatement("SELECT * FROM correspondanceMedecinExterne natural join MedecinExterne where IPP =  ?"); //à débugger
+            rechercheMedTt = con.prepareStatement("SELECT * FROM CorrespondanceMedecinExterne natural join MedecinExterne where IPP =  ?"); //à débugger
             rechercheMedTt.setString(1, ipp);
         } catch (Exception e) {
             System.out.println("Erreur de requête 3");
@@ -133,7 +131,7 @@ public class DossierMedicoAdministratif {
 
         //Requête 4: récupérer les venues
         try {
-            rechercheVenue = con.prepareStatement("SELECT * FROM (CorrespondanceDMA_Hospitalisation natural join Venue) natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
+            rechercheVenue = con.prepareStatement("SELECT * FROM (correspondanceDMA_Hospitalisation natural join Venue) natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
             rechercheVenue.setString(1, ipp);
         } catch (Exception e) {
             System.out.println("Erreur de requête 4");
@@ -158,42 +156,29 @@ public class DossierMedicoAdministratif {
 
         //-----------parcours des données retournées
         //---Variables temporaires
-        String r_IPP = null;
-        String r_nom = null;
-        String r_prenom = null;
-        String r_idSIR = null;
-        String r_sexe = null;
-        Date r_dateNaissance = null;
-        String r_nom_proche = null;
-        String r_n_tel_proche = null;
-        String r_n_tel = null;
-        String r_adresse = null;
-        String r_groupeSanguin = null;
         MedecinTraitant r_medTraitant = null;
-        DossierMedicoAdministratif dmaTest = null;
         String r_medAdresse = null;
         String r_medNom = null;
         String r_medPrenom = null;
         String r_medNtel = null;
         int r_medCodePostal = 0;
-        ArrayList<Venue> r_liste = new ArrayList();
 
         try {
             while (resultats_bd.next()) {
                 //Informations du patient
-                r_IPP = resultats_bd.getString("IPP");
-                r_nom = resultats_bd.getString("nom");
-                r_prenom = resultats_bd.getString("prenom");
-                r_sexe = resultats_bd.getString("sexe");
-                r_dateNaissance = resultats_bd.getDate("dateNaissance");
-                r_nom_proche = resultats_bd.getString("nom_proche");
-                r_n_tel_proche = resultats_bd.getString("tel_proche");
-                r_n_tel = resultats_bd.getString("telephone_personnel");
-                r_adresse = resultats_bd.getString("adresse");
-                r_groupeSanguin = resultats_bd.getString("groupe_sanguin");
+                this.IPP = resultats_bd.getString("IPP");
+                this.nom = resultats_bd.getString("nom");
+                this.prenom = resultats_bd.getString("prenom");
+                this.sexe = resultats_bd.getString("sexe");
+                this.dateNaissance = resultats_bd.getDate("dateNaissance");
+                this.nom_proche = resultats_bd.getString("nom_proche");
+                this.n_tel_proche = resultats_bd.getString("tel_proche");
+                this.n_tel = resultats_bd.getString("telephone_personnel");
+                this.adresse = resultats_bd.getString("adresse");
+                this.groupeSanguin = resultats_bd.getString("groupe_sanguin");
             }
             while (resultats_bd2.next()) {
-                r_idSIR = resultats_bd2.getString("idSIR");
+                this.idSIR = resultats_bd2.getString("idSIR");
             }
             while (resultats_bd3.next()) {
                 //Informations du médecin
@@ -211,13 +196,10 @@ public class DossierMedicoAdministratif {
 
             //Création de l'instance du médecin traitant
             if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0 && r_medNtel != null && r_medAdresse != null) {
-                r_medTraitant = new MedecinTraitant(r_medAdresse, r_medNom, r_medPrenom, r_medNtel, r_medCodePostal);
+                this.medTraitant = new MedecinTraitant(r_medAdresse, r_medNom, r_medPrenom, r_medNtel, r_medCodePostal);
             } else {
-                r_medTraitant = null;
+                this.medTraitant = null;
             }
-
-            //Création du DMA
-            dmaTest = new DossierMedicoAdministratif(r_IPP, r_nom, r_prenom, r_n_tel, r_sexe, r_dateNaissance, r_adresse, r_groupeSanguin, r_medTraitant, r_n_tel_proche, r_nom_proche);
 
             while (resultats_bd4.next()) {
                 //Liste des venues
@@ -239,7 +221,7 @@ public class DossierMedicoAdministratif {
 
                 //On cherche le PH
                 r_PHrespo = new PH();
-                r_PHrespo = r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+                r_PHrespo.rechercherUnMedecinRPPS(nrpps);
 
                 //On crée le lit 
                 Lit lit = new Lit(true, r_num_lit);
@@ -247,10 +229,10 @@ public class DossierMedicoAdministratif {
                 //On crée une venue
                 if (r_num_lit != null) {
                     Hospitalisation h1 = new Hospitalisation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo, lit);
-                    dmaTest.ajouterUneVenue(h1);
+                    this.ajouterUneVenue(h1);
                 } else {
                     Consultation c1 = new Consultation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo);
-                    dmaTest.ajouterUneVenue(c1);
+                    this.ajouterUneVenue(c1);
                 }
             }
 
@@ -267,10 +249,11 @@ public class DossierMedicoAdministratif {
             } while (e != null);
         }
 
-        return dmaTest;
     }
 
-    public DossierMedicoAdministratif rechercherUnDMA(String nom, String prenom, Date dateN) {
+    //On doit rajouter une méthode qui ajoute la traçabilité: la personne
+    //connectée sur le DMA doit être enregistrée dans la base
+    public void rechercherUnDMA(String nom, String prenom, Date dateN) {
         Connection con = null;
         PreparedStatement rechercheIPP = null;
         PreparedStatement rechercheIDSIR = null;
@@ -292,9 +275,9 @@ public class DossierMedicoAdministratif {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -332,181 +315,170 @@ public class DossierMedicoAdministratif {
 
         //-----------parcours des données retournées: requête 1
         //---Variables temporaires
-        String r_IPP = null;
-        String r_sexe = null;
-        String r_nom_proche = null;
-        String r_n_tel_proche = null;
-        String r_n_tel = null;
-        String r_adresse = null;
-        String r_groupeSanguin = null;
-        MedecinTraitant r_medTraitant = null;
-        DossierMedicoAdministratif dmaTest = null;
-
-        try {
-            while (resultats_bd.next()) {
-                //Informations du patient
-                r_IPP = resultats_bd.getString("IPP");
-                r_sexe = resultats_bd.getString("sexe");
-                r_nom_proche = resultats_bd.getString("nom_proche");
-                r_n_tel_proche = resultats_bd.getString("tel_proche");
-                r_n_tel = resultats_bd.getString("telephone_personnel");
-                r_adresse = resultats_bd.getString("adresse");
-                r_groupeSanguin = resultats_bd.getString("groupe_sanguin");
-            }
-
-            //Fermeture des résultats des requêtes
-            resultats_bd.close();
-
-        } catch (SQLException e) {
-            do {
-                System.out.println("Accès aux résultats refusé");
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
-
-        //Requête 2: récupérer l'idSIR s'il existe
-        try {
-            rechercheIDSIR = con.prepareStatement("SELECT idSIR FROM correspondanceDMA_SIR where IPP =  ?");
-            rechercheIDSIR.setString(1, r_IPP);
-        } catch (Exception e) {
-            System.out.println("Erreur de requête 2");
-        }
-
-        //Requête 3: récupérer le médecin traitant s'il existe
-        try {
-            rechercheMedTt = con.prepareStatement("SELECT * FROM correspondanceMedecinExterne natural join MedecinExterne where IPP =  ?"); //à débugger
-            rechercheMedTt.setString(1, r_IPP);
-        } catch (Exception e) {
-            System.out.println("Erreur de requête 3");
-        }
-
-        //Requête 4: récupérer les venues
-        try {
-            rechercheVenue = con.prepareStatement("SELECT * FROM (CorrespondanceDMA_Hospitalisation natural join Venue) natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
-            rechercheVenue.setString(1, r_IPP);
-        } catch (Exception e) {
-            System.out.println("Erreur de requête 4");
-        }
-
-        //-----------Accès à la base de données
-        try {
-            resultats_bd2 = rechercheIDSIR.executeQuery();
-            resultats_bd3 = rechercheMedTt.executeQuery();
-            resultats_bd4 = rechercheVenue.executeQuery();
-        } catch (SQLException e) {
-            do {
-                System.out.println("Requête refusée");
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
-
-        //-----------parcours des données retournées
-        //---Variables temporaires
-        String r_idSIR = null;
-        String r_medAdresse = null;
-        String r_medNom = null;
-        String r_medPrenom = null;
-        String r_medNtel = null;
-        int r_medCodePostal = 0;
-        ArrayList<Venue> r_liste = new ArrayList();
-
-        try {
-            while (resultats_bd2.next()) {
-                r_idSIR = resultats_bd2.getString("idSIR");
-            }
-            while (resultats_bd3.next()) {
-                //Informations du médecin
-                r_medAdresse = resultats_bd3.getString("adresse");
-                r_medNom = resultats_bd3.getString("nom");
-                r_medPrenom = resultats_bd3.getString("prenom");
-                r_medNtel = resultats_bd3.getString("telephone_pro");
-                r_medCodePostal = resultats_bd3.getInt("codePostal");
-            }
-
-            //Fermeture des résultats des requête
-            resultats_bd2.close();
-            resultats_bd3.close();
-
-            //Création de l'instance du médecin traitant
-            if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0 && r_medNtel != null && r_medAdresse != null) {
-                r_medTraitant = new MedecinTraitant(r_medAdresse, r_medNom, r_medPrenom, r_medNtel, r_medCodePostal);
-            } else {
-                r_medTraitant = null;
-            }
-
-            //Création du DMA
-            dmaTest = new DossierMedicoAdministratif(r_IPP, nom, prenom, r_n_tel, r_sexe, dateN, r_adresse, r_groupeSanguin, r_medTraitant, r_n_tel_proche, r_nom_proche);
-
-            while (resultats_bd4.next()) {
-                //Liste des venues
-                String r_numSejour;
-                Date r_dateEntree;
-                Date r_dateSortie;
-                String r_lettreSortie;
-                String nrpps;
-                PH r_PHrespo;
-                String r_num_lit;
-
-                //On récupère la première venue
-                r_numSejour = resultats_bd4.getString("num_sejour");
-                r_dateEntree = resultats_bd4.getDate("date_entree");
-                r_dateSortie = resultats_bd4.getDate("date_sortie");
-                r_lettreSortie = resultats_bd4.getString("ref_doc_lettre_sortie");
-                nrpps = resultats_bd4.getString("n_rpps");
-                r_num_lit = resultats_bd4.getString("num_lit");
-
-                //On cherche le PH
-                r_PHrespo = new PH();
-                r_PHrespo = r_PHrespo.rechercherUnMedecinRPPS(nrpps);
-
-                //On crée le lit 
-                Lit lit = new Lit(true, r_num_lit);
-
-                //On crée une venue
-                if (r_num_lit != null) {
-                    Hospitalisation h1 = new Hospitalisation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo, lit);
-                    dmaTest.ajouterUneVenue(h1);
-                } else {
-                    Consultation c1 = new Consultation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo);
-                    dmaTest.ajouterUneVenue(c1);
+        if (this.IPP != null) {
+            try {
+                while (resultats_bd.next()) {
+                    //Informations du patient
+                    this.IPP = resultats_bd.getString("IPP");
+                    this.nom = resultats_bd.getString("nom");
+                    this.prenom = resultats_bd.getString("prenom");
+                    this.sexe = resultats_bd.getString("sexe");
+                    this.dateNaissance = resultats_bd.getDate("dateNaissance");
+                    this.nom_proche = resultats_bd.getString("nom_proche");
+                    this.n_tel_proche = resultats_bd.getString("tel_proche");
+                    this.n_tel = resultats_bd.getString("telephone_personnel");
+                    this.adresse = resultats_bd.getString("adresse");
+                    this.groupeSanguin = resultats_bd.getString("groupe_sanguin");
                 }
+
+                //Fermeture des résultats des requêtes
+                resultats_bd.close();
+
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
             }
 
-            //On ferme les résultats
-            resultats_bd4.close();
+            //Requête 2: récupérer l'idSIR s'il existe
+            try {
+                rechercheIDSIR = con.prepareStatement("SELECT idSIR FROM CorrespondanceDMA_SIR where IPP =  ?");
+                rechercheIDSIR.setString(1, this.IPP);
+            } catch (Exception e) {
+                System.out.println("Erreur de requête 2");
+            }
 
-        } catch (SQLException e) {
-            do {
-                System.out.println("Accès aux résultats refusé");
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
+            //Requête 3: récupérer le médecin traitant s'il existe
+            try {
+                rechercheMedTt = con.prepareStatement("SELECT * FROM CorrespondanceMedecinExterne natural join MedecinExterne where IPP =  ?"); //à débugger
+                rechercheMedTt.setString(1, this.IPP);
+            } catch (Exception e) {
+                System.out.println("Erreur de requête 3");
+            }
+
+            //Requête 4: récupérer les venues
+            try {
+                rechercheVenue = con.prepareStatement("SELECT * FROM (correspondanceDMA_Hospitalisation natural join Venue) natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
+                rechercheVenue.setString(1, this.IPP);
+            } catch (Exception e) {
+                System.out.println("Erreur de requête 4");
+            }
+
+            //-----------Accès à la base de données
+            try {
+                resultats_bd2 = rechercheIDSIR.executeQuery();
+                resultats_bd3 = rechercheMedTt.executeQuery();
+                resultats_bd4 = rechercheVenue.executeQuery();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Requête refusée");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //-----------parcours des données retournées
+            //---Variables temporaires
+            String r_medAdresse = null;
+            String r_medNom = null;
+            String r_medPrenom = null;
+            String r_medNtel = null;
+            int r_medCodePostal = 0;
+
+            try {
+                while (resultats_bd2.next()) {
+                    this.idSIR = resultats_bd2.getString("idSIR");
+                }
+                while (resultats_bd3.next()) {
+                    //Informations du médecin
+                    r_medAdresse = resultats_bd3.getString("adresse");
+                    r_medNom = resultats_bd3.getString("nom");
+                    r_medPrenom = resultats_bd3.getString("prenom");
+                    r_medNtel = resultats_bd3.getString("telephone_pro");
+                    r_medCodePostal = resultats_bd3.getInt("codePostal");
+                }
+
+                //Fermeture des résultats des requête
+                resultats_bd2.close();
+                resultats_bd3.close();
+
+                //Création de l'instance du médecin traitant
+                if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0 && r_medNtel != null && r_medAdresse != null) {
+                    this.medTraitant = new MedecinTraitant(r_medAdresse, r_medNom, r_medPrenom, r_medNtel, r_medCodePostal);
+                } else {
+                    this.medTraitant = null;
+                }
+
+                while (resultats_bd4.next()) {
+                    //Liste des venues
+                    String r_numSejour;
+                    Date r_dateEntree;
+                    Date r_dateSortie;
+                    String r_lettreSortie;
+                    String nrpps;
+                    PH r_PHrespo;
+                    String r_num_lit;
+
+                    //On récupère la première venue
+                    r_numSejour = resultats_bd4.getString("num_sejour");
+                    r_dateEntree = resultats_bd4.getDate("date_entree");
+                    r_dateSortie = resultats_bd4.getDate("date_sortie");
+                    r_lettreSortie = resultats_bd4.getString("ref_doc_lettre_sortie");
+                    nrpps = resultats_bd4.getString("n_rpps");
+                    r_num_lit = resultats_bd4.getString("num_lit");
+
+                    //On cherche le PH
+                    r_PHrespo = new PH();
+                    r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+
+                    //On crée le lit 
+                    Lit lit = new Lit(true, r_num_lit);
+
+                    //On crée une venue
+                    if (r_num_lit != null) {
+                        Hospitalisation h1 = new Hospitalisation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo, lit);
+                        this.ajouterUneVenue(h1);
+                    } else {
+                        Consultation c1 = new Consultation(r_numSejour, r_dateEntree, r_dateSortie, r_lettreSortie, r_PHrespo);
+                        this.ajouterUneVenue(c1);
+                    }
+                }
+
+                //On ferme les résultats
+                resultats_bd4.close();
+
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
         }
 
-        return dmaTest;
     }
 
     //Cherche le lit du patient. Méthode à combiner avec la méthode InformationsSecteur dans la classe Secteur pour avoir toutes les informations
     public Lit localiserUnPatient(String nom, String prenom, Date dateN) {
-        DossierMedicoAdministratif dma = new DossierMedicoAdministratif();
-        dma = dma.rechercherUnDMA(nom, prenom, dateN);
+        this.rechercherUnDMA(nom, prenom, dateN);
 
         //On récupère toutes les hospitalisations
         ArrayList<Hospitalisation> listeHospi = new ArrayList();
-        for (int i = 0; i < dma.listeVenue.size(); i++) {
-            if (dma.listeVenue.get(i) instanceof Hospitalisation) {
-                Hospitalisation h = (Hospitalisation) dma.listeVenue.get(i);
+
+        for (int i = 0; i < this.listeVenue.size(); i++) {
+            if (this.listeVenue.get(i) instanceof Hospitalisation) {
+                Hospitalisation h = (Hospitalisation) this.listeVenue.get(i);
                 listeHospi.add(h);
             }
         }
@@ -515,7 +487,9 @@ public class DossierMedicoAdministratif {
         Lit lit = null;
 
         int j = 0;
+
         while (j < listeHospi.size() && listeHospi.get(j).getDateSortie() != null) {
+            System.out.println(listeHospi.get(j).getDateSortie());
             j++;
         }
 
@@ -526,7 +500,8 @@ public class DossierMedicoAdministratif {
         return lit;
     }
 
-    public void creerUnDMA(String IPP, String nom, String prenom, String sexe, Date dateN, String nom_proche, String n_tel_proche, String n_tel, String adresse, String groupeSanguin, MedecinTraitant medTt) {
+//change
+    public static void creerUnDMA(String IPP, String nom, String prenom, String sexe, Date dateN, String nom_proche, String n_tel_proche, String n_tel, String adresse, String groupeSanguin, MedecinTraitant medTt) {
         //L'interface envoie des informations
         //Création un peu particulière: la création du DMA crée aussi automatiquement la première venue
         //Voir la méthode créerUneVenue, à associer avec celle-ci lors de la création du DMA
@@ -546,9 +521,9 @@ public class DossierMedicoAdministratif {
 
         //-----------Etablissement de la connexion
         try {
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -672,19 +647,116 @@ public class DossierMedicoAdministratif {
         }
     }
 
+    //Il y a 2 méthodes pour générer un IPP: genererUnIPPe() génère un IPP à tester
+    //la méthode testerExistenceIPP(...) qui teste l'existence de cet IPP provisoire
+    public String genererUnIPP() {
+        //Ajout de l'année
+        String IPP = Integer.toString(LocalDateTime.now().getYear()).substring(2, 4);
+
+        //Ajout d'un nombre au hasard à 7 chiffres
+        int num = (int) Math.round(Math.random() * 9999999);
+        IPP += num;
+
+        while (testerExistenceIPP(IPP) == true) {
+            IPP = Integer.toString(LocalDateTime.now().getYear()).substring(2, 4);
+            num = (int) Math.round(Math.random() * 9999999);
+            IPP += num;
+        }
+
+        return IPP;
+    }
+
+    public boolean testerExistenceIPP(String IPP) {
+        Connection con = null;
+        PreparedStatement chercherIPP = null;
+        boolean existe = false;
+
+        //-----------Connexion
+        //Chargement du pilote
+        try {
+            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
+        } catch (java.lang.ClassNotFoundException e) {
+            System.out.println("Erreur: Class Not Found");
+        }
+
+        //-----------Etablissement de la connexion
+        try {
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passee
+        } catch (java.sql.SQLException e) {
+            do {
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //Vérification que ce numéro d'IPP n'existe pas
+        try {
+            String requete = "select IPP from DMA where IPP = ?";
+            chercherIPP = con.prepareStatement(requete);
+            chercherIPP.setString(1, IPP);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ResultSet resultats_bd = null;
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = chercherIPP.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        try {
+            while (resultats_bd.next()) {
+                if (resultats_bd.getString("IPP") != null) {
+                    existe = true;
+                }
+            }
+            //Fermeture des résultats des requête
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+        return existe;
+    }
+
 //TEST
     public static void main(String[] args) {
         DossierMedicoAdministratif dma = new DossierMedicoAdministratif();
-        Date date1 = new Date(56, 9, 28);
-        Date date = new Date(55, 9, 28);
+        Date date1 = new Date(55, 8, 28);
+        Date date = new Date(56, 9, 28);
         Date dateTest = new Date(100, 06, 22);
 
-        dma.rechercherUnDMA("465782439");
+        dma.rechercherUnDMA("180000111"); //OK
         dma.rechercherUnDMA("Gates", "Bill", date1);
-        dma.localiserUnPatient("Gates", "Bill", date); //trouve un lit: normal car hospitalisation en cours
-        dma.localiserUnPatient("Jobs", "Steve", date1); //ne trouve pas de lit: normal car pas d'hospitalisation en cours
-        MedecinTraitant medTest = dma.rechercherUnDMA("465782439").getMedecinTraitant();
-        //dma.creerUnDMA("123456789", "Test", "Raoul", "M", dateTest, "Test Christine", "0666996699", "0688991122", "32 adresse de test", "B+", medTest);
-        
+//        System.out.println(dma.localiserUnPatient("Gates", "Bill", date1).getNumeroLit()); //trouve un lit: normal car hospitalisation en cours
+//        dma.localiserUnPatient("Jobs", "Steve", date); //ne trouve pas de lit: normal car pas d'hospitalisation en cours
+//        MedecinTraitant medTest = dma.rechercherUnDMA("180000111").getMedecinTraitant();
+//        dma.creerUnDMA(dma.genererUnIPP(), "Test", "Raoul", "M", dateTest, "Test Christine", "0666996699", "0688991122", "32 adresse de test", "B+", medTest);
+//        System.out.println(dma.genererUnIPP()); //ça marche
+//        System.out.println(dma.testerExistenceIPP("180000111")); //OK
+//        System.out.println(dma.testerExistenceIPP("180000131")); //OK: ça marche pas: normal
     }
 }
