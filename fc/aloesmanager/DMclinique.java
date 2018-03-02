@@ -227,7 +227,7 @@ public class DMclinique {
             //------------------ Ajout des prescriptions d'examen ------------------
             //-----------parcours des données retournées
             //---Variables temporaires
-            String r_date = null;
+            Date r_date;
             Date r_date_sql;
             Examen r_examen;
             String r_exam;
@@ -240,7 +240,7 @@ public class DMclinique {
                     r_exam = resultats_bd2.getString("examen");
                     r_exigences_examen = resultats_bd2.getString("exigences_examen");
                     r_nrpps = resultats_bd2.getString("n_rpps");
-                    r_date = resultats_bd2.getString("date_pres");
+                    r_date = resultats_bd2.getDate("date_pres");
 
                     //Conversion du service type String en type Service
                     r_examen = Examen.valueOf(r_exam);
@@ -248,12 +248,8 @@ public class DMclinique {
                     //On cherche le PH
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
-                    //Conversion de la date en format sql
-                    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
                     try {
-                        java.util.Date date = sdf.parse(r_date);
-                        r_date_sql = new Date(date.getTime());
-                        this.ajouterPrescriptionExam(new PrescriptionExamen(r_date_sql, r_examen, r_ph, r_exigences_examen, IPP));
+                        this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP));
                     } catch (Exception e) {
                         System.out.println("");
                     }
@@ -297,8 +293,7 @@ public class DMclinique {
             //------------------ Ajout des prescriptions de médicaments ------------------
             //-----------parcours des données retournées
             //---Variables temporaires
-            Date r_date_sql2;
-            String r_date2 = null;
+            Date r_date2;
             String r_nrpps2 = null;
             String r_listeMedic = null;
             PH r_ph2 = new PH();
@@ -312,12 +307,8 @@ public class DMclinique {
                     //On cherche le PH
                     r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
 
-                    //Conversion de la date en format sql
-                    SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD");
                     try {
-                        java.util.Date date = sdf.parse(r_date2);
-                        r_date_sql2 = new Date(date.getTime());
-                        this.ajouterPrescriptionMedic(new PrescriptionMedicamenteuse(r_date_sql2, r_ph2, r_listeMedic, IPP));
+                        this.ajouterPrescriptionMedic(new PrescriptionMedicamenteuse(r_date2, r_ph2, r_listeMedic, IPP));
                     } catch (Exception e) {
                         System.out.println("");
                     }
