@@ -12,14 +12,9 @@ import java.sql.*;
  * @author Thao
  */
 public enum Service { //à remplir
-    pneumologie("pneumologie"),
-    urgences("urgences"),
-    obstrétrique("obstrétique"),
-    psychiatrie("psychiatrie"),
-    dermatologie("dermatologie"),
-    cardiologie("cardiologie"),
-    urologie("urologie"),    
-    radiologie("radiologie");
+    secteur_cardiaque("secteur_cardiaque"),
+    chirurgie_main_brules("chirurgie_main_brules"),
+    imagerie("imagerie");
     
      // attributs de l'énum
     private String libelle;
