@@ -27,7 +27,7 @@ public class PH extends PersonnelMedical {
     public String getNRPPS(){
         return this.nRPPS;
     }
-    public PH rechercherUnMedecin(String nom, String prenom) {
+    public void rechercherUnMedecin(String nom, String prenom) {
         PH ph = null;
         Connection con = null;
         PreparedStatement rechercheMedecin = null;
@@ -117,7 +117,7 @@ public class PH extends PersonnelMedical {
                 e = e.getNextException();
             } while (e != null);
         }
-        return ph;
+
     }
 
     public PH rechercherUnMedecin(String specialite) {
