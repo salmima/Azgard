@@ -5,17 +5,9 @@ import java.sql.*;
 public class DossierMedicoTechnique {
 
     private String observations;
-
-    /**
-     *
-     * @element-type Radiologie
-     */
-    /**
-     *
-     * @element-type Analyses
-     */
-    /**
-     *
-     * @element-type Anesthesie
-     */
+    private Hematologie dh;
+    private Anatomopathologie dap;
+    private Biologie dp;
+    private Anesthesie da;
+    private Radiologie dr;
 }
