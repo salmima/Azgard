@@ -10,6 +10,9 @@ public class Secteur {
     public String nom;
     private ArrayList<Lit> listeLits;
 
+    /**
+     * Constructeur qui initialise les attributs
+     */
     public Secteur() {
         this.specialite = null;
         this.etage = 0;
@@ -17,6 +20,9 @@ public class Secteur {
         this.listeLits = new ArrayList();
     }
 
+    /**
+     * Constructeur partiel
+     */
     public Secteur(String specialite, int etage, String nom) {
         this.specialite = specialite;
         this.etage = etage;
@@ -24,6 +30,9 @@ public class Secteur {
         this.listeLits = new ArrayList(); //j'ai un problème dans la lecture des résultats de la BD pour créer des secteurs avec leurs listes de lit. Solution: faire une liste de secteurs possibles
     }
 
+     /**
+     * Constructeur complet
+     */
     public Secteur(String specialite, int etage, String nom, ArrayList<Lit> listeLits) {
         this.specialite = specialite;
         this.etage = etage;
@@ -31,17 +40,24 @@ public class Secteur {
         this.listeLits = listeLits;
     }
 
+     /**
+     * Retourne le nom du secteur
+     */
     public String getNom() {
         return nom;
     }
 
+     /**
+     * Ajout d'un lit dans un secteur
+     */
     public void ajouterLit(Lit lit) {
         listeLits.add(lit);
     }
 
-    //Récupère les informations du secteur lié à un lit
-    public Secteur informationsSecteur(Lit lit) { //ne marche que si le lit existe bien évidemment
-        Secteur secteur = new Secteur();
+     /**
+     * Récupère les informations du secteur lié à un lit
+     */
+    public void informationsSecteur(Lit lit) { //ne marche que si le lit existe bien évidemment
         Connection con = null;
         PreparedStatement rechercheSecteur = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
@@ -57,9 +73,9 @@ public class Secteur {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -73,7 +89,7 @@ public class Secteur {
         //----------- Requêtes
         //Requête 1: informations du DMA
         try {
-            rechercheSecteur = con.prepareStatement("SELECT * FROM SECTEUR join LIT on (nom_secteur = nom) WHERE num_lit = ?");
+            rechercheSecteur = con.prepareStatement("SELECT * FROM Secteur join Lit on (nom_secteur = nom) WHERE num_lit = ?");
             rechercheSecteur.setString(1, lit.getNumeroLit());
         } catch (Exception e) {
             System.out.println("Erreur de requête 1");
@@ -95,27 +111,16 @@ public class Secteur {
 
         //-----------parcours des données retournées
         //---Variables temporaires
-        String r_specialite = null;
-        String r_nom = null;
-        int r_etage = 0;
-
         try {
             while (resultats_bd.next()) {
                 //Informations du patient
-                r_specialite = resultats_bd.getString("specialite");
-                r_nom = resultats_bd.getString("nom");
-                r_etage = resultats_bd.getInt("etage");
-
+                this.specialite = resultats_bd.getString("specialite");
+                this.nom = resultats_bd.getString("nom");
+                this.etage = resultats_bd.getInt("etage");
             }
-
-            //Création du secteur
-            secteur = new Secteur(r_specialite, r_etage, r_nom);
 
             //Fermeture des résultats des requêtes
             resultats_bd.close();
-
-            System.out.println(r_specialite);
-            System.out.println(r_nom);
 
         } catch (SQLException e) {
             do {
@@ -128,7 +133,6 @@ public class Secteur {
             } while (e != null);
         }
         
-        return secteur;
     }
 
     //TEST
@@ -141,8 +145,9 @@ public class Secteur {
         //Test d'intégration avec la classe DMA
         DossierMedicoAdministratif dma = new DossierMedicoAdministratif();
         
-        Date date1 = new Date(55, 9, 28);
-        secteur.informationsSecteur(dma.localiserUnPatient("Gates", "Bill", date1)); //ça marche
+        Date date = new Date(55, 8, 28);
+        System.out.println(dma.localiserUnPatient("Gates", "Bill", date).getNumeroLit()); //ça marche
+        secteur.informationsSecteur(dma.localiserUnPatient("Gates", "Bill", date)); //ça marche
 
     }
 }
