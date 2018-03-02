@@ -19,12 +19,16 @@ public enum Examen {
     // attributs de l'énum
     private String libelle;
 
-    // constructeur
+    /**
+     * Constructeur
+     */
     private Examen(String libelle) {
         this.libelle = libelle;
     }
     
-    //retourne le libellé
+    /**
+     * Retourne le libellé
+     */
     public String getLibelle(){
         return libelle;
     }
