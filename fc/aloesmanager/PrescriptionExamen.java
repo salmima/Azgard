@@ -11,17 +11,19 @@ public class PrescriptionExamen {
     private PH ph;
     private String exigences_examen;
     private String id;
+    private boolean done;
     //je sais pas si on remet la signature
 
     /**
      * Constructeur
      */
-    public PrescriptionExamen(Date date, Examen examen, PH ph, String exigences, String id){
+    public PrescriptionExamen(Date date, Examen examen, PH ph, String exigences, String id, boolean done){
         this.date = date;
         this.examen = examen;
         this.ph = ph;
         this.exigences_examen = exigences;
         this.id = id;
+        this.done= done;
     }
     
     /**
@@ -58,7 +60,7 @@ public class PrescriptionExamen {
         }
 
         try {
-            String requete = "INSERT INTO Prescription_examen VALUES(? , ? , ?, ?, ?)";
+            String requete = "INSERT INTO Prescription_examen VALUES(? , ? , ?, ?, ?, NULL)";
             creerPresExam = con.prepareStatement(requete);
             creerPresExam.setDate(1, sqlDate);
             creerPresExam.setString(2, examen.getLibelle());
