@@ -5,11 +5,11 @@ import java.sql.*;
 
 public abstract class Resultat {
 
-    private String compteRendu;
-    private Date date;
-    private String observations;
-    private String id;
-    private String nrpps;
+    protected String compteRendu;
+    protected Date date;
+    protected String observations;
+    protected String id;
+    protected String nrpps;
     
     /**
      * Retourne le compte-rendu
