@@ -340,14 +340,6 @@ public class DMclinique {
             java.util.Date utilDate2 = new java.util.Date();
             java.sql.Date date_co = new java.sql.Date(utilDate2.getTime());
 
-            //-----------Connexion
-            //Chargement du pilote
-            try {
-                Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-            } catch (java.lang.ClassNotFoundException e) {
-                System.out.println("Erreur: Class Not Found");
-            }
-
             try {
                 String requete = "INSERT INTO Tracabilite VALUES(? , ? , ?)";
                 ajouterTrace = con.prepareStatement(requete);
