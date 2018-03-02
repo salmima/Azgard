@@ -16,15 +16,19 @@ public enum Service { //à remplir
     chirurgie_main_brules("chirurgie_main_brules"),
     imagerie("imagerie");
     
-     // attributs de l'énum
+     
     private String libelle;
 
-    // constructeur
+    /**
+     * Constructeur
+     */
     private Service(String libelle) {
         this.libelle = libelle;
     }
     
-    //retourne le libellé
+    /**
+     * Retourne le libellé
+     */
     public String getLibelle(){
         return libelle;
     }
