@@ -28,6 +28,5 @@ public class Consultation extends Venue {
         ph1 = ph1.rechercherUnMedecin("House", "Gregory");
 
         c.creerUneVenue("555458756", "180200003", date1, ph1);
-        System.out.println("hey");
     }
 }
