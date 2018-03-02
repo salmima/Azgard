@@ -26,7 +26,9 @@ public class DossierMedicoAdministratif {
     private MedecinTraitant medTraitant;
     private ArrayList<Venue> listeVenue;
 
-    //Constructeur par défaut
+    /**
+     * Constructeur initialisant
+     */
     public DossierMedicoAdministratif() {
         this.IPP = null;
         this.nom = null;
@@ -41,7 +43,9 @@ public class DossierMedicoAdministratif {
         this.listeVenue = new ArrayList();
     }
 
-    //Constructeur complet
+    /**
+     * Constructeur complet
+     */
     public DossierMedicoAdministratif(String IPP, String nom, String prenom, String n_tel, String sexe, Date dateNaissance, String adresse, String groupeSanguin, MedecinTraitant medTt, String n_tel_proche, String nom_proche) {
         this.IPP = IPP;
         this.nom = nom;
@@ -57,10 +61,16 @@ public class DossierMedicoAdministratif {
         this.listeVenue = new ArrayList();
     }
 
+    /**
+     * Ajout d'une venue
+     */
     public void ajouterUneVenue(Venue venue) {
         listeVenue.add(venue);
     }
 
+    /**
+     * Retourne l'IPP
+     */
     public String getIPP() {
         return this.IPP;
     }
@@ -69,6 +79,9 @@ public class DossierMedicoAdministratif {
         return this.medTraitant;
     }
 
+    /**
+     * Recherche d'un DMA à partir d'un IPP
+     */
     public void rechercherUnDMA(String ipp) { 
         Connection con = null;
         PreparedStatement rechercheIPP = null;
@@ -251,8 +264,9 @@ public class DossierMedicoAdministratif {
 
     }
 
-    //On doit rajouter une méthode qui ajoute la traçabilité: la personne
-    //connectée sur le DMA doit être enregistrée dans la base
+     /**
+     * Recherche d'un DMA en fonction du nom, prénom et date de naissance du patient
+     */
     public void rechercherUnDMA(String nom, String prenom, Date dateN) {
         Connection con = null;
         PreparedStatement rechercheIPP = null;
@@ -499,8 +513,9 @@ public class DossierMedicoAdministratif {
 
         return lit;
     }
-
-//change
+    /**
+     * Création d'un DMA
+     */
     public static void creerUnDMA(String IPP, String nom, String prenom, String sexe, Date dateN, String nom_proche, String n_tel_proche, String n_tel, String adresse, String groupeSanguin, MedecinTraitant medTt) {
         //L'interface envoie des informations
         //Création un peu particulière: la création du DMA crée aussi automatiquement la première venue
