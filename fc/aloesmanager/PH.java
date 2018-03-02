@@ -1,6 +1,8 @@
 package fc.aloesmanager;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class PH extends PersonnelMedical {
 
@@ -24,10 +26,17 @@ public class PH extends PersonnelMedical {
         this.specialite = specialite;
     }
 
-    public String getNRPPS(){
+    /**
+     * Renvoie le numéro RPPS
+     */
+    public String getNRPPS() {
         return this.nRPPS;
     }
-    public void rechercherUnMedecin(String nom, String prenom) {
+
+    /**
+     * Recherche d'un médecin à partir d'un nom et prénom
+     */
+    public static PH rechercherUnMedecin(String nom, String prenom) {
         PH ph = null;
         Connection con = null;
         PreparedStatement rechercheMedecin = null;
@@ -44,9 +53,10 @@ public class PH extends PersonnelMedical {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco");
+
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -60,7 +70,7 @@ public class PH extends PersonnelMedical {
         //----------- Requêtes
         //Requête 1: informations du DMA
         try {
-            rechercheMedecin = con.prepareStatement("SELECT * FROM PERSONNELMEDICAL WHERE lower(nom) =  ? and lower(prenom) = ? and typePersonnel='PH' ");
+            rechercheMedecin = con.prepareStatement("SELECT * FROM personnelMedical WHERE lower(nom) =  ? and lower(prenom) = ? and typePersonnel='PH' ");
             rechercheMedecin.setString(1, nom.toLowerCase());
             rechercheMedecin.setString(2, prenom.toLowerCase());
         } catch (Exception e) {
@@ -94,7 +104,7 @@ public class PH extends PersonnelMedical {
                 //Informations du patient
                 r_n_rpps = resultats_bd.getString("n_rpps");
                 r_n_tel = resultats_bd.getInt("telephone_pro");
-                r_service = resultats_bd.getString("service"); 
+                r_service = resultats_bd.getString("service");
                 r_specialite = resultats_bd.getString("specialite");
             }
 
@@ -117,11 +127,14 @@ public class PH extends PersonnelMedical {
                 e = e.getNextException();
             } while (e != null);
         }
-
+        return ph;
     }
 
-    public PH rechercherUnMedecin(String specialite) {
-        PH ph = null;
+    /**
+     * Recherche d'un médecin à partir d'une certaine spécialité
+     */
+    public static ArrayList<PH> rechercherUnMedecin(String specialite) {
+        ArrayList<PH> ph = new ArrayList();
         Connection con = null;
         PreparedStatement rechercheMedecin = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
@@ -137,9 +150,9 @@ public class PH extends PersonnelMedical {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -151,10 +164,9 @@ public class PH extends PersonnelMedical {
         }
 
         //----------- Requêtes
-        //Requête 1: informations du DMA
         try {
-            rechercheMedecin = con.prepareStatement("SELECT * FROM PERSONNELMEDICAL WHERE specialite = ? and typePersonnel='PH' ");
-            rechercheMedecin.setString(1, specialite);
+            rechercheMedecin = con.prepareStatement("SELECT * FROM personnelMedical WHERE lower(specialite) = ? and typePersonnel='PH' ");
+            rechercheMedecin.setString(1, specialite.toLowerCase());
         } catch (Exception e) {
             System.out.println("Erreur de requête 1");
         }
@@ -183,22 +195,23 @@ public class PH extends PersonnelMedical {
 
         try {
             while (resultats_bd.next()) {
-                //Informations du patient
+                //Informations du médecin
                 r_n_rpps = resultats_bd.getString("n_rpps");
                 r_nom = resultats_bd.getString("nom");
                 r_prenom = resultats_bd.getString("prenom");
                 r_n_tel = resultats_bd.getInt("telephone_pro");
-                r_service = resultats_bd.getString("service"); 
+                r_service = resultats_bd.getString("service");
+
+                //Conversion du service type String en type Service
+                Service service = Service.valueOf(r_service);
+
+                //Création du PH
+                ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
+
             }
 
             //Fermeture des résultats des requêtes
             resultats_bd.close();
-
-            //Conversion du service type String en type Service
-            Service service = Service.valueOf(r_service);
-
-            //Création du PH
-            ph = new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite);
 
         } catch (SQLException e) {
             do {
@@ -214,6 +227,9 @@ public class PH extends PersonnelMedical {
         return ph;
     }
 
+    /**
+     * Recherche d'un médecin à partir de son numéro RPPS
+     */
     public PH rechercherUnMedecinRPPS(String nrpps) {
         PH ph = null;
         Connection con = null;
@@ -231,9 +247,9 @@ public class PH extends PersonnelMedical {
         //-----------Etablissement de la connexion
         try {
             //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "SIH";
-            String DBurl1 = "jdbc:mysql://localhost:3306/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "root", "choco"); //remplacer le mot de passe
+            String base1 = "azgardengineering_sih";
+            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
+            con = DriverManager.getConnection(DBurl1, "154118", "choco");
         } catch (java.sql.SQLException e) {
             do {
                 System.out.println("SQLState : " + e.getSQLState());
@@ -245,9 +261,8 @@ public class PH extends PersonnelMedical {
         }
 
         //----------- Requêtes
-        //Requête 1: informations du DMA
         try {
-            rechercheMedecin = con.prepareStatement("SELECT * FROM PERSONNELMEDICAL where n_rpps = ? ");
+            rechercheMedecin = con.prepareStatement("SELECT * FROM personnelMedical where n_rpps = ? ");
             rechercheMedecin.setString(1, nrpps);
         } catch (Exception e) {
             System.out.println("Erreur de requête 1");
@@ -281,7 +296,7 @@ public class PH extends PersonnelMedical {
                 r_nom = resultats_bd.getString("nom");
                 r_prenom = resultats_bd.getString("prenom");
                 r_n_tel = resultats_bd.getInt("telephone_pro");
-                r_service = resultats_bd.getString("service"); 
+                r_service = resultats_bd.getString("service");
                 r_specialite = resultats_bd.getString("specialite");
             }
 
@@ -308,11 +323,27 @@ public class PH extends PersonnelMedical {
         return ph;
     }
 
+    /**
+     * Mise en forme des informations du médecin à afficher dans l'interface
+     */
+    public Vector<String> afficherMedecin() {
+        Vector<String> rowData = new Vector();
+        String data = "";
+        data += this.nom.substring(0, 1).toUpperCase() + this.nom.substring(1);
+        data += "\t" + this.prenom.substring(0, 1).toUpperCase() + this.prenom.substring(1);
+        data += "\t" + this.specialite.substring(0, 1).toUpperCase() + this.specialite.substring(1);
+        data += "\t" + this.service.getLibelle().substring(0, 1).toUpperCase() + this.service.getLibelle().substring(1);
+        rowData.add(data);
+        return rowData;
+    }
+
     //TEST
     public static void main(String[] args) {
         PH ph1 = new PH();
         ph1.rechercherUnMedecin("House", "Gregory");
+        ph1.rechercherUnMedecinRPPS("pneumologie");
         ph1.rechercherUnMedecinRPPS("18945686235");
 
     }
 }
+
