@@ -4,6 +4,9 @@ import java.sql.*;
 
 public class Consultation extends Venue {
 
+    /**
+     * Constructeur initialisant
+     */
     public Consultation() {
         this.numSejour = null;
         this.dateEntree = null;
@@ -11,6 +14,9 @@ public class Consultation extends Venue {
         this.lettreSortie = null;
     }
 
+    /**
+     * Constructeur complet
+     */
     public Consultation(String num, Date dE, Date dS, String lettre, PH phRespo) {
         this.numSejour = num;
         this.dateEntree = dE;
