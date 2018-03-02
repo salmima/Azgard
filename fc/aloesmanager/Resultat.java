@@ -32,5 +32,11 @@ public abstract class Resultat {
     
     //pour obtenir le type de résultat, tester avec instanceOf ResultatBiologie, ResultatAnapathologie, ResultatImagerie
     
+     /**
+     * Retourne l'ID du patient
+     */
+    public String getId(){
+        return this.observations;
+    }
     
 }
