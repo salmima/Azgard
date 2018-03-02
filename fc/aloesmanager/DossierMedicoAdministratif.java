@@ -69,7 +69,7 @@ public class DossierMedicoAdministratif {
         return this.medTraitant;
     }
 
-    public void rechercherUnDMA(String ipp) { //c'est l'identifiant de connexion de la personne connectée. Elle est stockée dans une instance de Connexion
+    public void rechercherUnDMA(String ipp) { 
         Connection con = null;
         PreparedStatement rechercheIPP = null;
         PreparedStatement rechercheIDSIR = null;
