@@ -257,6 +257,9 @@ public class DMT_Biologie extends DossierMedicoTechnique {
         }
     }
 
+    /**
+     * Ajout d'un résultat de Biologie d'un patient
+     */
     public void ajouterResultat(Date date, PrescriptionExamen pres, String id, String observations, String compteRendu, String identifiant) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement ajouterResultat;
@@ -284,6 +287,9 @@ public class DMT_Biologie extends DossierMedicoTechnique {
 
     }
 
+    /**
+     * Création d'un DMT de Biologie d'un patient
+     */
     public void creerUnDMRadio(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
