@@ -151,14 +151,20 @@ public class DMT_Radio extends DossierMedicoTechnique {
                 }
                 resultats_bd2.close();
 
-                 if (r_nrpps != null) {
+                try {
                     //On cherche le PH
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
-                    //On crée le résultat
-                    resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph);
-                    this.ajouterResultat(resultat);
+                    if (r_ph != null) {
+
+                        //On crée le résultat
+                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph);
+                        this.ajouterResultat(resultat);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
 
             } catch (SQLException e) {
                 do {
@@ -210,14 +216,14 @@ public class DMT_Radio extends DossierMedicoTechnique {
                     r_exigences = resultats_bd3.getString("exigences_examen");
                     r_done = resultats_bd3.getBoolean("done");
 
-                    if (r_nrpps != null) {
+                    try {
                         //On cherche le PH demandeur
                         r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
-                    }
 
-                    try {
-                        pres = new PrescriptionExamen(r_date2, Examen.valueOf("radiologie"), r_ph2, r_exigences, r_id, r_done);
-                        this.ajouterPrescription(pres);
+                        if (r_ph2 != null) {
+                            pres = new PrescriptionExamen(r_date2, Examen.valueOf("radiologie"), r_ph2, r_exigences, r_id, r_done);
+                            this.ajouterPrescription(pres);
+                        }
                     } catch (Exception e) {
                         System.out.println("");
                     }
@@ -294,7 +300,7 @@ public class DMT_Radio extends DossierMedicoTechnique {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         //Requête 1: Ajout d'un DM clinique
-        //La non-vérification de l'existence du DM se fait dans la base de données
+        //La vérification de non-existence du DM se fait dans la base de données
         try {
             String requete = "INSERT INTO DMT_Radio VALUES(? ,?)";
             creerDMRadio = con.prepareStatement(requete);
