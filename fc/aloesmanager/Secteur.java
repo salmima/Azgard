@@ -58,33 +58,9 @@ public class Secteur {
      * Récupère les informations du secteur lié à un lit
      */
     public void informationsSecteur(Lit lit) { //ne marche que si le lit existe bien évidemment
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheSecteur = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
-
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //----------- Requêtes
         //Requête 1: informations du DMA
