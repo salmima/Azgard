@@ -41,7 +41,7 @@ public class PrescriptionMedicamenteuse {
         ResultSet resultats_bd = null;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-        String n_rpps = Connexion.returnNRPPS(identifiant);
+        String n_rpps = PH.returnNRPPS(identifiant);
 
         try {
             String requete = "INSERT INTO Prescription_medic VALUES(? , ? , ?, ?)";
