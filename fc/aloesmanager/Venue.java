@@ -20,32 +20,11 @@ public abstract class Venue {
         //Ma méthode implique que l'interface a cherché le médecin et a retourné un PH (à adapter si ça ne vous convient pas)
         //La localisation du patient est mise à jour par le service clinique, une fois qu'ils on reçu le DMA, si c'est une hospitalisation
 
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerHospi = null;
         ResultSet resultats_bd = null;
 
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
+  
 
         try {
             String requete = "INSERT INTO VENUE VALUES(? , ? , NULL, NULL)";
@@ -116,32 +95,10 @@ public abstract class Venue {
     }
 
     public static String chercherDerniereVenue() {
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement chercherNumSejour = null;
         String last = "";
 
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //Vérification que ce numéro d'IPP n'existe pas
         try {
