@@ -36,7 +36,7 @@ public class PrescriptionMedicamenteuse {
      */
     public void creerUnePrescriptionMedicamenteuse(String listeMedic, String id, String identifiant) { //id du patient, identifiant de la personne connectée
         //L'interface envoie des informations
-        Connection con = ConnexionBDD.obtenirConnection();;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerPresMedic = null;
         PreparedStatement chercherNRPPS = null;
         ResultSet resultats_bd = null;
