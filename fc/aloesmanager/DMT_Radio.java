@@ -259,12 +259,13 @@ public class DMT_Radio extends DossierMedicoTechnique {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement ajouterResultat;
         String n_rpps = PH.returnNRPPS(identifiant);
+        String service_demandeur ="";
 
         try {
         //Requête: Ajout du résultat dans le service demandeur
         //On recherche le service demandeur
             PH ph = pres.getPH();
-            String service_demandeur = ph.getService().getLibelle();
+            service_demandeur = ph.getService().getLibelle();
         } catch (Exception e) {
             System.out.println("");
         }
