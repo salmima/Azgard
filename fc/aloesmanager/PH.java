@@ -32,6 +32,13 @@ public class PH extends PersonnelMedical {
     public String getNRPPS() {
         return this.nRPPS;
     }
+    
+     /**
+     * Renvoie le service du PH
+     */
+    public Service getService() {
+        return this.service;
+    }
 
     /**
      * Recherche d'un médecin à partir d'un nom et prénom
