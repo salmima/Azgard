@@ -12,5 +12,24 @@ import java.sql.*;
  * @author Thao
  */
 public enum TypeMT {
+        biologie("biologie"),
+    hematologie("hematologie"),
+    anatomopathologie("anatomopathologie");
     
+     // attributs de l'énum
+    private String libelle;
+
+    /**
+     * Constructeur
+     */
+    private TypeMT(String libelle) {
+        this.libelle = libelle;
+    }
+    
+    /**
+     * Retourne le libellé
+     */
+    public String getLibelle(){
+        return libelle;
+    }
 }
