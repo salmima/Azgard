@@ -41,7 +41,7 @@ public class PrescriptionExamen {
     /**
      * Ajout d'une prescription d'examen
      */
-    public void creerUnePrescriptionExamen(Examen examen, String id, String n_rpps, String exigences_examen) { //id du patient
+    public void creerUnePrescriptionExamen(Examen examen, String id, String n_rpps, String exigences_examen) { //id du patient, identifiant de la personne connectée
         //L'interface envoie des informations
         Connection con = null;
         PreparedStatement creerPresExam = null;
