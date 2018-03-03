@@ -165,7 +165,7 @@ public class DMclinique {
                 }
 
                 //Création partielle d'un DM clinique
-                if (r_id != null && r_service != null) {
+                if (r_id != null && serv != null) {
                     this.id = r_id;
                     this.observations = r_observations;
                     this.service = serv;
@@ -228,16 +228,16 @@ public class DMclinique {
                     r_date = resultats_bd2.getDate("date_pres");
                     r_done = resultats_bd2.getBoolean("done");
 
-                    if (r_exam != null) {
+                   try {
                         //Conversion du service type String en type Service
                         r_examen = Examen.valueOf(r_exam);
 
                         //On cherche le PH
                         r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
-                    }
-                    
-                    try {
-                        this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, r_done));
+
+                        if (r_examen != null && r_ph != null) {
+                            this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, r_done));
+                        }
                     } catch (Exception e) {
                         System.out.println("");
                     }
@@ -292,12 +292,13 @@ public class DMclinique {
                     r_nrpps2 = resultats_bd3.getString("n_rpps");
                     r_listeMedic = resultats_bd3.getString("liste_medic");
 
-                    if (r_nrpps2 != null) {
+                    try  {
                         //On cherche le PH
                         r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
-                    }
-                    try {
-                        this.ajouterPrescriptionMedic(new PrescriptionMedicamenteuse(r_date2, r_ph2, r_listeMedic, IPP));
+                        
+                        if (r_ph2 != null){
+                            this.ajouterPrescriptionMedic(new PrescriptionMedicamenteuse(r_date2, r_ph2, r_listeMedic, IPP));
+                        }
                     } catch (Exception e) {
                         System.out.println("");
                     }
@@ -357,29 +358,26 @@ public class DMclinique {
                     r_nrpps3 = resultats_bd4.getString("n_rpps");
                     r_type_examen = resultats_bd4.getString("type_examen");
 
-                    if (r_nrpps3 != null) {
+                    try {
                         //On cherche le PH
                         r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps3);
-                    }
-                    try {
-                        if (r_type_examen.equals("radiologie")) {
-                            resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                        
+                        if (r_nrpps3 != null) {
+                            if (r_type_examen.equals("radiologie")) {
+                                resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                this.ajouterResultat(resultat);
+                            } else if (r_type_examen.equals("hematologie")) {
+                                resultat = new ResultatHematologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                this.ajouterResultat(resultat);
+                            } else if (r_type_examen.equals("anatomopathologie")) {
+                                resultat = new ResultatAnapathologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                this.ajouterResultat(resultat);
+                            } else if (r_type_examen.equals("biologie")) {
+                                resultat = new ResultatBiologique(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                this.ajouterResultat(resultat);
+                            }
                             this.ajouterResultat(resultat);
                         }
-                        else if (r_type_examen.equals("hematologie")) {
-                            resultat = new ResultatHematologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
-                            this.ajouterResultat(resultat);
-                        }
-                        else if (r_type_examen.equals("anatomopathologie")) {
-                            resultat = new ResultatAnapathologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
-                            this.ajouterResultat(resultat);
-                        }
-                        else if (r_type_examen.equals("biologie")) {
-                            resultat = new ResultatBiologique(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
-                            this.ajouterResultat(resultat);
-                        }
-                        this.ajouterResultat(resultat);
-                        System.out.println(resultat.getCompteRendu());
                     } catch (Exception e) {
                         System.out.println("");
                     }
