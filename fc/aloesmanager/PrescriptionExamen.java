@@ -8,7 +8,7 @@ public class PrescriptionExamen {
 
     private Date date;
     Examen examen;
-    private PH ph;
+    private PH ph; //PH demandeur
     private String exigences_examen;
     private String id;
     private boolean done;
