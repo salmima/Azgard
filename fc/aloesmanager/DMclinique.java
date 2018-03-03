@@ -424,7 +424,7 @@ public class DMclinique {
         PreparedStatement creerDM = null;
 
         //Requête 1: Ajout d'un DM clinique
-        //La non-vérification de l'existence du DM se fait dans la base de données
+        //La vérification de non-existence du DM se fait dans la base de données
         try {
             String requete = "INSERT INTO DMclinique VALUES(? ,?, NULL )";
             creerDM = con.prepareStatement(requete);
