@@ -14,7 +14,9 @@ import java.sql.*;
 public enum Service { //à remplir
     secteur_cardiaque("secteur_cardiaque"),
     chirurgie_main_brules("chirurgie_main_brules"),
-    imagerie("imagerie");
+    imagerie("imagerie"),
+    biologie("biologie");
+    
     
      
     private String libelle;
