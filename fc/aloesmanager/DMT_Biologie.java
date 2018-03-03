@@ -109,7 +109,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
         }
 
         if (r_id != null) {
-            //----------- Requête 2: recherche des résultats d'examen radiologie
+            //----------- Requête 2: recherche des résultats d'examen biologie
             try {
                 rechercheResultat = con.prepareStatement("select * from Resultat where id = ? and type_examen = 'biologie'");
                 rechercheResultat.setString(1, r_id);
