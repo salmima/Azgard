@@ -256,6 +256,10 @@ public class DMT_Anapath extends DossierMedicoTechnique {
         }
     }
 
+     /**
+     * Ajout d'un résultat d'Anapath d'un patient
+     */
+    //Penser à faire dma.ajouterExamen(new Examen.valueOf("anatomopathologie")
     public void ajouterResultat(Date date, PrescriptionExamen pres, String id, String observations, String compteRendu, String identifiant) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement ajouterResultat;
@@ -283,6 +287,9 @@ public class DMT_Anapath extends DossierMedicoTechnique {
 
     }
 
+     /**
+     * Création d'un DMT Anatomopathologie d'un patient
+     */
     public void creerUnDMAnapath(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
