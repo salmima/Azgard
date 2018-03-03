@@ -260,6 +260,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
     /**
      * Ajout d'un résultat de Biologie d'un patient
      */
+    //Penser à faire dma.ajouterExamen(new Examen.valueOf("biologie")
     public void ajouterResultat(Date date, PrescriptionExamen pres, String id, String observations, String compteRendu, String identifiant) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement ajouterResultat;
