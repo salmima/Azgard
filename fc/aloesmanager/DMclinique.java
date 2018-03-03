@@ -78,6 +78,13 @@ public class DMclinique {
         this.listePrescriptionMedic.add(pres);
     }
     
+     /**
+     * Ajout d'un résultat à la liste de résultats
+     */
+    public void ajouterResultat(Resultat resultat) {
+        this.listeResultats.add(resultat);
+    }
+    
     /**
      * Récupération de la liste de prescription médicamenteuse
      */
