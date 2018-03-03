@@ -48,6 +48,7 @@ public class DMT_Radio extends DossierMedicoTechnique {
     /**
      * Recherche d'un DMT de Radiologie d'un patient
      */
+    //ATTENTION: il faut vérifier dans l'interface que la personne est bien de secteur "imagerie" et que son statut est bien "PH"
     public void rechercherUnDMRadio(String IPP, String identifiant) { //identifiant de la personne connectée
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheDMRadio = null;
