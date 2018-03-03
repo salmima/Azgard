@@ -317,7 +317,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
         Date dateTest = new Date(118, 2, 3);
         PrescriptionExamen pres = new PrescriptionExamen(dateTest, Examen.valueOf("biologie"), PH.rechercherUnMedecin("house", "gregory"), "pres 2", "180000111", false);
 //        dmt.rechercherUnDMBiologie("180000222", "MARM"); //ça marche
-//        dmt.creerUnDMRadio("180000111","biologie - bill gates"); //ça marche
+//        dmt.creerUnDMBiologie("180000111","biologie - bill gates"); //ça marche
 //        dmt.ajouterResultat(dateTest, pres, "180000222", "", "pas de cholestérol", "MARM"); //ça marche
     }
 
