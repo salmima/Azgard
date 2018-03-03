@@ -256,6 +256,10 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
         }
     }
 
+     /**
+     * Ajout d'un résultat d'hematologie
+     */
+    //Penser à faire dma.ajouterExamen(new Examen.valueOf('hematologie')
     public void ajouterResultat(Date date, PrescriptionExamen pres, String id, String observations, String compteRendu, String identifiant) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement ajouterResultat;
@@ -283,6 +287,9 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
 
     }
 
+    /**
+     * Création d'un DMT de Biologie d'un patient
+     */
     public void creerUnDMHematologie(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
