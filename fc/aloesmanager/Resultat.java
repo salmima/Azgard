@@ -38,12 +38,5 @@ public abstract class Resultat {
     public String getId(){
         return this.observations;
     }
-    
-    /**
-     * Retourne le numéro RPPS du personnel MT qui a publié le résultat
-     */
-    public PH getPH(){
-        return this.ph;
-    }
-    
+
 }
