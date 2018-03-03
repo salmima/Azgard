@@ -4,6 +4,8 @@ import java.sql.*;
 
 public class ResultatImagerie extends Resultat {
     
+     protected PH ph; //ph qui a ajouté le résultat
+    
     /**
      * Constructeur
      */
