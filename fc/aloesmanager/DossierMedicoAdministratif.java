@@ -25,6 +25,7 @@ public class DossierMedicoAdministratif {
     private String groupeSanguin;
     private MedecinTraitant medTraitant;
     private ArrayList<Venue> listeVenue;
+    private ArrayList<Examen> listeExamen;
 
     /**
      * Constructeur initialisant
@@ -41,6 +42,7 @@ public class DossierMedicoAdministratif {
         this.nom_proche = null;
         this.groupeSanguin = null;
         this.listeVenue = new ArrayList();
+        this.listeExamen = new ArrayList<Examen>();
     }
 
     /**
@@ -59,6 +61,7 @@ public class DossierMedicoAdministratif {
         this.nom_proche = nom_proche;
         this.medTraitant = medTt;
         this.listeVenue = new ArrayList();
+        this.listeExamen = new ArrayList<Examen>();
     }
 
     /**
@@ -75,8 +78,18 @@ public class DossierMedicoAdministratif {
         return this.IPP;
     }
 
+     /**
+     * Retourne le médecin traitant
+     */
     public MedecinTraitant getMedecinTraitant() {
         return this.medTraitant;
+    }
+    
+    /**
+     * Retourne la nature de l'examen
+     */
+    public void ajouterExamen(Examen examen) {
+        this.listeExamen.add(examen);
     }
 
     /**
