@@ -38,6 +38,14 @@ public class PrescriptionExamen {
         this.done= done;
     }
     
+     /**
+     * Retourne le PH
+     */
+    public PH getPH(){
+        return this.ph;
+    }
+    
+    
     /**
      * Ajout d'une prescription d'examen
      */
