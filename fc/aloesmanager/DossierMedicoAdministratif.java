@@ -101,10 +101,12 @@ public class DossierMedicoAdministratif {
         PreparedStatement rechercheIDSIR = null;
         PreparedStatement rechercheMedTt = null;
         PreparedStatement rechercheVenue = null;
+        PreparedStatement rechercheExamen = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
         ResultSet resultats_bd4 = null;
+        ResultSet resultats_bd5 = null;
 
         //----------- Requêtes
         //Requête 1: informations du DMA
@@ -250,6 +252,62 @@ public class DossierMedicoAdministratif {
                 e = e.getNextException();
             } while (e != null);
         }
+        
+         //----------- Requête 5: recherche des examens 
+        try {
+            rechercheExamen = con.prepareStatement("select * from Resultat where id = ?");
+            rechercheExamen.setString(1, IPP);
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 2");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd5 = rechercheExamen.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //------------------ Ajout de la nature des examens ------------------
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        String r_typeExamen = "";
+
+        try {
+            while (resultats_bd5.next()) {
+                r_typeExamen = resultats_bd5.getString("type_examen");
+            }
+            resultats_bd5.close();
+
+            try {
+                //On convertit r_examen pour avoir une instance d'Examen
+                Examen examen = Examen.valueOf(r_typeExamen);
+
+                if (examen != null) {
+                    //On l'ajoute à la liste
+                    this.ajouterExamen(examen);
+                }
+            } catch (Exception e) {
+                System.out.println("");
+            }
+
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
 
     }
 
@@ -262,10 +320,12 @@ public class DossierMedicoAdministratif {
         PreparedStatement rechercheIDSIR = null;
         PreparedStatement rechercheMedTt = null;
         PreparedStatement rechercheVenue = null;
+        PreparedStatement rechercheExamen = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
         ResultSet resultats_bd4 = null;
+        ResultSet resultats_bd5 = null;
 
         //----------- Requêtes
         //Requête 1: informations du DMA
@@ -444,11 +504,70 @@ public class DossierMedicoAdministratif {
                     e = e.getNextException();
                 } while (e != null);
             }
+            
+        //----------- Requête 5: recherche des examens 
+        try {
+            rechercheExamen = con.prepareStatement("select * from Resultat where id = ?");
+            rechercheExamen.setString(1, IPP);
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 2");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd5 = rechercheExamen.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //------------------ Ajout de la nature des examens ------------------
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        String r_typeExamen = "";
+
+        try {
+            while (resultats_bd5.next()) {
+                r_typeExamen = resultats_bd5.getString("type_examen");
+            }
+            resultats_bd5.close();
+
+            try {
+                //On convertit r_examen pour avoir une instance d'Examen
+                Examen examen = Examen.valueOf(r_typeExamen);
+
+                if (examen != null) {
+                    //On l'ajoute à la liste
+                    this.ajouterExamen(examen);
+                }
+            } catch (Exception e) {
+                System.out.println("");
+            }
+
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
         }
 
     }
 
-    //Cherche le lit du patient. Méthode à combiner avec la méthode InformationsSecteur dans la classe Secteur pour avoir toutes les informations
+    /**
+    * Cherche le lit du patient. 
+    Méthode à combiner avec la méthode InformationsSecteur dans la classe Secteur pour avoir toutes les informations
+    */
     public Lit localiserUnPatient(String nom, String prenom, Date dateN) {
         this.rechercherUnDMA(nom, prenom, dateN);
 
