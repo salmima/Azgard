@@ -16,5 +16,11 @@ public class ResultatImagerie extends Resultat {
         this.id = id;
         this.ph = ph;
     }
-
+    
+    /**
+     * Retourne le numéro RPPS du personnel MT qui a publié le résultat
+     */
+    public PH getPH(){
+        return this.ph;
+    }
 }
