@@ -8,7 +8,7 @@ public abstract class Resultat {
     protected Date date;
     protected String observations;
     protected String id;
-    protected String nrpps;
+    protected PH ph;
     
     /**
      * Retourne le compte-rendu
@@ -43,8 +43,8 @@ public abstract class Resultat {
     /**
      * Retourne le numéro RPPS du personnel MT qui a publié le résultat
      */
-    public String getNRPPS(){
-        return this.nrpps;
+    public PH getPH(){
+        return this.ph;
     }
     
 }
