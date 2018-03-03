@@ -3,8 +3,7 @@ package fc.aloesmanager;
 import java.sql.*;
 
 public class ResultatImagerie extends Resultat {
-    
-     protected PH ph; //ph qui a ajouté le résultat
+
     
     /**
      * Constructeur
@@ -16,11 +15,5 @@ public class ResultatImagerie extends Resultat {
         this.id = id;
         this.ph = ph;
     }
-    
-    /**
-     * Retourne le numéro RPPS du personnel MT qui a publié le résultat
-     */
-    public PH getPH(){
-        return this.ph;
-    }
+
 }
