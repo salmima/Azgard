@@ -83,7 +83,7 @@ public class DossierMedicoAdministratif {
      * Recherche d'un DMA à partir d'un IPP
      */
     public void rechercherUnDMA(String ipp) { 
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheIPP = null;
         PreparedStatement rechercheIDSIR = null;
         PreparedStatement rechercheMedTt = null;
@@ -92,30 +92,6 @@ public class DossierMedicoAdministratif {
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
         ResultSet resultats_bd4 = null;
-
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //----------- Requêtes
         //Requête 1: informations du DMA
@@ -268,7 +244,7 @@ public class DossierMedicoAdministratif {
      * Recherche d'un DMA en fonction du nom, prénom et date de naissance du patient
      */
     public void rechercherUnDMA(String nom, String prenom, Date dateN) {
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheIPP = null;
         PreparedStatement rechercheIDSIR = null;
         PreparedStatement rechercheMedTt = null;
@@ -277,30 +253,6 @@ public class DossierMedicoAdministratif {
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
         ResultSet resultats_bd4 = null;
-
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            //il faut instancier un objet de la classe Connexion en précisant l'URL de la base
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //----------- Requêtes
         //Requête 1: informations du DMA
@@ -522,32 +474,9 @@ public class DossierMedicoAdministratif {
         //Voir la méthode créerUneVenue, à associer avec celle-ci lors de la création du DMA
         //Création de l'une ou l'autre instance en fonction du type spécifié dans l'interface par l'utilisateur
 
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMA = null;
         PreparedStatement creerMTT = null;
-
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passe
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //Ajout d'un DMA
         try {
@@ -682,32 +611,9 @@ public class DossierMedicoAdministratif {
     }
 
     public boolean testerExistenceIPP(String IPP) {
-        Connection con = null;
+        Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement chercherIPP = null;
         boolean existe = false;
-
-        //-----------Connexion
-        //Chargement du pilote
-        try {
-            Class.forName("com.mysql.jdbc.Driver"); //charge le pilote et crée une instance de cette classe
-        } catch (java.lang.ClassNotFoundException e) {
-            System.out.println("Erreur: Class Not Found");
-        }
-
-        //-----------Etablissement de la connexion
-        try {
-            String base1 = "azgardengineering_sih";
-            String DBurl1 = "jdbc:mysql://mysql-azgardengineering.alwaysdata.net/" + base1 + "?verifyServerCertificate=false&useSSL=true";
-            con = DriverManager.getConnection(DBurl1, "154118", "choco"); //remplacer le mot de passee
-        } catch (java.sql.SQLException e) {
-            do {
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
 
         //Vérification que ce numéro d'IPP n'existe pas
         try {
