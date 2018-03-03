@@ -50,21 +50,21 @@ public class DMclinique {
         this.id = id;
     }
 
-     /**
+    /**
      * Mise à jour deS observations
      */
     public void setObs(String obs) {
         this.observations = obs;
     }
 
-     /**
+    /**
      * Mise à jour du service
      */
     public void setService(Service service) {
         this.service = service;
     }
 
-     /**
+    /**
      * Ajout d'une prescription d'examen
      */
     public void ajouterPrescriptionExam(PrescriptionExamen pres) {
@@ -77,53 +77,55 @@ public class DMclinique {
     public void ajouterPrescriptionMedic(PrescriptionMedicamenteuse pres) {
         this.listePrescriptionMedic.add(pres);
     }
-    
-     /**
+
+    /**
      * Ajout d'un résultat à la liste de résultats
      */
     public void ajouterResultat(Resultat resultat) {
         this.listeResultats.add(resultat);
     }
-    
+
     /**
      * Récupération de la liste de prescription médicamenteuse
      */
-    public ArrayList<PrescriptionMedicamenteuse> getListePresMedic(){
+    public ArrayList<PrescriptionMedicamenteuse> getListePresMedic() {
         return this.listePrescriptionMedic;
     }
-    
-    
+
     /**
      * Récupération de la liste de prescription d'examen
      */
-    public ArrayList<PrescriptionExamen> getListePresExam(){
+    public ArrayList<PrescriptionExamen> getListePresExam() {
         return this.listePrescriptionExamen;
     }
 
     /**
      * Récupération de la liste de résultats
      */
-    public ArrayList<Resultat> getListeResultat(){
+    public ArrayList<Resultat> getListeResultat() {
         return this.listeResultats;
     }
-    
-    
+
     /**
      * Recherche d'un DM clinique d'un patient
      */
-    public void rechercherUnDMClinique(String IPP, String identifiant) { //identifiant de la personne connectée
+    public void rechercherUnDMClinique(String IPP, String identifiant, String secteur) { //identifiant de la personne connectée
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheDMClinique = null;
         PreparedStatement recherchePrescriptionExamen = null;
         PreparedStatement recherchePrescriptionMedic = null;
+        PreparedStatement rechercheResultat = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
+        ResultSet resultats_bd4 = null;
 
-        //----------- Requête 1
+
+        //----------- Requête 1: on cherche le DM clinique du patient du secteur correspondant, s'il existe
         try {
-            rechercheDMClinique = con.prepareStatement("select * from DMclinique where id = ?");
+            rechercheDMClinique = con.prepareStatement("select * from DMclinique where id = ? and lower(nom_secteur) = ?");
             rechercheDMClinique.setString(1, IPP);
+            rechercheDMClinique.setString(2, secteur.toLowerCase());
         } catch (Exception e) {
             System.out.println("Erreur de requête 1");
         }
@@ -172,7 +174,7 @@ public class DMclinique {
             resultats_bd.close();
         } catch (SQLException e) {
             do {
-                System.out.println("Accès aux résultats refusé");
+                System.out.println("Accès aux résultats refusé 1");
                 System.out.println("SQLState : " + e.getSQLState());
                 System.out.println("Description : " + e.getMessage());
                 System.out.println("code erreur : " + e.getErrorCode());
@@ -184,7 +186,7 @@ public class DMclinique {
         //Une fois que j'ai le nom du secteur, on récupère les autres documents éventuels (prescription, résultat...)
         if (this.service != null) {
 
-            //----------- Requête 2
+            //----------- Requête 2: ajout des prescriptions d'examen
             try {
                 recherchePrescriptionExamen = con.prepareStatement("select * from (Prescription_examen natural join personnelMedical) where id = ? and lower(service) = ?");
                 recherchePrescriptionExamen.setString(1, IPP);
@@ -210,13 +212,13 @@ public class DMclinique {
             //------------------ Ajout des prescriptions d'examen ------------------
             //-----------parcours des données retournées
             //---Variables temporaires
-            Date r_date;
-            Date r_date_sql;
+            Date r_date = null;
             Examen r_examen;
             String r_exam;
             String r_exigences_examen = null;
             String r_nrpps = null;
             PH r_ph = new PH();
+            boolean r_done = false;
 
             try {
                 while (resultats_bd2.next()) {
@@ -224,6 +226,7 @@ public class DMclinique {
                     r_exigences_examen = resultats_bd2.getString("exigences_examen");
                     r_nrpps = resultats_bd2.getString("n_rpps");
                     r_date = resultats_bd2.getDate("date_pres");
+                    r_done = resultats_bd2.getBoolean("done");
 
                     //Conversion du service type String en type Service
                     r_examen = Examen.valueOf(r_exam);
@@ -232,7 +235,7 @@ public class DMclinique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
                     try {
-                        this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP));
+                        this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, r_done));
                     } catch (Exception e) {
                         System.out.println("");
                     }
@@ -241,7 +244,7 @@ public class DMclinique {
                 resultats_bd2.close();
             } catch (SQLException e) {
                 do {
-                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("Accès aux résultats refusé 2");
                     System.out.println("SQLState : " + e.getSQLState());
                     System.out.println("Description : " + e.getMessage());
                     System.out.println("code erreur : " + e.getErrorCode());
@@ -250,7 +253,7 @@ public class DMclinique {
                 } while (e != null);
             }
 
-            //----------- Requête 3
+            //----------- Requête 3: ajout des prescriptions de médicaments
             try {
                 recherchePrescriptionMedic = con.prepareStatement("select * from (Prescription_medic natural join personnelMedical) where id = ? and lower(service) = ?");
                 recherchePrescriptionMedic.setString(1, IPP);
@@ -283,7 +286,7 @@ public class DMclinique {
 
             try {
                 while (resultats_bd3.next()) {
-                    r_date2 = resultats_bd3.getString("date_pres");
+                    r_date2 = resultats_bd3.getDate("date_pres");
                     r_nrpps2 = resultats_bd3.getString("n_rpps");
                     r_listeMedic = resultats_bd3.getString("liste_medic");
 
@@ -300,7 +303,88 @@ public class DMclinique {
                 resultats_bd3.close();
             } catch (SQLException e) {
                 do {
-                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("Accès aux résultats refusé 3");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //----------- Requête 4: ajouter les résultats des prescriptions demandés par le service
+            try {
+                rechercheResultat = con.prepareStatement("select * from Resultat where id = ? and lower(service_demandeur) = ?"); //change
+                rechercheResultat.setString(1, IPP);
+                rechercheResultat.setString(2, service.getLibelle().toLowerCase());
+            } catch (Exception e) {
+                System.out.println("Erreur de requête 4");
+            }
+
+            //-----------Accès à la base de données
+            try {
+                resultats_bd4 = rechercheResultat.executeQuery();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Requête refusée");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //------------------ Consulter les résultats d'examen ------------------
+            //-----------parcours des données retournées
+            //---Variables temporaires
+            String r_compteRendu3 = "";
+            Date r_date3 = null;
+            String r_observations3 = "";
+            String r_nrpps3 = "";
+            String r_type_examen = "";
+            PH r_ph3 = new PH();
+            Resultat resultat = null;
+
+            try {
+                while (resultats_bd4.next()) {
+                    r_observations3 = resultats_bd4.getString("observations");
+                    r_compteRendu3 = resultats_bd4.getString("compte_rendu");
+                    r_date3 = resultats_bd4.getDate("date");
+                    r_nrpps3 = resultats_bd4.getString("n_rpps");
+                    r_type_examen = resultats_bd4.getString("type_examen");
+
+                    //On cherche le PH
+                    r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps3);
+
+                    try {
+                        if (r_type_examen.equals("radiologie")) {
+                            resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                            this.ajouterResultat(resultat);
+                        }
+                        else if (r_type_examen.equals("hematologie")) {
+                            resultat = new ResultatHematologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                            this.ajouterResultat(resultat);
+                        }
+                        else if (r_type_examen.equals("anatomopathologie")) {
+                            resultat = new ResultatAnapathologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                            this.ajouterResultat(resultat);
+                        }
+                        else if (r_type_examen.equals("biologie")) {
+                            resultat = new ResultatBiologique(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                            this.ajouterResultat(resultat);
+                        }
+                        this.ajouterResultat(resultat);
+                        System.out.println(resultat.getCompteRendu());
+                    } catch (Exception e) {
+                        System.out.println("");
+                    }
+                }
+
+                resultats_bd4.close();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé 4");
                     System.out.println("SQLState : " + e.getSQLState());
                     System.out.println("Description : " + e.getMessage());
                     System.out.println("code erreur : " + e.getErrorCode());
@@ -326,12 +410,9 @@ public class DMclinique {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            
-              //------------------ Ajout des résultats  ------------------
         }
     }
 
-   
     /**
      * Création d'un DM clinique
      */
@@ -339,13 +420,13 @@ public class DMclinique {
         //L'interface envoie des informations
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDM = null;
-        
+
         //Requête 1: Ajout d'un DM clinique
         //La non-vérification de l'existence du DM se fait dans la base de données
         try {
             String requete = "INSERT INTO DMclinique VALUES(? ,?, NULL )";
             creerDM = con.prepareStatement(requete);
-            creerDM.setString(1, IPP);
+            creerDM.setString(1,IPP);
             creerDM.setString(2, nom_secteur);
             int nbMaj = creerDM.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
@@ -360,10 +441,10 @@ public class DMclinique {
         String listeMedic = "Liste de médicaments contre l'allergie";
         Examen exam = Examen.valueOf("radiologie");
 
-//        dm.rechercherUnDMClinique("180000111", "GREGH"); //marche + ajouter traçabilite
+        dm.rechercherUnDMClinique("180000111", "GREGH","secteur_cardiaque"); //marche
 //        dm.creerUnePrescriptionMedicamenteuse(listeMedic, "180000111","18945686235");
 //        dm.creerUnePrescriptionExamen(exam, "180000111","18945686235","radio du thorax");
 //        dm.creerUnDM("180000222","chirurgie_main_brules"); //marche
+        
     }
 }
-
