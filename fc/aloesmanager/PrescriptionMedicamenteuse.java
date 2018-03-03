@@ -6,7 +6,7 @@ import java.sql.*;
 public class PrescriptionMedicamenteuse {
 
     private Date date;
-    private PH ph;
+    private PH ph; //PH demandeur
     private String listeMedic;
     private String id;
 
