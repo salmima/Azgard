@@ -213,8 +213,8 @@ public class DMclinique {
             //-----------parcours des données retournées
             //---Variables temporaires
             Date r_date = null;
-            Examen r_examen;
-            String r_exam;
+            Examen r_examen = null;
+            String r_exam = "";
             String r_exigences_examen = null;
             String r_nrpps = null;
             PH r_ph = new PH();
@@ -228,12 +228,14 @@ public class DMclinique {
                     r_date = resultats_bd2.getDate("date_pres");
                     r_done = resultats_bd2.getBoolean("done");
 
-                    //Conversion du service type String en type Service
-                    r_examen = Examen.valueOf(r_exam);
+                    if (r_exam != null) {
+                        //Conversion du service type String en type Service
+                        r_examen = Examen.valueOf(r_exam);
 
-                    //On cherche le PH
-                    r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
-
+                        //On cherche le PH
+                        r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
+                    }
+                    
                     try {
                         this.ajouterPrescriptionExam(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, r_done));
                     } catch (Exception e) {
@@ -290,9 +292,10 @@ public class DMclinique {
                     r_nrpps2 = resultats_bd3.getString("n_rpps");
                     r_listeMedic = resultats_bd3.getString("liste_medic");
 
-                    //On cherche le PH
-                    r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
-
+                    if (r_nrpps2 != null) {
+                        //On cherche le PH
+                        r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
+                    }
                     try {
                         this.ajouterPrescriptionMedic(new PrescriptionMedicamenteuse(r_date2, r_ph2, r_listeMedic, IPP));
                     } catch (Exception e) {
@@ -354,9 +357,10 @@ public class DMclinique {
                     r_nrpps3 = resultats_bd4.getString("n_rpps");
                     r_type_examen = resultats_bd4.getString("type_examen");
 
-                    //On cherche le PH
-                    r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps3);
-
+                    if (r_nrpps3 != null) {
+                        //On cherche le PH
+                        r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps3);
+                    }
                     try {
                         if (r_type_examen.equals("radiologie")) {
                             resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
