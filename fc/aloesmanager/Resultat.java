@@ -8,7 +8,6 @@ public abstract class Resultat {
     protected Date date;
     protected String observations;
     protected String id;
-    protected PH ph;
     
     /**
      * Retourne le compte-rendu
