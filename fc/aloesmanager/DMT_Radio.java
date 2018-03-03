@@ -151,12 +151,14 @@ public class DMT_Radio extends DossierMedicoTechnique {
                 }
                 resultats_bd2.close();
 
-                //On cherche le PH
-                r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
+                 if (r_nrpps != null) {
+                    //On cherche le PH
+                    r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
-                //On crée le résultat
-                resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph);
-                this.ajouterResultat(resultat);
+                    //On crée le résultat
+                    resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph);
+                    this.ajouterResultat(resultat);
+                }
 
             } catch (SQLException e) {
                 do {
@@ -208,8 +210,10 @@ public class DMT_Radio extends DossierMedicoTechnique {
                     r_exigences = resultats_bd3.getString("exigences_examen");
                     r_done = resultats_bd3.getBoolean("done");
 
-                    //On cherche le PH demandeur
-                    r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
+                    if (r_nrpps != null) {
+                        //On cherche le PH demandeur
+                        r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
+                    }
 
                     try {
                         pres = new PrescriptionExamen(r_date2, Examen.valueOf("radiologie"), r_ph2, r_exigences, r_id, r_done);
@@ -256,11 +260,15 @@ public class DMT_Radio extends DossierMedicoTechnique {
         PreparedStatement ajouterResultat;
         String n_rpps = PH.returnNRPPS(identifiant);
 
+        try {
         //Requête: Ajout du résultat dans le service demandeur
         //On recherche le service demandeur
-        PH ph = pres.getPH();
-        String service_demandeur = ph.getService().getLibelle();
-
+            PH ph = pres.getPH();
+            String service_demandeur = ph.getService().getLibelle();
+        } catch (Exception e) {
+            System.out.println("");
+        }
+        
         try {
             String requete = "INSERT INTO Resultat VALUES(? ,?, ?, ?, ? ,'radiologie',?)";
             ajouterResultat = con.prepareStatement(requete);
