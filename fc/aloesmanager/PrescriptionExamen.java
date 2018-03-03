@@ -14,6 +14,18 @@ public class PrescriptionExamen {
     private boolean done;
     //je sais pas si on remet la signature
 
+     /**
+     * Constructeur initialisant
+     */
+    public PrescriptionExamen() {
+        this.date = null;
+        this.examen =  null;
+        this.ph =  null;
+        this.exigences_examen =  null;
+        this.id =  null;
+        this.done = false;
+    }
+    
     /**
      * Constructeur
      */
@@ -33,6 +45,8 @@ public class PrescriptionExamen {
         //L'interface envoie des informations
         Connection con = null;
         PreparedStatement creerPresExam = null;
+        PreparedStatement chercherNRPPS = null;
+        ResultSet resultats_bd = null;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
@@ -59,6 +73,47 @@ public class PrescriptionExamen {
             } while (e != null);
         }
 
+        //----------- Requête 1: recherche du n_rpps à partir de l'identifiant
+        try {
+            chercherNRPPS = con.prepareStatement("select * from correspondanceId natural join acces_serveur where identifiant_connexion =?");
+            chercherNRPPS.setString(1, identifiant);
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = chercherNRPPS.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        String n_rpps ="";
+        try {
+            while (resultats_bd.next()) {
+                n_rpps = resultats_bd.getString("n_rpps");          
+            }
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+        
         try {
             String requete = "INSERT INTO Prescription_examen VALUES(? , ? , ?, ?, ?, NULL)";
             creerPresExam = con.prepareStatement(requete);
@@ -73,5 +128,9 @@ public class PrescriptionExamen {
             e.printStackTrace();
         }
     }
-
+    
+    public static void main(String[] args) {
+        PrescriptionExamen pres = new PrescriptionExamen();
+//        pres.creerUnePrescriptionExamen(Examen.valueOf("radiologie"), "180000111", "GREGH", "test Prescription"); //ça marche
+    }
 }
