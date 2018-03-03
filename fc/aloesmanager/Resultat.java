@@ -1,6 +1,5 @@
 package fc.aloesmanager;
 
-import java.util.Date;
 import java.sql.*;
 
 public abstract class Resultat {
