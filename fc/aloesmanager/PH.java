@@ -252,6 +252,60 @@ public class PH extends PersonnelMedical {
     }
 
     /**
+    *Recherche d'un NRPPS à partir d'un identifiant de connexion 
+    */
+     public static String returnNRPPS(String identifiant){
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement chercherNRPPS = null;
+        ResultSet resultats_bd = null;
+        String n_rpps="";
+        
+        //----------- Requête 1: recherche du n_rpps à partir de l'identifiant
+        try {
+            chercherNRPPS = con.prepareStatement("select * from correspondanceId natural join acces_serveur where identifiant_connexion =?");
+            chercherNRPPS.setString(1, identifiant);
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = chercherNRPPS.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+        
+         //-----------parcours des données retournées
+        //---Variables temporaires
+        try {
+            while (resultats_bd.next()) {
+                n_rpps = resultats_bd.getString("n_rpps");
+            }
+            //Fermeture des résultats des requête
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+        
+        return n_rpps;
+    }
+    
+    
+    /**
      * Mise en forme des informations du médecin à afficher dans l'interface
      */
     public Vector<String> afficherMedecin() {
