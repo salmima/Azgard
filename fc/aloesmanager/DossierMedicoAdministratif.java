@@ -92,6 +92,27 @@ public class DossierMedicoAdministratif {
         this.listeExamen.add(examen);
     }
 
+        /**
+     * Retourne le nom du patient
+     */
+    public String getNom() {
+        return this.nom;
+    }
+    
+    /**
+     * Retourne le prénom du patient
+     */
+    public String getPrenom() {
+        return this.prenom;
+    }
+    
+    /**
+     * Retourne la date de naissance
+     */
+    public Date getDateN() {
+        return this.dateNaissance;
+    }
+    
     /**
      * Recherche d'un DMA à partir d'un IPP
      */
