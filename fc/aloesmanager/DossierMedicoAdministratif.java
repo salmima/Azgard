@@ -77,7 +77,18 @@ public class DossierMedicoAdministratif {
     public String getIPP() {
         return this.IPP;
     }
-
+    /**
+     * Retourne le nom
+     */
+     public String getNom() {
+        return this.nom;
+    }
+    /**
+     * Retourne le prénom
+     */
+     public String getPrenom() {
+        return this.nom;
+    }
      /**
      * Retourne le médecin traitant
      */
