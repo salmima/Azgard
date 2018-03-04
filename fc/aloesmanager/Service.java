@@ -17,6 +17,7 @@ public enum Service { //à remplir
     imagerie("imagerie"),
     biologie("biologie"),
     radiologie("radiologie"),
+    anesthesie("anesthesie"),
     anatomopathologie("anatomopathologie"),
     hematologie("hematologie");
     
