@@ -766,7 +766,25 @@ public class DossierMedicoAdministratif {
         
     }
    
-    
+     /**
+     * Archiver un dossier
+     */
+    public void archiver(String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement majDateSortie = null;
+
+        try {
+            String requete = "UPDATE DMA SET deces = 1 WHERE IPP = ?";
+            majDateSortie = con.prepareStatement(requete);
+            majDateSortie.setString(1, IPP);
+
+            int nbMaj = majDateSortie.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     
      /**
      * Générer un IPP
