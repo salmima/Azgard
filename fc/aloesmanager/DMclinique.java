@@ -51,10 +51,17 @@ public class DMclinique {
     }
 
     /**
-     * Mise à jour deS observations
+     * Mise à jour des observations
      */
     public void setObs(String obs) {
         this.observations = obs;
+    }
+    
+     /**
+     * Retourne les  observations
+     */
+    public void getObs(String obs) {
+        return this.observations;
     }
 
     /**
