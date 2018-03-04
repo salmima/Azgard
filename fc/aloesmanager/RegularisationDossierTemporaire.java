@@ -121,7 +121,7 @@ public class RegularisationDossierTemporaire {
                     miseAJourDossiers(id_urgence, IPP);
                 }
                 //On supprime le dossier des urgences
-//                RegularisationDossierTemporaire.supprimerDossierTemporaire(id_urgence);
+                RegularisationDossierTemporaire.supprimerDossierTemporaire(id_urgence);
                 existe = true;
                 //afficher en refaisant rechercherUnDMA avec le nom, prénom, dateNaissance? Je ne sais pas comment tu comptes t'organiser dans l'interface
 
