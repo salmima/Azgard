@@ -36,20 +36,7 @@ public abstract class Venue {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        //Ajout de la correspondance avec le patient
-        try {
-            String requete = "INSERT INTO correspondanceDMA_Hospitalisation VALUES (?,?)";
-            creerHospi = con.prepareStatement(requete);
-            creerHospi.setString(1, IPP);
-            creerHospi.setString(2, numSejour);
-
-            int nbMaj = creerHospi.executeUpdate();
-            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
+        
         //Ajout du PH respo
         try {
             String requete = "INSERT INTO CorrespondancePH_Venue VALUES (?,?,?)";
