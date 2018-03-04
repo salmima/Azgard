@@ -86,6 +86,12 @@ public class DossierTemporaire {
 
             //-----------parcours des données retournées
             //---Variables temporaires /**
+             try{
+                 this.id_urgence = resultats_bd.getString("id_urgence");
+            } catch(Exception e){
+                System.out.println("");
+            }
+            if (this.id_urgence != null) {
             try {
                 while (resultats_bd.next()) {
                     //Informations du patient
@@ -120,7 +126,16 @@ public class DossierTemporaire {
              dm.creationDMclinique(id_urgence, identifiant); //identifiant de la personne connectée
             
  
+           //Requête 4: recherche de la venue
+                try {
+                    rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue where id =  ?");
+                    rechercheVenue.setString(1, id_urgence);
+                } catch (Exception e) {
+                    System.out.println("Erreur de requête 4");
+                }
+
             }
+        
         }
     
     /**
