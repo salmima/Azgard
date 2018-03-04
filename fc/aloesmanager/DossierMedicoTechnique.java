@@ -52,8 +52,43 @@ public class DossierMedicoTechnique {
     /**
      * Ajout d'un DMT Radio
      */
-    public void ajouterDMTHRadio(DMT_Radio dmt){
+    public void ajouterDMTRadio(DMT_Radio dmt){
         this.dr = dmt;
+    }
+    
+    /**
+     * Retourne d'un DMT Radio
+     */
+    public DMT_Radio getDMTRadio(){
+        return this.dr;
+    }
+    
+    /**
+     * Retourne d'un DMT Biologie
+     */
+    public DMT_Biologie getDMTBiologie(){
+        return this.db;
+    }
+    
+    /**
+     * Retourne d'un DMT Anesthesie
+     */
+    public DMT_Anesthesie getDMTAnesthesie(){
+        return this.da;
+    }
+    
+    /**
+     * Retourne d'un DMT Hematologie
+     */
+    public DMT_Hematologie getDMTHematologie(){
+        return this.dh;
+    }
+    
+    /**
+     * Retourne d'un DMT Anapath
+     */
+    public DMT_Anapath getDMTAnapath(DMT_Anapath dmt){
+        return this.dap;
     }
     
     /**
