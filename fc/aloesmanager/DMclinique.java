@@ -70,6 +70,13 @@ public class DMclinique {
     public void setService(Service service) {
         this.service = service;
     }
+    
+     /**
+     * Retourne le service
+     */
+    public Service getService() {
+        return this.service;
+    }
 
     /**
      * Ajout d'une prescription d'examen
