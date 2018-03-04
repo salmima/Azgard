@@ -372,11 +372,15 @@ public class DossierMedicoAdministratif {
 
         //-----------parcours des données retournées: requête 1
         //---Variables temporaires
+        try{
+            this.IPP = resultats_bd.getString("IPP");
+        } catch(Exception e){
+            System.out.println("pas d'IPP existant");
+        }
         if (this.IPP != null) {
             try {
                 while (resultats_bd.next()) {
                     //Informations du patient
-                    this.IPP = resultats_bd.getString("IPP");
                     this.nom = resultats_bd.getString("nom");
                     this.prenom = resultats_bd.getString("prenom");
                     this.sexe = resultats_bd.getString("sexe");
