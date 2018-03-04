@@ -22,7 +22,6 @@ public abstract class Venue {
 
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerHospi = null;
-        ResultSet resultats_bd = null;
 
   
 
