@@ -87,7 +87,7 @@ public class DossierMedicoTechnique {
     /**
      * Retourne d'un DMT Anapath
      */
-    public DMT_Anapath getDMTAnapath(DMT_Anapath dmt){
+    public DMT_Anapath getDMTAnapath(){
         return this.dap;
     }
     
