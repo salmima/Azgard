@@ -46,6 +46,13 @@ public class DMT_Radio extends DossierMedicoTechnique {
     }
 
     /**
+     * Retourne les observations
+     */
+    public String getObs() {
+        return this.observations;
+    }
+
+    /**
      * Recherche d'un DMT de Radiologie d'un patient
      */
     //ATTENTION: il faut vérifier dans l'interface que la personne est bien de secteur "imagerie" et que son statut est bien "PH"
