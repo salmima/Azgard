@@ -27,7 +27,7 @@ public abstract class Venue {
   
 
         try {
-            String requete = "INSERT INTO VENUE VALUES(? , ? , NULL, NULL)";
+            String requete = "INSERT INTO Venue VALUES(? , ? , NULL, NULL)";
             creerHospi = con.prepareStatement(requete);
             creerHospi.setString(1, numSejour);
             creerHospi.setDate(2, dateEntree);
@@ -40,7 +40,7 @@ public abstract class Venue {
 
         //Ajout de la correspondance avec le patient
         try {
-            String requete = "INSERT INTO correspondanceDMA_hospitalisation VALUES (?,?)";
+            String requete = "INSERT INTO correspondanceDMA_Hospitalisation VALUES (?,?)";
             creerHospi = con.prepareStatement(requete);
             creerHospi.setString(1, IPP);
             creerHospi.setString(2, numSejour);
