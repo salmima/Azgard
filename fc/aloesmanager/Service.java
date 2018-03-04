@@ -16,7 +16,7 @@ public enum Service { //à remplir
     chirurgie_main_brules("chirurgie_main_brules"),
     imagerie("imagerie"),
     biologie("biologie"),
-    anatomopathologie(anatomopathologie);
+    anatomopathologie("anatomopathologie");
     
     
      
