@@ -42,9 +42,12 @@ public class DossierMedicoTechnique {
         this.db = dmt;
     }
     
-//    public void ajouterDMTAnesthesie(DMT_Anesthesie dmt){
-//        this.da = dmt;
-//    }
+    /**
+     * Ajout d'un DMT Anesthesie
+     */
+    public void ajouterDMTAnesthesie(DMT_Anesthesie dmt){
+        this.da = dmt;
+    }
     
     /**
      * Ajout d'un DMT Radio
@@ -74,7 +77,9 @@ public class DossierMedicoTechnique {
         dmt_r.rechercherUnDMRadio(id, identifiant);
         this.dr = dmt_r;
         
-        //ajout du DMT Anesthésie quand il sera créé            
+        DMT_Anesthesie dmt_a = new DMT_Anesthesie();
+        dmt_a.rechercherUnDMAnesthesie(id, identifiant);
+        this.da = dmt_a;             
     }
     
     
