@@ -844,7 +844,7 @@ public class DossierMedicoAdministratif {
             //mais attention! il est partiel! Il manque certaines informations non renseignées dans le dossier des urgences
             //cela évite néanmoins la ressaisie des informations déjà comprise dans le dossier des urgenes
             try {
-                if (!dma.getNom().equals(r_nom) && !dma.getPrenom().equals(r_prenom) && !dma.getDateN().equals(r_dateN)) {
+                if (dma.getNom() == null && dma.getPrenom() == null && dma.getDateN() == null) {
                     String IPP_provisoire = dma.genererUnIPP();
                     while (dma.testerExistenceIPP(IPP_provisoire) == true) {
                         IPP_provisoire = dma.genererUnIPP();
@@ -960,5 +960,6 @@ public class DossierMedicoAdministratif {
 //        System.out.println(dma.genererUnIPP()); //ça marche
 //        System.out.println(dma.testerExistenceIPP("180000111")); //OK
 //        System.out.println(dma.testerExistenceIPP("180000131")); //OK: ça marche pas: normal
+//        System.out.println(DossierMedicoAdministratif.regulariserDossierTemporaire("999000001")); //ça marche
     }
 }
