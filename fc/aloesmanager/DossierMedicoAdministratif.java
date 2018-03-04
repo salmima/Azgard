@@ -777,7 +777,7 @@ public class DossierMedicoAdministratif {
 
         //Récupération du dossier des urgences
         try {
-            String requete = "select * from dossier_urgence where id_urgences = ?";
+            String requete = "select * from dossier_urgence where id_urgence = ?";
             regulariser = con.prepareStatement(requete);
             regulariser.setString(1, id_urgence);
         } catch (SQLException e) {
