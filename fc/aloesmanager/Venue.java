@@ -15,7 +15,7 @@ public abstract class Venue {
     /**
      * Création d'une venue
      */
-    public void creerUneVenue(String IPP, String numSejour, Date dateEntree, PH PHrespo) {
+    public static void creerUneVenue(String IPP, String numSejour, Date dateEntree, PH PHrespo) {
         //L'interface envoie des informations
         //Ma méthode implique que l'interface a cherché le médecin et a retourné un PH (à adapter si ça ne vous convient pas)
         //La localisation du patient est mise à jour par le service clinique, une fois qu'ils on reçu le DMA, si c'est une hospitalisation
