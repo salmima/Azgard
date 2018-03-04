@@ -128,13 +128,13 @@ public class DossierTemporaire {
      */
     //Je propose que la méthode pour générer l'id_urgence soit le même que pour les IPP
     //C'est à l'interface de génerer un IPP 
-    public void creerUnDMTemporaire(String id_urgence, String nom, String prenom, String n_tel, String sexe, Date dateNaissance, String moyen_arrivee, String nom_proche, String tel_proche) {
+    public void creerUnDMTemporaire(String id_urgence, String nom, String prenom, String n_tel, String sexe, Date dateNaissance, String moyen_arrivee, String nom_proche, String tel_proche, String identifiant) { //identifiant de l'urgentiste
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMTemporaire;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
-        //Requête 1: Ajout d'un DM clinique
+        //Requête 1: Ajout d'un DM des urgences
         //La vérification de non-existence du DM se fait dans la base de données
         try {
             String requete = "INSERT INTO dossier_urgence VALUES(? ,?,?,?,?,?,?,?,?)";
@@ -153,13 +153,58 @@ public class DossierTemporaire {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        //Ajout de la traçabilité 
+        PreparedStatement ajouterTrace = null;
+        java.util.Date utilDate2 = new java.util.Date();
+        java.sql.Date date_co = new java.sql.Date(utilDate2.getTime());
+
+        try {
+            String requete = "INSERT INTO Tracabilite VALUES(? , ? , ?)";
+            ajouterTrace = con.prepareStatement(requete);
+            ajouterTrace.setDate(3, date_co);
+            ajouterTrace.setString(2, identifiant);
+            ajouterTrace.setString(1, id_urgence);
+
+            int nbMaj = ajouterTrace.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        //Requête 2: Création d'une seule venue!
+        try {
+            String requete = "INSERT INTO Venue VALUES(? ,?, NULl, NULL)";
+            creerDMTemporaire = con.prepareStatement(requete);
+            creerDMTemporaire.setString(1, numSejour);
+            creerDMTemporaire.setDate(2, sqlDate);
+
+            int nbMaj = creerDMTemporaire.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        //Requête 3: on ajoute la correspondance PH_Venue
+        try {
+            String requete = "INSERT INTO CorrespondancePH_Venue VALUES(? ,?,?)";
+            creerDMTemporaire = con.prepareStatement(requete);
+            creerDMTemporaire.setString(3, numSejour);
+            creerDMTemporaire.setString(1, id_urgence);
+            creerDMTemporaire.setString(2, nrpps);
+
+            int nbMaj = creerDMTemporaire.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 
     public static void main(String[] args) {
         DossierTemporaire dt = new DossierTemporaire();
         Date date = new Date(00, 9, 28);
-        dt.creerUnDMTemporaire("111222333", "test", "urgence thao", "0101202020", "M", date, "SAMU", "", "");
+        dt.creerUnDMTemporaire("111222444", "test", "urgence th", "0101202020", "M", date, "SAMU", "", "","AIMD");
     }
     
     }
