@@ -871,7 +871,7 @@ public class DossierMedicoAdministratif {
      */
     //Il y a 2 méthodes pour générer un IPP: genererUnIPPe() génère un IPP à tester
     //la méthode testerExistenceIPP(...) qui teste l'existence de cet IPP provisoire
-    public String genererUnIPP() {
+    public static String genererUnIPP() {
         //Ajout de l'année
         String IPP = Integer.toString(LocalDateTime.now().getYear()).substring(2, 4);
 
@@ -891,7 +891,7 @@ public class DossierMedicoAdministratif {
      /**
      * Test de l'existence d'un IPP
      */
-    public boolean testerExistenceIPP(String IPP) {
+    public static boolean testerExistenceIPP(String IPP) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement chercherIPP = null;
         boolean existe = false;
