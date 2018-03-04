@@ -723,6 +723,26 @@ public class DossierMedicoAdministratif {
         }
     }
 
+    
+    public void mettreAJourDateSortie(String numSejour, Date dateSortie){
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement majDateSortie = null;
+        
+        try {
+            String requete = "UPDATE Venue SET date_sortie = ? WHERE num_sejour = ?)";
+            majDateSortie= con.prepareStatement(requete);
+            majDateSortie.setDate(1, dateSortie);
+            majDateSortie.setString(2, numSejour);
+
+            int nbMaj = majDateSortie.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    
     //Il y a 2 méthodes pour générer un IPP: genererUnIPPe() génère un IPP à tester
     //la méthode testerExistenceIPP(...) qui teste l'existence de cet IPP provisoire
     public String genererUnIPP() {
