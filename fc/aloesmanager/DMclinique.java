@@ -60,7 +60,7 @@ public class DMclinique {
      /**
      * Retourne les  observations
      */
-    public void getObs(String obs) {
+    public String getObs(String obs) {
         return this.observations;
     }
 
