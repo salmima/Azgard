@@ -20,6 +20,13 @@ public class DossierMedical {
     public void ajouterDMclinique(DMclinique dm) {
         this.listeDMclinique.add(dm);
     }
+    
+     /**
+     * Retourne la liste de DM clinique
+     */
+    public ArrayList<DMclinique> returnListe() {
+        return this.listeDMclinique;
+    }
 
     /**
      * Ajout de tous les DM clinique d'un patient passé aux urgencss
