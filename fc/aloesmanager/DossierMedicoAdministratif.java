@@ -843,19 +843,22 @@ public class DossierMedicoAdministratif {
             //on renvoie toujours false: au niveau de l'interface, cela signifie qu'on doit afficher le DMA créé
             //mais attention! il est partiel! Il manque certaines informations non renseignées dans le dossier des urgences
             //cela évite néanmoins la ressaisie des informations déjà comprise dans le dossier des urgenes
-            if (!dma.getNom().equals(r_nom) && !dma.getPrenom().equals(r_prenom) && !dma.getDateN().equals(r_dateN)) {
-                String IPP_provisoire = dma.genererUnIPP();
-                while (dma.testerExistenceIPP(IPP_provisoire) == true){
-                    IPP_provisoire = dma.genererUnIPP();
-                }             
-                DossierMedicoAdministratif.creerUnDMA(IPP_provisoire, r_nom, r_prenom, r_sexe, r_dateN, r_nom_proche, r_tel_proche, "", "", "", null);
-                //afficher en refaisant rechercherUnDMA avec le nom, prénom, dateNaissance? Je ne sais pas comment tu comptes t'organiser dans l'interface
-            } 
-            //Si le DMA existe (le nom, prénom et date de naissance retourné par l'instance correspondent à ceux qui sont rentrés dans le dossier urgence
-            //on renvoie true: au niveau de l'interface, true signifie qu'on peut afficher l'écran "Consulter un DMA" directement
-            else {
-                existe = true;
-                //afficher en refaisant rechercherUnDMA avec le nom, prénom, dateNaissance? Je ne sais pas comment tu comptes t'organiser dans l'interface
+            try {
+                if (!dma.getNom().equals(r_nom) && !dma.getPrenom().equals(r_prenom) && !dma.getDateN().equals(r_dateN)) {
+                    String IPP_provisoire = dma.genererUnIPP();
+                    while (dma.testerExistenceIPP(IPP_provisoire) == true) {
+                        IPP_provisoire = dma.genererUnIPP();
+                    }
+                    DossierMedicoAdministratif.creerUnDMA(IPP_provisoire, r_nom, r_prenom, r_sexe, r_dateN, r_nom_proche, r_tel_proche, "", "", "", null);
+                    //afficher en refaisant rechercherUnDMA avec le nom, prénom, dateNaissance? Je ne sais pas comment tu comptes t'organiser dans l'interface
+                } //Si le DMA existe (le nom, prénom et date de naissance retourné par l'instance correspondent à ceux qui sont rentrés dans le dossier urgence
+                //on renvoie true: au niveau de l'interface, true signifie qu'on peut afficher l'écran "Consulter un DMA" directement
+                else {
+                    existe = true;
+                    //afficher en refaisant rechercherUnDMA avec le nom, prénom, dateNaissance? Je ne sais pas comment tu comptes t'organiser dans l'interface
+                }
+            } catch (Exception e) {
+                System.out.println("Le DMA n'existait pas");
             }
         }
         return existe;
