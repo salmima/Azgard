@@ -36,7 +36,7 @@ public class DossierMedical {
         ArrayList<String> listeService = new ArrayList<String>();
         Service[] listeEnum = Service.class.getEnumConstants();
          for (int i = 0; i < listeEnum.length ; i++){
-             if (!listeEnum[i].getLibelle().equals("radiologie")|| listeEnum[i].getLibelle().equals("hematologie") ||listeEnum[i].getLibelle().equals("anatomopathologie") || listeEnum[i].getLibelle().equals("biologie") ){
+                         if (!listeEnum[i].getLibelle().equals("imagerie") && !listeEnum[i].getLibelle().equals("anesthesie") && !listeEnum[i].getLibelle().equals("hematologie") && !listeEnum[i].getLibelle().equals("anatomopathologie") && !listeEnum[i].getLibelle().equals("biologie")){
                  listeService.add(listeEnum[i].getLibelle());
              }
          }
