@@ -39,7 +39,7 @@ public class DMT_Radio extends DossierMedicoTechnique {
     }
 
     /**
-     * Ajout d'un résultat à la liste d'examens
+     *  Ajout d'une prescription d'examens à la liste de prescriptions
      */
     public void ajouterPrescription(PrescriptionExamen pres) {
         this.liste_examens.add(pres);
