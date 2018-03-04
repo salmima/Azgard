@@ -723,7 +723,9 @@ public class DossierMedicoAdministratif {
         }
     }
 
-    
+     /**
+    * Mise à jour de la date de sortie d'une venue. Le test de la validité de la date (avant la date d'entrée) est effectué dans la base de données
+    */
     public void mettreAJourDateSortie(String numSejour, Date dateSortie){
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement majDateSortie = null;
