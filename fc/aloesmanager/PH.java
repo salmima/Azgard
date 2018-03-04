@@ -32,7 +32,12 @@ public class PH extends PersonnelMedical {
     public String getNRPPS() {
         return this.nRPPS;
     }
-    
+      /**
+     * Renvoie le nom du PH 
+     */
+    public String getNom() {
+        return this.nom;
+    }
      /**
      * Renvoie le service du PH
      */
