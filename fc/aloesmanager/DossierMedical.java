@@ -41,9 +41,9 @@ public class DossierMedical {
              }
          }
         
-        //Ajout de chaque DM clinique
-        DMclinique dm = new DMclinique();
+        //Ajout de chaque DM clinique 
         for (int i = 0; i < listeService.size(); i++) {
+            DMclinique dm = new DMclinique();
             try {
                 dm.rechercherUnDMClinique(id, identifiant, listeService.get(i));
             } catch (Exception e) {
