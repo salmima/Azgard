@@ -419,7 +419,7 @@ public class DossierMedicoAdministratif {
 
             //Requête 4: récupérer les venues
             try {
-                rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
+                rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue natural join LocalisationPatient) where id =  ?"); //à débugger
                 rechercheVenue.setString(1, this.IPP);
             } catch (Exception e) {
                 System.out.println("Erreur de requête 4");
