@@ -122,5 +122,45 @@ public class DossierTemporaire {
  
             }
         }
+    
+    /**
+     * Création d'un DM des urgences
+     */
+    //Je propose que la méthode pour générer l'id_urgence soit le même que pour les IPP
+    //C'est à l'interface de génerer un IPP 
+    public void creerUnDMTemporaire(String id_urgence, String nom, String prenom, String n_tel, String sexe, Date dateNaissance, String moyen_arrivee, String nom_proche, String tel_proche) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement creerDMTemporaire;
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+        //Requête 1: Ajout d'un DM clinique
+        //La vérification de non-existence du DM se fait dans la base de données
+        try {
+            String requete = "INSERT INTO dossier_urgence VALUES(? ,?,?,?,?,?,?,?,?)";
+            creerDMTemporaire = con.prepareStatement(requete);
+            creerDMTemporaire.setString(1, id_urgence);
+            creerDMTemporaire.setString(2, nom);
+            creerDMTemporaire.setString(3, prenom);
+            creerDMTemporaire.setString(4, sexe);
+            creerDMTemporaire.setDate(5, dateNaissance);
+            creerDMTemporaire.setDate(6, sqlDate);
+            creerDMTemporaire.setString(7, moyen_arrivee);
+            creerDMTemporaire.setString(8, nom_proche);
+            creerDMTemporaire.setString(9, tel_proche);
+            int nbMaj = creerDMTemporaire.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        DossierTemporaire dt = new DossierTemporaire();
+        Date date = new Date(00, 9, 28);
+        dt.creerUnDMTemporaire("111222333", "test", "urgence thao", "0101202020", "M", date, "SAMU", "", "");
+    }
+    
     }
 
