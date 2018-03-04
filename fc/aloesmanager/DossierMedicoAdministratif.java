@@ -744,7 +744,9 @@ public class DossierMedicoAdministratif {
         
     }
     
-    
+     /**
+     * Générer un IPP
+     */
     //Il y a 2 méthodes pour générer un IPP: genererUnIPPe() génère un IPP à tester
     //la méthode testerExistenceIPP(...) qui teste l'existence de cet IPP provisoire
     public String genererUnIPP() {
@@ -764,6 +766,9 @@ public class DossierMedicoAdministratif {
         return IPP;
     }
 
+     /**
+     * Test de l'existence d'un IPP
+     */
     public boolean testerExistenceIPP(String IPP) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement chercherIPP = null;
