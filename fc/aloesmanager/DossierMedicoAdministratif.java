@@ -371,13 +371,7 @@ public class DossierMedicoAdministratif {
         }
 
         //-----------parcours des données retournées: requête 1
-        //---Variables temporaires
-        try{
-            this.IPP = resultats_bd.getString("IPP");
-        } catch(Exception e){
-            System.out.println("pas d'IPP existant");
-        }
-        if (this.IPP != null) {
+        //---Variables temporaires 
             try {
                 while (resultats_bd.next()) {
                     //Informations du patient
@@ -406,6 +400,7 @@ public class DossierMedicoAdministratif {
                 } while (e != null);
             }
 
+            if (this.IPP != null) {
             //Requête 2: récupérer l'idSIR s'il existe
             try {
                 rechercheIDSIR = con.prepareStatement("SELECT idSIR FROM CorrespondanceDMA_SIR where IPP =  ?");
@@ -581,7 +576,7 @@ public class DossierMedicoAdministratif {
                 System.out.println("");
                 e = e.getNextException();
             } while (e != null);
-        }
+        }}
         }
 
     }
