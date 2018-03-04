@@ -14,8 +14,10 @@ import java.sql.DriverManager;
  */
 public class ConnexionBDD {
 
+    /**
+     * Connexion: chargement du pilote et établissement de la connexion
+     */
     public static Connection obtenirConnection() {
-
         Connection con = null;
 
         //-----------Connexion
