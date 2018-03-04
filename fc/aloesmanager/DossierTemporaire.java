@@ -48,7 +48,13 @@ public class DossierTemporaire {
         this.dmt = dmt;
     }
 
-    
+    /**
+     * Ajout d'une venue
+     */
+    public void ajouterUneVenue(Venue venue) {
+        this.venue = venue;
+    }
+
     
     /**
      * Recherche d'un DM Temporaire à partir d'un identifiant de patient des urgences
@@ -128,16 +134,60 @@ public class DossierTemporaire {
  
            //Requête 4: recherche de la venue
                 try {
-                    rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue where id =  ?");
+                    rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue natural join LocalisationPatient) where id =  ?");
                     rechercheVenue.setString(1, id_urgence);
                 } catch (Exception e) {
                     System.out.println("Erreur de requête 4");
+                }
+                //-----------Accès à la base de données
+                try {
+                    resultats_bd2 = rechercheVenue.executeQuery();
+                } catch (SQLException e) {
+                    do {
+                        System.out.println("Requête refusée");
+                        System.out.println("SQLState : " + e.getSQLState());
+                        System.out.println("Description : " + e.getMessage());
+                        System.out.println("code erreur : " + e.getErrorCode());
+                        System.out.println("");
+                        e = e.getNextException();
+                    } while (e != null);
+                }
+
+                //-----------parcours des données retournées
+                //---Variables temporaires
+                String r_numSejour = "";
+                Date r_date_entree = null;
+                try {
+                    while (resultats_bd2.next()) {
+                        r_numSejour = resultats_bd2.getString("num_sejour");
+                        r_date_entree = resultats_bd2.getDate("date_entree");
+                        //On cherche le PH
+                        r_PHrespo = new PH();
+                        r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+
+                        //On crée le lit 
+                        Lit lit = new Lit(true, r_num_lit);
+
+                        //On crée une venue
+                        if (r_num_lit != null) {
+                            Hospitalisation h1 = new Hospitalisation(r_numSejour, r_date_entree, null, null, r_PHrespo, lit);
+                            this.ajouterUneVenue(h1);
+                        } else {
+                            Consultation c1 = new Consultation(r_numSejour, r_date_entree, null, null, r_PHrespo);
+                            this.ajouterUneVenue(c1);
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("Erreur");
                 }
 
             }
         
         }
-    }    
+    } 
+    
+    
+    
     /**
      * Création d'un DM des urgences
      */
