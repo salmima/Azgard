@@ -137,7 +137,7 @@ public class DossierTemporaire {
             }
         
         }
-    
+    }    
     /**
      * Création d'un DM des urgences
      */
