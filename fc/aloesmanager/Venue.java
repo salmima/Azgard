@@ -85,7 +85,7 @@ public abstract class Venue {
             String last = Venue.chercherDerniereVenue().substring(4, 9); //on récupère la dernière venue
             String test = Integer.toString(Integer.parseInt(last.substring(1, last.length())) + 1); //on ajoute +1 à la dernière venue
             int compteur = Integer.parseInt(last.substring(1, last.length())) + 1; //on transforme cette valeur en int
-            String nombreZerosAAjouter = Integer.toString(5 - test.length()); //on calcule le nombre de 0 à ajouter devant le chiffre ("leading zeros")
+            String nombreZerosAAjouter = Integer.toString(6 - test.length()); //on calcule le nombre de 0 à ajouter devant le chiffre ("leading zeros")
 
             numSejour += String.format("%0" + nombreZerosAAjouter + "d", compteur); //on ajoute le compteur au début du numéro de séjour
         }
