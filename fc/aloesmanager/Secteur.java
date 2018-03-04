@@ -46,6 +46,12 @@ public class Secteur {
     public String getNom() {
         return nom;
     }
+    /**
+     * Retourne l'étage du secteur
+     */
+    public int getEtage(){
+        return etage;
+    }
 
      /**
      * Ajout d'un lit dans un secteur
