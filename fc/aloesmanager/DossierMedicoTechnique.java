@@ -1,13 +1,82 @@
 package fc.aloesmanager;
 
-import java.sql.*;
-
 public class DossierMedicoTechnique {
 
     private String observations;
-    private Hematologie dh;
-    private Anatomopathologie dap;
-    private Biologie dp;
+    private DMT_Hematologie dh;
+    private DMT_Anapath dap;
+    private DMT_Biologie db;
     private Anesthesie da;
-    private Radiologie dr;
+    private DMT_Radio dr;
+    
+    /**
+     * Constructeur initialisant
+     */
+    public DossierMedicoTechnique(){
+        this.observations = null;
+        this.dh = null;
+        this.dap = null;
+        this.db = null;
+        this.da = null;
+        this.dr = null;
+    }
+    
+    /**
+     * Ajout d'un DMT Hematologie
+     */
+    public void ajouterDMTHemato(DMT_Hematologie dmt){
+        this.dh = dmt;
+    }
+    
+    /**
+     * Ajout d'un DMT Anatomopathologie
+     */
+    public void ajouterDMTAnapath(DMT_Anapath dmt){
+        this.dap = dmt;
+    }
+    
+    /**
+     * Ajout d'un DMT Biologie
+     */
+    public void ajouterDMTBiologie(DMT_Biologie dmt){
+        this.db = dmt;
+    }
+    
+//    public void ajouterDMTAnesthesie(DMT_Anesthesie dmt){
+//        this.da = dmt;
+//    }
+    
+    /**
+     * Ajout d'un DMT Radio
+     */
+    public void ajouterDMTHRadio(DMT_Radio dmt){
+        this.dr = dmt;
+    }
+    
+    /**
+     * Ajout de tous les DMT d'un patient passé aux urgencss
+     */
+    public void creationDMT(String id, String identifiant){ //identifiant de l'urgentiste
+        //Ajout de chaque DMT
+        DMT_Hematologie dmt_h = new DMT_Hematologie();
+        dmt_h.rechercherUnDMHematologie(id, identifiant);
+        this.dh = dmt_h;
+        
+        DMT_Anapath dmt_ap = new DMT_Anapath();
+        dmt_ap.rechercherUnDMAnapath(id, identifiant);
+        this.dap = dmt_ap;
+        
+        DMT_Biologie dmt_b = new DMT_Biologie();
+        dmt_b.rechercherUnDMBiologie(id, identifiant);
+        this.db = dmt_b;
+        
+        DMT_Radio dmt_r = new DMT_Radio();
+        dmt_r.rechercherUnDMRadio(id, identifiant);
+        this.dr = dmt_r;
+        
+        //ajout du DMT Anesthésie quand il sera créé            
+    }
+    
+    
 }
+
