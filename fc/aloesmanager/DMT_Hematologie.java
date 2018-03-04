@@ -44,6 +44,14 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
     public void ajouterPrescription(PrescriptionExamen pres) {
         this.liste_examens.add(pres);
     }
+    
+    /**
+     * Retourne les observations
+     */
+    public String getObs() {
+        return this.observations;
+    }
+
 
     /**
      * Recherche d'un DMT de Hematologie d'un patient
