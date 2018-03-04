@@ -44,10 +44,10 @@ public class DMclinique {
     }
 
     /**
-     * Mise à jour de l'identifiant du patient
+     * Retourne de l'identifiant du patient
      */
-    public void setId(String id) {
-        this.id = id;
+    public String getId() {
+        return this.id;
     }
 
     /**
