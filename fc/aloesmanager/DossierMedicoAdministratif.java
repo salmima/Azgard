@@ -375,6 +375,7 @@ public class DossierMedicoAdministratif {
             try {
                 while (resultats_bd.next()) {
                     //Informations du patient
+                    this.IPP = resultats_bd.getString("IPP");
                     this.nom = resultats_bd.getString("nom");
                     this.prenom = resultats_bd.getString("prenom");
                     this.sexe = resultats_bd.getString("sexe");
