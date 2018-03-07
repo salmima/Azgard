@@ -45,6 +45,26 @@ public class PrescriptionExamen {
         return this.ph;
     }
     
+    /**
+     * Retourne le libellé de l'examen
+     */
+    public String getLibelleExamen() {
+        return this.examen.getLibelle();
+    }
+    
+    /**
+     * Retourne la date de prescription de l'examen
+     */
+    public Date getDate() {
+        return this.date;
+    }
+
+    /**
+     * Retourne les exigences de l'examen
+     */
+    public String getExigences() {
+        return this.exigences_examen;
+    }
     
     /**
      * Ajout d'une prescription d'examen
@@ -71,6 +91,131 @@ public class PrescriptionExamen {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public static ArrayList<PrescriptionExamen> retourneListePrescriptionExamen(String IPP, String secteur) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement recherchePres = null;
+        ResultSet resultats_bd = null;
+        ArrayList<PrescriptionExamen> listePres = new ArrayList<PrescriptionExamen>(); //on retourne une liste d'examens
+
+        //----------- Requête 1: recherche du DMT Biologie
+        try {
+            recherchePres = con.prepareStatement("select * from (Prescription_examen natural join personnelMedical) where id = ? and lower(service)=? ORDER BY date_pres desc");
+            recherchePres.setString(1, IPP);
+            recherchePres.setString(2, secteur.toLowerCase());
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        Date r_date = null;
+        Examen r_examen = null;
+        String r_exam;
+        String r_exigences_examen = null;
+        String r_nrpps = null;
+        PH r_ph = new PH();
+
+        try {
+            while (resultats_bd.next()) {
+                r_exam = resultats_bd.getString("examen");
+                r_exigences_examen = resultats_bd.getString("exigences_examen");
+                r_nrpps = resultats_bd.getString("n_rpps");
+
+                try {
+                    //Conversion du service type String en type Service
+                    r_examen = Examen.valueOf(r_exam);
+
+                    //On cherche le PH
+                    r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
+
+                    if (r_examen != null && r_ph != null) {
+                        listePres.add(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, false));
+                    }
+                } catch (Exception e) {
+                    System.out.println("");
+                }
+            }
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé 2");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        return listePres;
+    }
+    
+    
+    /**
+     * Méthode renvoie la liste des prescriptions Cherche les prescriptions pour
+     * un patient dans un service donné Méthode à utiliser pour automatiser le
+     * remplissage de la lettre de sortie secteur est le secteur de la personne
+     * connectée
+     */
+    public static ArrayList<PrescriptionExamen> retourneListePrescriptionExamen(String IPP, String secteur) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement recherchePres = null;
+        ResultSet resultats_bd = null;
+        ArrayList<PrescriptionExamen> listePres = new ArrayList<PrescriptionExamen>(); //on retourne une liste d'examens
+
+        //----------- Requête 1: recherche du DMT Biologie
+        try {
+            recherchePres = con.prepareStatement("select * from (Prescription_examen natural join personnelMedical) where id = ? and lower(service)=? ORDER BY date_pres desc");
+            recherchePres.setString(1, IPP);
+            recherchePres.setString(2, secteur.toLowerCase());
+        } catch (Exception e) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        Date r_date = null;
+        Examen r_examen = null;
+        String r_exam;
+        String r_exigences_examen = null;
+        String r_nrpps = null;
+        PH r_ph = new PH();
+
+        try {
+            while (resultats_bd.next()) {
+                r_exam = resultats_bd.getString("examen");
+                r_exigences_examen = resultats_bd.getString("exigences_examen");
+                r_nrpps = resultats_bd.getString("n_rpps");
+
+                try {
+                    //Conversion du service type String en type Service
+                    r_examen = Examen.valueOf(r_exam);
+
+                    //On cherche le PH
+                    r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
+
+                    if (r_examen != null && r_ph != null) {
+                        listePres.add(new PrescriptionExamen(r_date, r_examen, r_ph, r_exigences_examen, IPP, false));
+                    }
+                } catch (Exception e) {
+                    System.out.println("");
+                }
+            }
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé 2");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        return listePres;
     }
     
     public static void main(String[] args) {
