@@ -46,6 +46,14 @@ public class PrescriptionExamen {
     }
     
     /**
+     * Retourne la date de prescription
+     */
+    public String getID() {
+        return this.id;
+    }
+    
+    
+    /**
      * Retourne le libellé de l'examen
      */
     public String getLibelleExamen() {
