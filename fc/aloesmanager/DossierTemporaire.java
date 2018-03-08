@@ -15,6 +15,7 @@ public class DossierTemporaire {
     private String nom_proche;
     private String n_tel_proche;
     private DossierMedicoTechnique dmt;
+    private Venue venue;
 
     /**
      * Constructeur initialisant
@@ -30,12 +31,13 @@ public class DossierTemporaire {
         this.n_tel_proche = null;
         this.nom_proche = null;
         this.dmt = null;
+        this.venue = null;
     }
 
     /**
      * Constructeur complet
      */
-    public DossierTemporaire(String id_urgence, String nom, String prenom, String sexe, Date dateNaissance, String moyenArivee, Date dateArrivee, String n_tel_proche, String nom_proche, DossierMedicoTechnique dmt) {
+    public DossierTemporaire(String id_urgence, String nom, String prenom, String sexe, Date dateNaissance, String moyenArivee, Date dateArrivee, String n_tel_proche, String nom_proche, DossierMedicoTechnique dmt,Venue venue) {
         this.id_urgence = id_urgence;
         this.nom = nom;
         this.prenom = prenom;
@@ -46,6 +48,7 @@ public class DossierTemporaire {
         this.moyenArrivee = moyenArrivee;
         this.dateArrivee = dateArrivee;
         this.dmt = dmt;
+        this.venue = venue;
     }
 
     /**
