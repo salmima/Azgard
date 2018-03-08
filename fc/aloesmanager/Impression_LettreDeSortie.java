@@ -45,9 +45,9 @@ public class Impression_LettreDeSortie {
         document = builder.newDocument();
         //Création de l'élément racine et ajout au document
         racine = document.createElement("lettreDeSortie");
-        racine.setAttribute("xmlns:","http://azgardengineering.com/LettreDeSortie"); //a finir
+        racine.setAttribute("xmlns:","http://azgardengineering.com/LettreDeSortie");
         racine.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance"); 
-        racine.setAttribute("xsi:schemaLocation","http://azgardengineering.com/LettreDeSortie LettreDeSortie.xsd"); //a finir
+        racine.setAttribute("xsi:schemaLocation","http://azgardengineering.com/LettreDeSortie LettreDeSortie.xsd"); 
         document.appendChild(racine);
     }
 
