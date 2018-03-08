@@ -114,15 +114,14 @@ public class PH extends PersonnelMedical {
             resultats_bd.close();
 
             //Conversion du service type String en type Service
-            if (r_service != null) {
-                service = Service.valueOf(r_service);
-                //Création du PH
-                ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
-            }
-
-            //Création du PH
-            ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
-
+             if (r_service != null) {
+                    service = Service.valueOf(r_service);
+                    //Création du PH
+                    ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
+                } else {
+                    //Création du PH
+                    ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
+                }
         } catch (SQLException e) {
             do {
                 System.out.println("Accès aux résultats refusé");
@@ -174,6 +173,7 @@ public class PH extends PersonnelMedical {
         String r_prenom = null;
         int r_n_tel = 0;
         String r_service = null;
+        Service service = null;
 
         try {
             while (resultats_bd.next()) {
@@ -185,14 +185,14 @@ public class PH extends PersonnelMedical {
                 r_service = resultats_bd.getString("service");
 
                 //Conversion du service type String en type Service
-                if (r_service != null) {
+                  if (r_service != null) {
                     service = Service.valueOf(r_service);
                     //Création du PH
-                    ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
+                    ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
+                } else {
+                    //Création du PH
+                    ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
                 }
-
-                //Création du PH
-                ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
 
             }
 
@@ -251,6 +251,7 @@ public class PH extends PersonnelMedical {
         int r_n_tel = 0;
         String r_service = null;
         String r_specialite = null;
+        Service service = null;
 
         try {
             while (resultats_bd.next()) {
@@ -269,11 +270,11 @@ public class PH extends PersonnelMedical {
             if (r_service != null) {
                 service = Service.valueOf(r_service);
                 //Création du PH
-                ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
+                ph = new PH(nrpps, r_nom, r_prenom, r_n_tel, service, r_specialite);
+            } else {
+                //Création du PH
+                ph = new PH(nrpps, r_nom, r_prenom, r_n_tel, service, r_specialite);
             }
-
-            //Création du PH
-            ph = new PH(nrpps, r_nom, r_prenom, r_n_tel, service, r_specialite);
 
         } catch (SQLException e) {
             do {
