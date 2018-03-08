@@ -87,7 +87,7 @@ public class DossierMedicoAdministratif {
      * Retourne le prénom
      */
      public String getPrenom() {
-        return this.nom;
+        return this.prenom;
     }
      /**
      * Retourne le médecin traitant
@@ -108,6 +108,54 @@ public class DossierMedicoAdministratif {
      */
     public Date getDateN() {
         return this.dateNaissance;
+    }
+    /**
+     * Retourne le sexe du patient
+     */
+    public String getSexe() {
+        return this.sexe;
+    }
+    
+    /**
+     * Retourne le n° de tél du patient
+     */
+    public String getTel() {
+        return this.n_tel;
+    }
+    
+    /**
+     * Retourne l'adresse
+     */
+    public String getAdresse() {
+        return this.adresse;
+    }
+
+    /**
+     * Retourne le nom et prénom du proche
+     */
+    public String getNomProche() {
+        return this.nom_proche;
+    }
+    
+    /**
+     * Retourne le téléphone du proche
+     */
+    public String getTelProche() {
+        return this.n_tel_proche;
+    }
+    
+    /**
+     * Retourne la liste des venues
+     */
+    public ArrayList<Venue> getListeVenue() {
+        return this.listeVenue;
+    }
+    
+    /**
+     * Retourne l'id SIR
+     */
+    public String getIdSIR() {
+        return this.idSIR;
     }
     
     /**
@@ -153,7 +201,7 @@ public class DossierMedicoAdministratif {
 
         //Requête 4: récupérer les venues
         try {
-            rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue natural join LocalisationPatient where id =  ?"); //à débugger
+            rechercheVenue = con.prepareStatement("SELECT * FROM (Venue natural join CorrespondancePH_Venue natural join LocalisationPatient) where id =  ?"); //à débugger
             rechercheVenue.setString(1, ipp);
         } catch (Exception e) {
             System.out.println("Erreur de requête 4");
@@ -243,7 +291,7 @@ public class DossierMedicoAdministratif {
 
                 //On cherche le PH
                 r_PHrespo = new PH();
-                r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+                r_PHrespo = r_PHrespo.rechercherUnMedecinRPPS(nrpps);
 
                 //On crée le lit 
                 Lit lit = new Lit(true, r_num_lit);
@@ -494,7 +542,7 @@ public class DossierMedicoAdministratif {
 
                     //On cherche le PH
                     r_PHrespo = new PH();
-                    r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+                    r_PHrespo = r_PHrespo.rechercherUnMedecinRPPS(nrpps);
 
                     //On crée le lit 
                     Lit lit = new Lit(true, r_num_lit);
