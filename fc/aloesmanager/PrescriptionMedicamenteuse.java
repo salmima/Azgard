@@ -31,6 +31,35 @@ public class PrescriptionMedicamenteuse {
         this.id = id;
     }
     
+    /**
+     * Retourne la date de prescription
+     */
+    public Date getDate() {
+        return this.date;
+    }
+    
+    /**
+     * Retourne la date de prescription
+     */
+    public String getListe() {
+        return this.listeMedic;
+    }
+    
+    /**
+     * Retourne la date de prescription
+     */
+    public String getID() {
+        return this.id;
+    }
+    
+    /**
+     * Retourne la date de prescription
+     */
+    public PH getPH() {
+        return this.ph;
+    }
+    
+    
      /**
      * Ajout d'une prescription médicamenteuse
      */
