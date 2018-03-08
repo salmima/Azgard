@@ -36,9 +36,10 @@ public abstract class Resultat {
      /**
      * Retourne l'ID du patient
      */
-    public String getId(){
-        return this.observations;
+    public String getID(){
+        return this.id;
     }
+    
     
     /**
      * Retourne le numéro RPPS du personnel MT qui a publié le résultat
