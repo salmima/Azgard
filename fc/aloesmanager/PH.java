@@ -44,6 +44,20 @@ public class PH extends PersonnelMedical {
     public Service getService() {
         return this.service;
     }
+    
+    /**
+     * Renvoie le prénom du PH
+     */
+    public String getPrenom() {
+        return this.prenom;
+    }
+    
+    /**
+     * Renvoie la spécialité du PH
+     */
+    public String getSpecialite() {
+        return this.specialite;
+    }
 
     /**
      * Recherche d'un médecin à partir d'un nom et prénom
