@@ -164,9 +164,13 @@ public class DossierTemporaire {
                     while (resultats_bd2.next()) {
                         r_numSejour = resultats_bd2.getString("num_sejour");
                         r_date_entree = resultats_bd2.getDate("date_entree");
+                        nrpps = resultats_bd2.getString("n_rpps");
+                        r_num_lit = resultats_bd2.getString("num_lit");
+                        
                         //On cherche le PH
                         r_PHrespo = new PH();
                         r_PHrespo.rechercherUnMedecinRPPS(nrpps);
+                        
 
                         //On crée le lit 
                         Lit lit = new Lit(true, r_num_lit);
@@ -201,6 +205,8 @@ public class DossierTemporaire {
         PreparedStatement creerDMTemporaire;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        String numSejour = Venue.creerUnNumSejour();
+        String nrpps = PH.returnNRPPS(identifiant);
 
         //Requête 1: Ajout d'un DM des urgences
         //La vérification de non-existence du DM se fait dans la base de données
