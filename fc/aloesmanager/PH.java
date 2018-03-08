@@ -114,7 +114,11 @@ public class PH extends PersonnelMedical {
             resultats_bd.close();
 
             //Conversion du service type String en type Service
-            service = Service.valueOf(r_service);
+            if (r_service != null) {
+                service = Service.valueOf(r_service);
+                //Création du PH
+                ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
+            }
 
             //Création du PH
             ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
@@ -181,7 +185,11 @@ public class PH extends PersonnelMedical {
                 r_service = resultats_bd.getString("service");
 
                 //Conversion du service type String en type Service
-                Service service = Service.valueOf(r_service);
+                if (r_service != null) {
+                    service = Service.valueOf(r_service);
+                    //Création du PH
+                    ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
+                }
 
                 //Création du PH
                 ph.add(new PH(r_n_rpps, r_nom, r_prenom, r_n_tel, service, specialite));
@@ -257,8 +265,12 @@ public class PH extends PersonnelMedical {
             //Fermeture des résultats des requêtes
             resultats_bd.close();
 
-            //Conversion du service type String en type Service
-            Service service = Service.valueOf(r_service);
+              //Conversion du service type String en type Service
+            if (r_service != null) {
+                service = Service.valueOf(r_service);
+                //Création du PH
+                ph = new PH(r_n_rpps, nom, prenom, r_n_tel, service, r_specialite);
+            }
 
             //Création du PH
             ph = new PH(nrpps, r_nom, r_prenom, r_n_tel, service, r_specialite);
