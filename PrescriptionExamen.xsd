@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace = "http://azgardengineering.com/PrescriptionExamen"
+           xmlns = "http://azgardengineering.com/PrescriptionExamen"
+           elementFormDefault="qualified">
+
+    <xs:element name="prescription_examen" type="PresExam"/>
+        
+        <xs:complexType name="PresExam">
+            <xs:sequence>
+                <xs:element name="date_prescription" type="xs:date"/>
+                <xs:element name="type_examen" type="xs:string"/>
+                <xs:element name="informationsPrescripteur" type="InformationsPrescripteur"/>
+                <xs:element name="informationsPatient" type="InformationsPatient"/>
+                <xs:element name="exigences_examen" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="InformationsPatient">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="prenom" type="xs:string"/>
+                <xs:element name="date_naissance" type="xs:date"/>
+            </xs:sequence>
+        </xs:complexType>
+            
+        <xs:complexType name="InformationsPrescripteur">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="prenom" type="xs:string"/>
+                <xs:element name="specialite" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>   
+        
+</xs:schema>

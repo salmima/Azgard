@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<xs:schema version="1.0" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace = "http://azgardengineering.com/LettreDeSortie"
+           xmlns = "http://azgardengineering.com/LettreDeSortie"
+           elementFormDefault="qualified">
+
+    <xs:element name="lettreDeSortie" type="LettreDeSortie"/>
+        
+        <xs:complexType name="LettreDeSortie">
+            <xs:sequence>
+                <xs:element name="informationsMedicoAdministratives" type="InformationsMedicoAdministratives"/>
+                <xs:element name="informationsMedicales" type="InformationsMedicales"/>
+            </xs:sequence>       
+        </xs:complexType>
+        
+        <xs:complexType name="InformationsMedicoAdministratives">
+            <xs:sequence>
+                <xs:element name="informationsPatient" type="InformationsPatient"/>
+                <xs:element name="date_redaction" type="xs:date"/>
+                <xs:element name="nom_redacteur" type="xs:string"/>
+                <xs:element name="moyen_arrivee" type="xs:string"/>
+                <xs:element name="statut" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="InformationsPatient">
+            <xs:sequence>
+                <xs:element name="nom" type="xs:string"/>
+                <xs:element name="prenom" type="xs:string"/>
+                <xs:element name="dateNaissance" type="xs:date"/>
+                <xs:element name="sexe" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+            
+        <xs:complexType name="InformationsMedicales">
+            <xs:sequence>
+                <xs:element name="motifHospitalisation" type="xs:string" minOccurs = "0"/>
+                <xs:element name="synthese_medicale" type="Synthese_Medicale" minOccurs = "0"/>
+                <xs:element name="actes_examens" type="Actes_examens" minOccurs = "0"/>
+                <xs:element name="traitement_medic" type="Traitement_Medic" minOccurs = "0"/>
+                <xs:element name="suite" type="xs:string" minOccurs = "0"/>
+            </xs:sequence>
+        </xs:complexType>   
+        
+        <xs:complexType name="Synthese_Medicale">
+            <xs:sequence>
+                <xs:element name="pathologie" type="xs:string" maxOccurs = "unbounded"/>
+                <xs:element name="porteur_BMR" type="xs:string" minOccurs = "0"/>
+                <xs:element name="porteur_BHRe" type="xs:string" minOccurs = "0"/>
+                <xs:element name="transfusion" type="xs:string" minOccurs = "0"/>
+            </xs:sequence>
+        </xs:complexType>
+            
+        <xs:complexType name="Actes_examens">
+            <xs:sequence>
+                <xs:element name="actes_techniques" type="xs:string" minOccurs="0"/>
+                <xs:element name="examens_complementaires" type="Examen" minOccurs = "0"/>
+                <xs:element name="examens_biologiques" type="Examen" minOccurs = "0"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="Examen">
+            <xs:sequence>
+                <xs:element name="examen" type="xs:string"/>
+                <xs:element name="resultat" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+        
+        <xs:complexType name="Traitement_Medic">
+            <xs:sequence>
+                <xs:element name="medicament_avant_admission" type="xs:string" maxOccurs = "unbounded"/>
+                <xs:element name="medicament_apres_admission" type="xs:string" maxOccurs = "unbounded"/>
+                <xs:element name="commentaires" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+
+</xs:schema>
