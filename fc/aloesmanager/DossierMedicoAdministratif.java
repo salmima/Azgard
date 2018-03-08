@@ -829,6 +829,86 @@ public class DossierMedicoAdministratif {
         }
     }
 
+    /**
+     * Ajouter le téléphone personnel
+     */
+    public void ajouterTel(String tel, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement majTel = null;
+
+        try {
+            String requete = "UPDATE DMA SET telephone_personnel = ? WHERE IPP = ?";
+            majTel = con.prepareStatement(requete);
+            majTel.setString(2, IPP);
+            majTel.setString(1, tel);
+
+            int nbMaj = majTel.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Ajouter le nom d'un proche
+     */
+    public void ajouterProche(String nom_proche, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement maj = null;
+
+        try {
+            String requete = "UPDATE DMA SET nom_proche = ? WHERE IPP = ?";
+            maj = con.prepareStatement(requete);
+            maj.setString(2, IPP);
+            maj.setString(1, nom_proche);
+
+            int nbMaj = maj.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Ajouter le téléphone d'un proche
+     */
+    public void ajouterTelProche(String tel_proche, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement maj = null;
+
+        try {
+            String requete = "UPDATE DMA SET tel_proche = ? WHERE IPP = ?";
+            maj = con.prepareStatement(requete);
+            maj.setString(2, IPP);
+            maj.setString(1, tel_proche);
+
+            int nbMaj = maj.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Ajouter l'adresse
+     */
+    public void ajouterAdresse(String ad, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement maj = null;
+
+        try {
+            String requete = "UPDATE DMA SET adresse = ? WHERE IPP = ?";
+            maj = con.prepareStatement(requete);
+            maj.setString(2, IPP);
+            maj.setString(1, ad);
+
+            int nbMaj = maj.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     
      /**
      * Générer un IPP
