@@ -625,8 +625,8 @@ public class DossierMedicoAdministratif {
                 System.out.println("");
                 e = e.getNextException();
             } while (e != null);
-        }}
         }
+     }
 
     }
 
