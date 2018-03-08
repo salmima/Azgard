@@ -140,6 +140,19 @@ public class Impression {
         }
 
     }
+    
+    //    //Code à mettre dans l'interface si on veut proposer une boîte de dialogue
+//    private void jButtonImprimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonImprimerActionPerformed
+//        //il faut d'abord génerer un pdf avec une des méthodes (Impression_...)
+//        //en fonction de la méthode appelée, le fichier a un certain nom: il faut remplacer ce nom à la ligne juste en dessous v
+//          try {
+//            File myFile = new File("src/output/pdf.pdf"); //remplacer l'adresse du pdf: celle-ci change en fonction de l'emplacement du bouton
+//            Desktop.getDesktop().open(myFile);
+//        } catch (IOException e) {
+//            // System probably doesn't have a default PDF program
+//        }
+//    }
+
 
     public static void main(String[] args) {
         Impression.xmlToPdf("src/xml/Impression_pres_res.xsl", "src/xml/presmedic.xml", "essai"); //ça marche
