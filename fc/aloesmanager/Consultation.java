@@ -24,7 +24,23 @@ public class Consultation extends Venue {
         this.lettreSortie = lettre;
         this.PHrespo = phRespo;
     }
+    
+     public java.sql.Date getDateEntree() {
+        return this.dateEntree;
+    }
 
+    public java.sql.Date getDateSortie() {
+        return this.dateSortie;
+    }
+
+    public String getNumSejour() {
+        return this.numSejour;
+    }
+
+    public PH getPHRespo() {
+        return this.PHrespo;
+    }
+    
     //TEST
     public static void main(String[] args) {
         Consultation c = new Consultation();
