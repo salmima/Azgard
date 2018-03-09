@@ -146,6 +146,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
             Date r_date = null;
             String r_observations2 = "";
             String r_nrpps = "";
+            String r_service_demandeur = "";
             PH r_ph = new PH();
             ResultatImagerie resultat;
 
@@ -154,7 +155,8 @@ public class DMT_Biologie extends DossierMedicoTechnique {
                     r_observations2 = resultats_bd2.getString("observations");
                     r_compteRendu = resultats_bd2.getString("compte_rendu");
                     r_date = resultats_bd2.getDate("date");
-                    r_nrpps = resultats_bd2.getString("n_rpps");;
+                    r_nrpps = resultats_bd2.getString("n_rpps");
+                    r_service_demandeur = resultats_bd.getString("service_demandeur");
                 }
                 resultats_bd2.close();
 
@@ -163,7 +165,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph);
+                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
