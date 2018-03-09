@@ -361,6 +361,7 @@ public class DMclinique {
             String r_observations3 = "";
             String r_nrpps3 = "";
             String r_type_examen = "";
+            String r_service_demandeur = "";
             PH r_ph3 = new PH();
             Resultat resultat = null;
 
@@ -371,6 +372,7 @@ public class DMclinique {
                     r_date3 = resultats_bd4.getDate("date");
                     r_nrpps3 = resultats_bd4.getString("n_rpps");
                     r_type_examen = resultats_bd4.getString("type_examen");
+                    r_service_demandeur = resultats_bd.getString("service_demandeur");
 
                     try {
                         //On cherche le PH
@@ -378,16 +380,16 @@ public class DMclinique {
                         
                         if (r_nrpps3 != null) {
                             if (r_type_examen.equals("radiologie")) {
-                                resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                resultat = new ResultatImagerie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, r_service_demandeur);
                                 this.ajouterResultat(resultat);
                             } else if (r_type_examen.equals("hematologie")) {
-                                resultat = new ResultatHematologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                resultat = new ResultatHematologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, r_service_demandeur);
                                 this.ajouterResultat(resultat);
                             } else if (r_type_examen.equals("anatomopathologie")) {
-                                resultat = new ResultatAnapathologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                resultat = new ResultatAnapathologie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, r_service_demandeur);
                                 this.ajouterResultat(resultat);
                             } else if (r_type_examen.equals("biologie")) {
-                                resultat = new ResultatBiologique(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3);
+                                resultat = new ResultatBiologique(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, r_service_demandeur);
                                 this.ajouterResultat(resultat);
                             }
                             this.ajouterResultat(resultat);
