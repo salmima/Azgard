@@ -111,7 +111,7 @@ public class Impression_Resultat {
         ph = PH.rechercherUnMedecin("house", "gregory");
 
         //En fonction du résultat que l'on veut imprimer, changer de constructeur
-        Resultat res = new ResultatImagerie("compte-rendu", sqlDate, "observations", "180000111", ph);
+        Resultat res = new ResultatImagerie("compte-rendu", sqlDate, "observations", "180000111", ph,"");
         
         Impression_Resultat imp = new Impression_Resultat(res,"radiologie");
         
