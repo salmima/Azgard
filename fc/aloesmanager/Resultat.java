@@ -9,6 +9,7 @@ public abstract class Resultat {
     protected String observations;
     protected String id;
     protected PH ph; //ph qui a ajouté le résultat
+    protected String service_demandeur; //service demandeur
     
     /**
      * Retourne le compte-rendu
@@ -76,6 +77,7 @@ public abstract class Resultat {
         String r_observations = "";
         String r_nrpps = "";
         String r_type_examen = "";
+        String r_service_demandeur = "";
         PH r_ph = new PH();
         Resultat resultat = null;
         try {
@@ -85,6 +87,7 @@ public abstract class Resultat {
                 r_date = resultats_bd.getDate("date");
                 r_nrpps = resultats_bd.getString("n_rpps");
                 r_type_examen = resultats_bd.getString("type_examen");
+                r_service_demandeur = resultats_bd.getString("service_demandeur");
 
                 try {
                     //On cherche le PH
@@ -92,16 +95,16 @@ public abstract class Resultat {
 
                     if (r_nrpps != null) {
                         if (r_type_examen.equals("radiologie")) {
-                            resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, IPP, r_ph);
+                            resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, IPP, r_ph,r_service_demandeur);
                             listeRes.add(resultat);
                         } else if (r_type_examen.equals("hematologie")) {
-                            resultat = new ResultatHematologie(r_compteRendu, r_date, r_observations, IPP, r_ph);
+                            resultat = new ResultatHematologie(r_compteRendu, r_date, r_observations, IPP, r_ph,r_service_demandeur);
                             listeRes.add(resultat);
                         } else if (r_type_examen.equals("anatomopathologie")) {
-                            resultat = new ResultatAnapathologie(r_compteRendu, r_date, r_observations, IPP, r_ph);
+                            resultat = new ResultatAnapathologie(r_compteRendu, r_date, r_observations, IPP, r_ph,r_service_demandeur);
                             listeRes.add(resultat);
                         } else if (r_type_examen.equals("biologie")) {
-                            resultat = new ResultatBiologique(r_compteRendu, r_date, r_observations, IPP, r_ph);
+                            resultat = new ResultatBiologique(r_compteRendu, r_date, r_observations, IPP, r_ph,r_service_demandeur);
                             listeRes.add(resultat);
                         } //ajouter resultat anesthesie
                         listeRes.add(resultat);
