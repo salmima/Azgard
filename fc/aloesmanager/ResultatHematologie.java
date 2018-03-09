@@ -7,12 +7,13 @@ public class ResultatHematologie extends Resultat {
     /**
      * Constructeur
      */
-    public ResultatHematologie(String CR, Date date, String obs, String id, PH ph){
+    public ResultatHematologie(String CR, Date date, String obs, String id, PH ph, PH ph_demandeur){
         this.compteRendu = CR;
         this.date = date;
         this.observations = obs;      
         this.id = id;
         this.ph = ph;
+        this.ph_demandeur = ph_demandeur;
     }
 
 }
