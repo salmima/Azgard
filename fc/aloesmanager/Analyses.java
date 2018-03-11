@@ -4,7 +4,9 @@ import java.sql.*;
 
 public abstract class Analyses extends DossierMedicoTechnique {
 
-  private Resultat resultat;
+    private ArrayList<PrescriptionExamen> liste_examens;
+    private String observations;
+    private String id;
 
 
 }
