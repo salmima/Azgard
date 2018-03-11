@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class DMT_Biologie extends DossierMedicoTechnique {
 
-    private ArrayList<ResultatImagerie> liste_resultats;
+    private ArrayList<ResultatBiologique> liste_resultats;
     private ArrayList<PrescriptionExamen> liste_examens;
     private String observations;
     private String id;
@@ -17,14 +17,14 @@ public class DMT_Biologie extends DossierMedicoTechnique {
     public DMT_Biologie() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatImagerie>();
+        this.liste_resultats = new ArrayList<ResultatBiologique>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Biologie(String id, String observations, ArrayList<ResultatImagerie> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Biologie(String id, String observations, ArrayList<ResultatBiologique> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
@@ -34,7 +34,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
     /**
      * Ajout d'un résultat à la liste de résultats
      */
-    public void ajouterResultat(ResultatImagerie resultat) {
+    public void ajouterResultat(ResultatBiologique resultat) {
         this.liste_resultats.add(resultat);
     }
 
@@ -148,7 +148,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
             String r_nrpps = "";
             String r_service_demandeur = "";
             PH r_ph = new PH();
-            ResultatImagerie resultat;
+            ResultatBiologique resultat;
 
             try {
                 while (resultats_bd2.next()) {
@@ -165,7 +165,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatBiologique(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
