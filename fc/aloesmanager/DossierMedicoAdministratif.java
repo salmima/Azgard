@@ -1039,5 +1039,11 @@ public class DossierMedicoAdministratif {
 //        System.out.println(dma.testerExistenceIPP("180000111")); //OK
 //        System.out.println(dma.testerExistenceIPP("180000131")); //OK: ça marche pas: normal
 //        System.out.println(DossierMedicoAdministratif.regulariserDossierTemporaire("999000001")); //ça marche
+        
+        //Test: ajout d'un médecin traitant -- ça marche
+        MedecinTraitant medTest2 = new MedecinTraitant("12 rue alfred", "test", "medThao", null, 38400);
+        //dma.creerUnDMA(dma.genererUnIPP(), "Test", "Thao", "F", dateTest, "Test Christine", "0666996699", "0688991122", "32 adresse de test", "B+", null);
+        dma.rechercherUnDMA("Test", "Thao", dateTest);
+        dma.ajouterMedTraitant(medTest2, dma.getIPP());
     }
 }
