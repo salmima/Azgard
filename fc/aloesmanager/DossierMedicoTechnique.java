@@ -2,7 +2,6 @@ package fc.aloesmanager;
 
 public class DossierMedicoTechnique {
 
-    private String observations;
     private DMT_Hematologie dh;
     private DMT_Anapath dap;
     private DMT_Biologie db;
@@ -13,7 +12,6 @@ public class DossierMedicoTechnique {
      * Constructeur initialisant
      */
     public DossierMedicoTechnique(){
-        this.observations = null;
         this.dh = null;
         this.dap = null;
         this.db = null;
