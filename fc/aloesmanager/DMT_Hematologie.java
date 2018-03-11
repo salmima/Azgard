@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class DMT_Hematologie extends DossierMedicoTechnique {
 
-    private ArrayList<ResultatImagerie> liste_resultats;
+    private ArrayList<ResultatHematologie> liste_resultats;
     private ArrayList<PrescriptionExamen> liste_examens;
     private String observations;
     private String id;
@@ -17,14 +17,14 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
     public DMT_Hematologie() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatImagerie>();
+        this.liste_resultats = new ArrayList<ResultatHematologie>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Hematologie(String id, String observations, ArrayList<ResultatImagerie> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Hematologie(String id, String observations, ArrayList<ResultatHematologie> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
@@ -148,7 +148,7 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
             String r_nrpps = "";
             String r_service_demandeur = "";
             PH r_ph = new PH();
-            ResultatImagerie resultat;
+            ResultatHematologie resultat;
 
             try {
                 while (resultats_bd2.next()) {
@@ -165,7 +165,7 @@ public class DMT_Hematologie extends DossierMedicoTechnique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatHematologie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
