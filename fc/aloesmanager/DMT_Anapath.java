@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 
 public class DMT_Anapath extends DossierMedicoTechnique {
 
-    private ArrayList<ResultatImagerie> liste_resultats;
+    private ArrayList<ResultatAnapathologie> liste_resultats;
     private ArrayList<PrescriptionExamen> liste_examens;
     private String observations;
     private String id;
@@ -17,14 +17,14 @@ public class DMT_Anapath extends DossierMedicoTechnique {
     public DMT_Anapath() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatImagerie>();
+        this.liste_resultats = new ArrayList<ResultatAnapathologie>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Anapath(String id, String observations, ArrayList<ResultatImagerie> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Anapath(String id, String observations, ArrayList<ResultatAnapathologie> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
@@ -34,7 +34,7 @@ public class DMT_Anapath extends DossierMedicoTechnique {
     /**
      * Ajout d'un résultat à la liste de résultats
      */
-    public void ajouterResultat(ResultatImagerie resultat) {
+    public void ajouterResultat(ResultatAnapathologie resultat) {
         this.liste_resultats.add(resultat);
     }
 
@@ -148,7 +148,7 @@ public class DMT_Anapath extends DossierMedicoTechnique {
             String r_nrpps = "";
             String r_service_demandeur = "";
             PH r_ph = new PH();
-            ResultatImagerie resultat;
+            ResultatAnapathologie resultat;
 
             try {
                 while (resultats_bd2.next()) {
@@ -165,7 +165,7 @@ public class DMT_Anapath extends DossierMedicoTechnique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatAnapathologie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
