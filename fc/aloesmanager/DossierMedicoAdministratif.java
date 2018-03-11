@@ -943,6 +943,107 @@ public class DossierMedicoAdministratif {
         }
     }
 
+
+/**
+     * Ajouter un médecin traitant
+     */
+    public void ajouterMedTraitant(MedecinTraitant medTt, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement maj = null;
+        ResultSet resultats_bd = null;
+
+        //On cherche si le médecin est présent dans la base de données
+        try {
+            maj = con.prepareStatement("SELECT * FROM MedecinExterne where lower(nom) = ? and lower(prenom) = ? and codePostal = ?");
+            maj.setString(1, medTt.getNom().toLowerCase());
+            maj.setString(2, medTt.getPrenom().toLowerCase());
+            maj.setInt(3, medTt.getCodePostal());
+
+        } catch (Exception e) {
+            System.out.println("Erreur de requête");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = maj.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires
+        String r_medNom = null;
+        String r_medPrenom = null;
+        int r_medCodePostal = 0;
+
+        try {
+            while (resultats_bd.next()) {
+                //Informations du médecin trouvé dans la base de données
+                //censé être unique
+                r_medNom = resultats_bd.getString("nom");
+                r_medPrenom = resultats_bd.getString("prenom");
+                r_medCodePostal = resultats_bd.getInt("codePostal");
+            }
+
+            //Fermeture des résultats des requête
+            resultats_bd.close();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //Création de l'instance du médecin traitant
+        if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0) { //le médecin a été trouvé dans la base de données
+            //On fait rien au niveau de la base de données
+            //On utilise directement le médecin passé en paramètre de la méthode
+        } else {
+            // le médecin n'existe pas dans la base de données mais n'est pas null
+            //On utilise directement l'instance de médecin traitant passé en paramètre de la méthode
+            //On ajoute ce médecin traitant non présent dans la base de données
+            try {
+                String requete = "INSERT INTO MedecinExterne VALUES (?,?,?,?,?)";
+                maj = con.prepareStatement(requete);
+                maj.setString(1, medTt.getNom());
+                maj.setString(2, medTt.getPrenom());
+                maj.setString(3, medTt.getNtel());
+                maj.setString(4, medTt.getAdresse());
+                maj.setInt(5, medTt.getCodePostal());
+
+                int nbMaj = maj.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Ajout de la correspondance avec le médecin traitant
+        try {
+            String requete = "INSERT INTO CorrespondanceMedecinExterne VALUES (?,?,?,?)";
+            maj = con.prepareStatement(requete);
+            maj.setString(1, IPP);
+            maj.setString(2, medTt.getNom());
+            maj.setString(3, medTt.getPrenom());;
+            maj.setInt(4, medTt.getCodePostal());
+
+            int nbMaj = maj.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
      /**
      * Générer un IPP
@@ -965,6 +1066,7 @@ public class DossierMedicoAdministratif {
 
         return IPP;
     }
+
 
      /**
      * Test de l'existence d'un IPP
