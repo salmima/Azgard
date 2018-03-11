@@ -12,12 +12,12 @@ public class PH extends PersonnelMedical {
         this.nom = null;
         this.prenom = null;
         this.nRPPS = null;
-        this.ntel = 0;
+        this.ntel = null;
         this.service = null;
         this.specialite = null;
     }
 
-    public PH(String nrpps, String nom, String prenom, int ntel, Service service, String specialite) {
+    public PH(String nrpps, String nom, String prenom,  String ntel, Service service, String specialite) {
         this.nom = nom;
         this.prenom = prenom;
         this.nRPPS = nrpps;
@@ -96,7 +96,7 @@ public class PH extends PersonnelMedical {
         //-----------parcours des données retournées
         //---Variables temporaires
         String r_n_rpps = null;
-        int r_n_tel = 0;
+        String r_n_tel = 0;
         String r_service = null;
         Service service = null;
         String r_specialite = null;
@@ -105,7 +105,7 @@ public class PH extends PersonnelMedical {
             while (resultats_bd.next()) {
                 //Informations du patient
                 r_n_rpps = resultats_bd.getString("n_rpps");
-                r_n_tel = resultats_bd.getInt("telephone_pro");
+                r_n_tel = resultats_bd.getString("telephone_pro");
                 r_service = resultats_bd.getString("service");
                 r_specialite = resultats_bd.getString("specialite");
             }
@@ -171,7 +171,7 @@ public class PH extends PersonnelMedical {
         String r_n_rpps = null;
         String r_nom = null;
         String r_prenom = null;
-        int r_n_tel = 0;
+        String r_n_tel = null;
         String r_service = null;
         Service service = null;
 
@@ -181,7 +181,7 @@ public class PH extends PersonnelMedical {
                 r_n_rpps = resultats_bd.getString("n_rpps");
                 r_nom = resultats_bd.getString("nom");
                 r_prenom = resultats_bd.getString("prenom");
-                r_n_tel = resultats_bd.getInt("telephone_pro");
+                r_n_tel = resultats_bd.getString("telephone_pro");
                 r_service = resultats_bd.getString("service");
 
                 //Conversion du service type String en type Service
@@ -248,7 +248,7 @@ public class PH extends PersonnelMedical {
         //---Variables temporaires
         String r_nom = null;
         String r_prenom = null;
-        int r_n_tel = 0;
+        String r_n_tel = 0;
         String r_service = null;
         String r_specialite = null;
         Service service = null;
@@ -258,7 +258,7 @@ public class PH extends PersonnelMedical {
                 //Informations du patient
                 r_nom = resultats_bd.getString("nom");
                 r_prenom = resultats_bd.getString("prenom");
-                r_n_tel = resultats_bd.getInt("telephone_pro");
+                r_n_tel = resultats_bd.getString("telephone_pro");
                 r_service = resultats_bd.getString("service");
                 r_specialite = resultats_bd.getString("specialite");
             }
