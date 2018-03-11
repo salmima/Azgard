@@ -703,74 +703,108 @@ public class DossierMedicoAdministratif {
         ResultSet resultats_bd = null;
         MedecinTraitant r_medTraitant = null;
 
-        try {
-            creerMTT = con.prepareStatement("SELECT * FROM MedecinExterne");
-        } catch (Exception e) {
-            System.out.println("Erreur de requête");
-        }
+       //si le médecin traitant passé en paramètres n'est pas null
+        //on le cherche dans la base de données
+                try {
+        if (medTt.getNom() != null && medTt.getPrenom() != null && medTt.getCodePostal() != 0) {
+            try {
+                creerMTT = con.prepareStatement("SELECT * FROM MedecinExterne where lower(nom) = ? and lower(prenom) = ? and codePostal = ?");
+                creerMTT.setString(1, medTt.getNom().toLowerCase());
+                creerMTT.setString(2, medTt.getPrenom().toLowerCase());
+                creerMTT.setInt(3, medTt.getCodePostal());
 
-        //-----------Accès à la base de données
-        try {
-            resultats_bd = creerMTT.executeQuery();
-        } catch (SQLException e) {
-            do {
-                System.out.println("Requête refusée");
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
-
-        //-----------parcours des données retournées
-        //---Variables temporaires
-        String r_medNom = null;
-        String r_medPrenom = null;
-        int r_medCodePostal = 0;
-
-        try {
-            while (resultats_bd.next()) {
-                //Informations du médecin
-                r_medNom = resultats_bd.getString("nom");
-                r_medPrenom = resultats_bd.getString("prenom");
-                r_medCodePostal = resultats_bd.getInt("codePostal");
+            } catch (Exception e) {
+                System.out.println("Erreur de requête");
             }
 
-            //Fermeture des résultats des requête
-            resultats_bd.close();
+            //-----------Accès à la base de données
+            try {
+                resultats_bd = creerMTT.executeQuery();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Requête refusée");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //-----------parcours des données retournées
+            //---Variables temporaires
+            String r_medNom = null;
+            String r_medPrenom = null;
+            int r_medCodePostal = 0;
+
+            try {
+                while (resultats_bd.next()) {
+                    //Informations du médecin trouvé dans la base de données
+                    //censé être unique
+                    r_medNom = resultats_bd.getString("nom");
+                    r_medPrenom = resultats_bd.getString("prenom");
+                    r_medCodePostal = resultats_bd.getInt("codePostal");
+                }
+
+                //Fermeture des résultats des requête
+                resultats_bd.close();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
 
             //Création de l'instance du médecin traitant
-            if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0) {
-                r_medTraitant = new MedecinTraitant(null, r_medNom, r_medPrenom, null, r_medCodePostal);
+            if (r_medNom != null && r_medPrenom != null && r_medCodePostal != 0) { //le médecin a été trouvé dans la base de données
+                //On fait rien au niveau de la base de données
+                //On utilise directement le médecin passé en paramètre de la méthode
             } else {
-                r_medTraitant = null;
+                // le médecin n'existe pas dans la base de données mais n'est pas null
+                //On utilise directement l'instance de médecin traitant passé en paramètre de la méthode
+                //On ajoute ce médecin traitant non présent dans la base de données
+                try {
+                    String requete = "INSERT INTO MedecinExterne VALUES (?,?,?,?,?)";
+                    creerMTT = con.prepareStatement(requete);
+                    creerMTT.setString(1, medTt.getNom());
+                    creerMTT.setString(2, medTt.getPrenom());
+                    creerMTT.setString(3, medTt.getNtel());
+                    creerMTT.setString(4, medTt.getAdresse());
+                    creerMTT.setInt(5, medTt.getCodePostal());
+
+                    int nbMaj = creerMTT.executeUpdate();
+                    System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
-        } catch (SQLException e) {
-            do {
-                System.out.println("Accès aux résultats refusé");
-                System.out.println("SQLState : " + e.getSQLState());
-                System.out.println("Description : " + e.getMessage());
-                System.out.println("code erreur : " + e.getErrorCode());
-                System.out.println("");
-                e = e.getNextException();
-            } while (e != null);
-        }
-        if (r_medTraitant.getNom() != medTt.getNom() && r_medTraitant.getPrenom() != medTt.getPrenom() && r_medTraitant.getCodePostal() != medTt.getCodePostal()) {
+
+            //Ajout de la correspondance avec le médecin traitant
             try {
-                String requete = "INSERT INTO MedecinExterne VALUES (?,?,?,?,?)";
+                String requete = "INSERT INTO CorrespondanceMedecinExterne VALUES (?,?,?,?)";
                 creerMTT = con.prepareStatement(requete);
-                creerMTT.setString(1, medTt.getNom());
-                creerMTT.setString(2, medTt.getPrenom());
-                creerMTT.setString(3, medTt.getNtel());
-                creerMTT.setString(4, medTt.getAdresse());
-                creerMTT.setInt(5, medTt.getCodePostal());
+                creerMTT.setString(1, IPP);
+                creerMTT.setString(2, medTt.getNom());
+                creerMTT.setString(3, medTt.getPrenom());;
+                creerMTT.setInt(4, medTt.getCodePostal());
 
                 int nbMaj = creerMTT.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+        }
+        } catch (Exception e) {
+            System.out.println("Le médecin n'existe pas");
+        }
+
+
+        //Si le médecin passé en paramètre de la méthode est null
+        //On fait rien
         }
 
         //Ajout de la correspondance avec le médecin traitant
