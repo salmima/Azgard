@@ -706,7 +706,7 @@ public class DossierMedicoAdministratif {
        //si le médecin traitant passé en paramètres n'est pas null
         //on le cherche dans la base de données
                 try {
-        if (medTt.getNom() != null && medTt.getPrenom() != null && medTt.getCodePostal() != 0) {
+         if (medTt != null) {
             try {
                 creerMTT = con.prepareStatement("SELECT * FROM MedecinExterne where lower(nom) = ? and lower(prenom) = ? and codePostal = ?");
                 creerMTT.setString(1, medTt.getNom().toLowerCase());
@@ -797,17 +797,9 @@ public class DossierMedicoAdministratif {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-        } catch (Exception e) {
-            System.out.println("Le médecin n'existe pas");
-        }
+      
 
-
-        //Si le médecin passé en paramètre de la méthode est null
-        //On fait rien
-        }
-
-        //Ajout de la correspondance avec le médecin traitant
+      //Ajout de la correspondance avec le médecin traitant
         try {
             String requete = "INSERT INTO CorrespondanceMedecinExterne VALUES (?,?,?,?)";
             creerMTT = con.prepareStatement(requete);
@@ -821,6 +813,14 @@ public class DossierMedicoAdministratif {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+          }
+        } catch (Exception e) {
+            System.out.println("Le médecin n'existe pas");
+        }
+        //Si le médecin passé en paramètre de la méthode est null
+        //On fait rien
+
     }
 
      /**
