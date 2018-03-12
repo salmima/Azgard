@@ -38,7 +38,7 @@ public class DossierTemporaire {
     /**
      * Constructeur complet
      */
-    public DossierTemporaire(String id_urgence, String nom, String prenom, String sexe, Date dateNaissance, String moyenArivee, Date dateArrivee, String n_tel_proche, String nom_proche, DossierMedicoTechnique dmt, Venue venue) {
+    public DossierTemporaire(String id_urgence, String nom, String prenom, String sexe, Date dateNaissance, String moyenArrivee, Date dateArrivee, String n_tel_proche, String nom_proche, DossierMedicoTechnique dmt, Venue venue) {
         this.id_urgence = id_urgence;
         this.nom = nom;
         this.prenom = prenom;
@@ -241,19 +241,6 @@ public class DossierTemporaire {
             ajouterTrace.setString(1, id_urgence);
 
             int nbMaj = ajouterTrace.executeUpdate();
-            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        //Requête 2: Création d'une seule venue!
-        try {
-            String requete = "INSERT INTO Venue VALUES(? ,?, NULl, NULL)";
-            creerDMTemporaire = con.prepareStatement(requete);
-            creerDMTemporaire.setString(1, numSejour);
-            creerDMTemporaire.setDate(2, sqlDate);
-
-            int nbMaj = creerDMTemporaire.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
         } catch (SQLException e) {
             e.printStackTrace();
