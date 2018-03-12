@@ -139,7 +139,7 @@ public class RegularisationDossierTemporaire {
                     miseAJourDossiers(id_urgence, IPP);
                     
                     //instance de DMA pour récupérer les infos
-                    dma.rechercherUnDMA(IPP_provisoire);
+                    dma.rechercherUnDMA(IPP);
                 }
                 //On supprime le dossier des urgences
                 RegularisationDossierTemporaire.supprimerDossierTemporaire(id_urgence);
