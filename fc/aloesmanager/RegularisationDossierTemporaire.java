@@ -17,6 +17,21 @@ import java.util.ArrayList;
  * @author Thao
  */
 public class RegularisationDossierTemporaire {
+    
+     static DossierMedicoAdministratif dma;
+   /**
+     * Constructeur de la classe RegularisationDossierTemporaire
+     */
+    public RegularisationDossierTemporaire() {
+        dma = null;
+    }
+    
+   /**
+     * Renvoie le dossier médico-administratif correspondant au dossier temporaire
+     */
+    public static DossierMedicoAdministratif getDma() {
+        return dma;
+    }
 
     /**
      * Régularisation du dossier des urgences (temporaire)
@@ -86,7 +101,7 @@ public class RegularisationDossierTemporaire {
         }
 
         //Test de l'existence du DMA
-        DossierMedicoAdministratif dma = new DossierMedicoAdministratif();
+        dma = new DossierMedicoAdministratif();
         if (r_nom != null && r_prenom != null & r_dateN != null) {
             try {
                 dma.rechercherUnDMA(r_nom, r_prenom, r_dateN);
@@ -110,6 +125,9 @@ public class RegularisationDossierTemporaire {
 
                     //Mise à jour de tous les dossiers
                     miseAJourDossiers(id_urgence, IPP_provisoire);
+                    
+                    //instance de DMA pour récupérer les infos
+                    dma.rechercherUnDMA(IPP_provisoire);
                 } 
 
                 //Si le DMA existe (le nom, prénom et date de naissance retourné par l'instance correspondent à ceux qui sont rentrés dans le dossier urgence
@@ -119,6 +137,9 @@ public class RegularisationDossierTemporaire {
 
                     //Mise à jour de tous les dossiers
                     miseAJourDossiers(id_urgence, IPP);
+                    
+                    //instance de DMA pour récupérer les infos
+                    dma.rechercherUnDMA(IPP_provisoire);
                 }
                 //On supprime le dossier des urgences
                 RegularisationDossierTemporaire.supprimerDossierTemporaire(id_urgence);
