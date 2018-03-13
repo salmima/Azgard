@@ -97,13 +97,14 @@ public class DossierTemporaire {
             //-----------parcours des données retournées
             //---Variables temporaires /**
             try {
-                this.id_urgence = resultats_bd.getString("id_urgence");
-            } catch (Exception e) {
-                System.out.println("");
-            }
-            if (this.id_urgence != null) {
-                try {
-                    while (resultats_bd.next()) {
+                while (resultats_bd.next()) {
+                    try {
+                        this.id_urgence = resultats_bd.getString("id_urgence");
+                    } catch (Exception e) {
+                        System.out.println("");
+                    }
+
+                    if (this.id_urgence != null) {
                         //Informations du patient
                         this.nom = resultats_bd.getString("nom");
                         this.prenom = resultats_bd.getString("prenom");
@@ -115,17 +116,19 @@ public class DossierTemporaire {
 
                     //Fermeture des résultats des requêtes
                     resultats_bd.close();
-                } catch (SQLException e) {
-                    do {
-                        System.out.println("Accès aux résultats refusé");
-                        System.out.println("SQLState : " + e.getSQLState());
-                        System.out.println("Description : " + e.getMessage());
-                        System.out.println("code erreur : " + e.getErrorCode());
-                        System.out.println("");
-                        e = e.getNextException();
-                    } while (e != null);
                 }
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
 
+            if (this.id_urgence != null) {
                 //Requête 2: recherche du DMT du patient (contenant tous les DMT)
                 DossierMedicoTechnique dmt = new DossierMedicoTechnique();
                 dmt.creationDMT(id_urgence, identifiant); //tous les DMT du patient passé aux urgences sont dans le DossierMedicoTechnique
@@ -189,9 +192,11 @@ public class DossierTemporaire {
                 } catch (Exception e) {
                     System.out.println("Erreur");
                 }
-
             }
+            else{
+                System.out.println("Le dossier temporaire des urgences n'existe pas");
         }
+    }
     }
 
     /**
