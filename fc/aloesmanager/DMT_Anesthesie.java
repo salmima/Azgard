@@ -165,7 +165,7 @@ public class DMT_Anesthesie extends DossierMedicoTechnique {
         if (r_id != null) {
             //----------- Requête 2: recherche des résultats d'examen anesthesie (correspondance pour le service demandeur)
             //----------- Requête 3: on cherche les demandes de prescription d'anesthésie
-            //----------- Requête 4: on cherche les résultats demandés par le service Anesthésie uniquement
+            //----------- Requête 4: on cherche tous les résultats d'examen d'un patient
             try {
                 rechercheResultat = con.prepareStatement("select * from Resultat where id = ? and type_examen = ?");
                 rechercheResultat.setString(1, r_id);
@@ -174,7 +174,7 @@ public class DMT_Anesthesie extends DossierMedicoTechnique {
                 recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'anesthesie' ");
                 recherchePrescription.setString(1, r_id);
 
-                rechercheResExam = con.prepareStatement("select * from Resultat where id = ? and service_demandeur = 'anesthesie'");
+                rechercheResExam = con.prepareStatement("select * from Resultat where id = ?");
                 rechercheResExam.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête");
