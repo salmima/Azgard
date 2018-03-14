@@ -61,6 +61,13 @@ public abstract class DMT {
         return this.liste_resultats;
     }
     
+     /**
+     * Récupération de la liste de prescriptions d'examen
+     */
+    public ArrayList<PrescriptionExamen> getListePres() {
+        return this.liste_examens;
+    }
+    
         /*
     * Méthode de recherche d'un DMT
      */
