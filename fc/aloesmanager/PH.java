@@ -58,6 +58,13 @@ public class PH extends PersonnelMedical {
     public String getSpecialite() {
         return this.specialite;
     }
+    
+     /**
+     * Retourne le numéro de séjour
+     */
+    public String getLettreSortie() {
+        return this.lettreSortie;
+    }
 
     /**
      * Recherche d'un médecin à partir d'un nom et prénom
