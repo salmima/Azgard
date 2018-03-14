@@ -38,20 +38,6 @@ public class DMT_Hematologie extends DMT {
         this.liste_resultats.add(resultat);
     }
 
-    /**
-     * Ajout d'un résultat à la liste d'examens
-     */
-    public void ajouterPrescription(PrescriptionExamen pres) {
-        this.liste_examens.add(pres);
-    }
-    
-    /**
-     * Retourne les observations
-     */
-    public String getObs() {
-        return this.observations;
-    }
-
 
     /**
      * Recherche d'un DMT de Hematologie d'un patient
