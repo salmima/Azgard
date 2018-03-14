@@ -3,13 +3,9 @@ package fc.aloesmanager;
 import java.util.ArrayList;
 import java.sql.*;
 
-public class DMT_Anesthesie extends DossierMedicoTechnique {
+public class DMT_Anesthesie extends DMT {
 
-    private ArrayList<Resultat> liste_resultats;
     private ArrayList<PrescriptionMedicamenteuse> liste_presMedic;
-    private ArrayList<PrescriptionExamen> liste_examens;
-    private String observations;
-    private String id;
 
     /**
      * Constructeur initialisant
