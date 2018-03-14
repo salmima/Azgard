@@ -37,27 +37,7 @@ public class Hospitalisation extends Venue {
         return this.localisation;
     }
 
-    /**
-     * Retourne la date d'entrée
-     */
-    public java.sql.Date getDateEntree() {
-        return this.dateEntree;
-    }
-
-     /**
-     * Retourne la date de sortie
-     */
-    public java.sql.Date getDateSortie() {
-        return this.dateSortie;
-    }
-
-     /**
-     * Retourne le numéro de séjour
-     */
-    public String getNumSejour() {
-        return this.numSejour;
-    }
-
+    
     /**
      * Met à jour la localisation d'un patient (instance java)
      */
