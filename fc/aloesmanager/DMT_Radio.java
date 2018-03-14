@@ -4,12 +4,8 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class DMT_Radio extends DossierMedicoTechnique {
+public class DMT_Radio extends DMT {
 
-    private ArrayList<ResultatImagerie> liste_resultats;
-    private ArrayList<PrescriptionExamen> liste_examens;
-    private String observations;
-    private String id;
 
     /**
      * Constructeur initialisant
@@ -17,14 +13,14 @@ public class DMT_Radio extends DossierMedicoTechnique {
     public DMT_Radio() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatImagerie>();
+        this.liste_resultats = new ArrayList<Resultat>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Radio(String id, String observations, ArrayList<ResultatImagerie> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Radio(String id, String observations, ArrayList<Resultat> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
