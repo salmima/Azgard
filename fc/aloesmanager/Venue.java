@@ -34,6 +34,19 @@ public abstract class Venue {
         return this.numSejour;
     }
     
+        /**
+     * Retourne la lettre de sortie
+     */
+    public String getLettreSortie() {
+        return this.lettreSortie;
+    }
+    
+    /**
+     * Retourne lePH respo
+     */
+    public PH getPHRespo() {
+        return this.PHrespo;
+    }
     
     /**
      * Création d'une venue
