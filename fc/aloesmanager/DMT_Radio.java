@@ -34,19 +34,6 @@ public class DMT_Radio extends DMT {
         this.liste_resultats.add(resultat);
     }
 
-    /**
-     *  Ajout d'une prescription d'examens à la liste de prescriptions
-     */
-    public void ajouterPrescription(PrescriptionExamen pres) {
-        this.liste_examens.add(pres);
-    }
-
-    /**
-     * Retourne les observations
-     */
-    public String getObs() {
-        return this.observations;
-    }
 
     /**
      * Recherche d'un DMT de Radiologie d'un patient
