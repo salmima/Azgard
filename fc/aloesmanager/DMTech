@@ -65,22 +65,28 @@ public abstract class DMT {
     * Méthode de recherche d'un DMT
      */
     public void rechercherUnDMT(String IPP, String identifiant, String secteur) {
-        if (secteur.equals("biologie")) {
+                if (secteur.equals("biologie")) {
             DMT_Biologie dmt = new DMT_Biologie();
             dmt.rechercherUnDMBiologie(IPP, identifiant);
+            return dmt;
         } else if (secteur.equals("hematologie")) {
             DMT_Hematologie dmt = new DMT_Hematologie();
             dmt.rechercherUnDMHematologie(IPP, identifiant);
+            return dmt;
         } else if (secteur.equals("anatomopathologie")) {
             DMT_Anapath dmt = new DMT_Anapath();
             dmt.rechercherUnDMAnapath(IPP, identifiant);
+            return dmt;
         } else if (secteur.equals("imagerie")) {
             DMT_Radio dmt = new DMT_Radio();
             dmt.rechercherUnDMRadio(IPP, identifiant);
+            return dmt;
         } else if (secteur.equals("anesthesie")) {
             DMT_Anesthesie dmt = new DMT_Anesthesie();
-            dmt.rechercherUnDM_Anesthesie(IPP, identifiant);
+            dmt.rechercherUnDMAnesthesie(IPP, identifiant);
+            return dmt;
         }
+        return null;
     }
 
 }
