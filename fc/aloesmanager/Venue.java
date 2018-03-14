@@ -74,7 +74,7 @@ public abstract class Venue {
             int compteur = Integer.parseInt(last.substring(1, last.length())) + 1; //on transforme cette valeur en int
             String nombreZerosAAjouter = Integer.toString(6 - test.length()); //on calcule le nombre de 0 à ajouter devant le chiffre ("leading zeros")
 
-            numSejour += String.format("%0" + nombreZerosAAjouter + "d", compteur); //on ajoute le compteur au début du numéro de séjour
+            numSejour += String.format("%05d", compteur); //on ajoute le compteur au début du numéro de séjour
         }
         
         return numSejour;
