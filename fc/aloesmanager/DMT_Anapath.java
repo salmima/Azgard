@@ -4,12 +4,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class DMT_Anapath extends DossierMedicoTechnique {
-
-    private ArrayList<ResultatAnapathologie> liste_resultats;
-    private ArrayList<PrescriptionExamen> liste_examens;
-    private String observations;
-    private String id;
+public class DMT_Anapath extends DMT {
 
     /**
      * Constructeur initialisant
@@ -17,14 +12,14 @@ public class DMT_Anapath extends DossierMedicoTechnique {
     public DMT_Anapath() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatAnapathologie>();
+        this.liste_resultats = new ArrayList<Resultat>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Anapath(String id, String observations, ArrayList<ResultatAnapathologie> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Anapath(String id, String observations, ArrayList<Resultat> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
