@@ -17,14 +17,14 @@ public class DMT_Biologie extends DossierMedicoTechnique {
     public DMT_Biologie() {
         this.id = null;
         this.observations = null;
-        this.liste_resultats = new ArrayList<ResultatBiologique>();
+        this.liste_resultats = new ArrayList<Resultat>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Biologie(String id, String observations, ArrayList<ResultatBiologique> liste, ArrayList<PrescriptionExamen> liste_exam) {
+    public DMT_Biologie(String id, String observations, ArrayList<Resultat> liste, ArrayList<PrescriptionExamen> liste_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
