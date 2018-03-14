@@ -32,7 +32,7 @@ public class DMT_Anesthesie extends DMT {
     /**
      * Ajout d'un résultat à la liste de résultats
      */
-    public void ajouterResultat(Resultat resultat) {
+    public void ajouterResultat(ResultatAnesthesie resultat) {
         this.liste_resultats.add(resultat);
     }
 
@@ -52,27 +52,6 @@ public class DMT_Anesthesie extends DMT {
     }
 
     /**
-     * Retourne de l'identifiant du patient
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Mise à jour deS observations
-     */
-    public void setObs(String obs) {
-        this.observations = obs;
-    }
-
-    /**
-     * Retourne les observations
-     */
-    public String getObs() {
-        return this.observations;
-    }
-
-    /**
      * Récupération de la liste de prescription médicamenteuse
      */
     public ArrayList<PrescriptionMedicamenteuse> getListePresMedic() {
@@ -86,13 +65,7 @@ public class DMT_Anesthesie extends DMT {
         return this.liste_examens;
     }
 
-    /**
-     * Récupération de la liste de résultats
-     */
-    public ArrayList<Resultat> getListeResultat() {
-        return this.liste_resultats;
-    }
-
+   
     /**
      * Recherche d'un DMT d'Anesthésie d'un patient
      */
