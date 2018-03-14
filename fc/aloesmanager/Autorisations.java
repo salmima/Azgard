@@ -240,6 +240,71 @@ public class Autorisations {
     //tous les DM cliniques existants)
     
     
+    
+    //6 - ajout d'une lettre de sortie dans un DM
+    //setVisible(true) le bouton d'ajout de lettre de sortie si boolean renvoyé  true
+    public static boolean autorisationLettre(String nom_secteur, String IPP) {
+        Connection con = ConnexionBDD.obtenirConnection();
+        PreparedStatement rechercheOK = null;
+        ResultSet resultats_bd = null;
+        boolean ok = false;
+
+        //----------- Requête: cherche le service responsable du patient
+        try {
+            rechercheOK = con.prepareStatement("SELECT service FROM CorrespondancePH_Venue natural join personnelMedical natural join Venue WHERE id = ? and date_sortie is NULL");
+            rechercheOK.setString(1, IPP);
+        } catch (Exception ee) {
+            System.out.println("Erreur de requête 1");
+        }
+
+        //-----------Accès à la base de données
+        try {
+            resultats_bd = rechercheOK.executeQuery();
+        } catch (SQLException e) {
+            do {
+                System.out.println("Requête refusée");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        //-----------parcours des données retournées
+        //---Variables temporaires 
+        String r_service = "";
+
+        try {
+            while (resultats_bd.next()) {
+                try {
+                    r_service = resultats_bd.getString("service");
+                } catch (Exception e) {
+                    System.out.println("");
+                }
+
+                //on teste si le service de la personne connectée est le même que celui du PH respo du patient
+                if (r_service.equals(nom_secteur)) {
+                    ok = true;
+                }
+            }
+            //Fermeture des résultats des requêtes
+            resultats_bd.close();
+
+        } catch (SQLException e) {
+            do {
+                System.out.println("Accès aux résultats refusé");
+                System.out.println("SQLState : " + e.getSQLState());
+                System.out.println("Description : " + e.getMessage());
+                System.out.println("code erreur : " + e.getErrorCode());
+                System.out.println("");
+                e = e.getNextException();
+            } while (e != null);
+        }
+
+        return ok;
+    }
+    
     public static void main(String[] args) {
 
         //Test autorisation 1
@@ -253,6 +318,11 @@ public class Autorisations {
          //Test autorisation 4
         System.out.println(Autorisations.autorisationDM("imagerie","180000111")); //doit envoyer secteur cardiaque -- OK
         System.out.println(Autorisations.autorisationDM("anesthesie","182678481")); //doit envoyer urgences -- OK
+    
+        //Test autorisation 6
+        System.out.println(Autorisations.autorisationLettre("secteur_cardiaque", "180000111")); //doit envoyer true -- OK
+        System.out.println(Autorisations.autorisationLettre("secteur_cardiaque", "185398140")); //doit envoyer true - OK
+        System.out.println(Autorisations.autorisationLettre("imagerie", "185398140")); //doit envoyer false - OK
     }
 
 }
