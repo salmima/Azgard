@@ -25,26 +25,7 @@ public class Consultation extends Venue {
         this.PHrespo = phRespo;
     }
     
-    /**
-     * Retourne la date d'entrée
-     */
-     public java.sql.Date getDateEntree() {
-        return this.dateEntree;
-    }
-
-    /**
-     * Retourne la date de sortie
-     */
-    public java.sql.Date getDateSortie() {
-        return this.dateSortie;
-    }
-
-    /**
-     * Retourne le numéro de séjour
-     */
-    public String getNumSejour() {
-        return this.numSejour;
-    }
+  
 
     /**
      * Retourne le PH respo
