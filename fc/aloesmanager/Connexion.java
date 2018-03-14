@@ -30,6 +30,17 @@ public class Connexion {
         this.nom = null;
         this.prenom = null;
     }
+ 
+   protected String getNom(){
+    return this.nom;
+   }
+ protected String getPrenom(){
+    return this.prenom;
+   }
+ protected String getSecteur(){
+    return this.secteur;
+   }
+ 
     
     //pour se connecter: utiliser testerIdentifiants
     //puis ouvrir une connexion avec ouvrirUneConnexion
