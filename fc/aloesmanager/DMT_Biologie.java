@@ -149,7 +149,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatBiologique(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatBiologique(r_compteRendu, r_date, r_observations2, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
