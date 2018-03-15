@@ -300,9 +300,10 @@ public class DMT_Anapath extends DMT {
      /**
      * Création d'un DMT Anatomopathologie d'un patient
      */
-    public void creerUnDMAnapath(String id, String observations) {
+    public boolean creerUnDMAnapath(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
+        boolean ok = false;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
@@ -315,10 +316,11 @@ public class DMT_Anapath extends DMT {
             creerDMRadio.setString(2, observations);
             int nbMaj = creerDMRadio.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    return ok;
     }
 
     //TEST
