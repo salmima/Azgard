@@ -138,10 +138,8 @@ public class DMT_Anapath extends DMT {
                     r_date = resultats_bd2.getDate("date");
                     r_nrpps = resultats_bd2.getString("n_rpps");
                     r_service_demandeur = resultats_bd2.getString("service_demandeur");
-                }
-                resultats_bd2.close();
-
-                try {
+                    
+                    try {
                     //On cherche le PH
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
@@ -152,6 +150,10 @@ public class DMT_Anapath extends DMT {
                 } catch (Exception e) {
                     System.out.println("");
                 }
+                }
+                resultats_bd2.close();
+
+                
 
             } catch (SQLException e) {
                 do {
