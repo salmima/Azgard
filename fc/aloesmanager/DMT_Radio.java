@@ -148,7 +148,7 @@ public class DMT_Radio extends DMT {
                     if (r_ph != null) {
 
                         //On crée le résultat
-                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatImagerie(r_compteRendu, r_date, r_observations2, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
