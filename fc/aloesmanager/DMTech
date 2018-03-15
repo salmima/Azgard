@@ -106,30 +106,58 @@ public abstract class DMT {
      * Mise à jour des observations d'un dossier
      */
     public static void majObservations(String id, String observations, String secteur) {
-        Connection con = ConnexionBDD.obtenirConnection();
+         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement majObs;
         String type_dossier = "";
-        
-        if (secteur.equals("biologie")) {
-            type_dossier = "DMT_Biologie";
-        } else if (secteur.equals("hematologie")) {
-            type_dossier = "DMT_Hematologie";
-        } else if (secteur.equals("anatomopathologie")) {
-            type_dossier = "DMT_Anapath";
-        } else if (secteur.equals("imagerie")) {
-            type_dossier = "DMT_Radio";
-        } else if (secteur.equals("anesthesie")) {
-            type_dossier = "DMT_Anesthesie";
-        }
-        try {
-            String requete = "UPDATE ? set observations = ? WHERE id = ?";
-            majObs = con.prepareStatement(requete);
-            majObs.setString(1, type_dossier);
-            majObs.setString(2,observations);
-            majObs.setString(3, id);
 
-            int nbMaj = majObs.executeUpdate();
-            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        try {
+            if (secteur.equals("biologie")) {
+                String requete = "UPDATE DMT_Biologie set observations = ? WHERE id = ?";
+                majObs = con.prepareStatement(requete);
+                majObs.setString(1, observations);
+                majObs.setString(2, id);
+                System.out.println(majObs);
+
+                int nbMaj = majObs.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            } else if (secteur.equals("hematologie")) {
+                String requete = "UPDATE DMT_Hematologie set observations = ? WHERE id = ?";
+                majObs = con.prepareStatement(requete);
+                majObs.setString(1, observations);
+                majObs.setString(2, id);
+                System.out.println(majObs);
+
+                int nbMaj = majObs.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            } else if (secteur.equals("anatomopathologie")) {
+                String requete = "UPDATE DMT_Anapath set observations = ? WHERE id = ?";
+                majObs = con.prepareStatement(requete);
+                majObs.setString(1, observations);
+                majObs.setString(2, id);
+                System.out.println(majObs);
+
+                int nbMaj = majObs.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            } else if (secteur.equals("imagerie")) {
+                String requete = "UPDATE DMT_Radio set observations = ? WHERE id = ?";
+                majObs = con.prepareStatement(requete);
+                majObs.setString(1, observations);
+                majObs.setString(2, id);
+                System.out.println(majObs);
+
+                int nbMaj = majObs.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            } else if (secteur.equals("anesthesie")) {
+                String requete = "UPDATE DMT_Anesthesie set observations = ? WHERE id = ?";
+                majObs = con.prepareStatement(requete);
+                majObs.setString(1, observations);
+                majObs.setString(2, id);
+                System.out.println(majObs);
+
+                int nbMaj = majObs.executeUpdate();
+                System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
