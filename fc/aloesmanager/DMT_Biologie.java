@@ -306,9 +306,10 @@ public class DMT_Biologie extends DossierMedicoTechnique {
     /**
      * Création d'un DMT de Biologie d'un patient
      */
-    public void creerUnDMBiologie(String id, String observations) {
+    public boolean creerUnDMBiologie(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
+        boolean ok = false;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
@@ -321,10 +322,11 @@ public class DMT_Biologie extends DossierMedicoTechnique {
             creerDMRadio.setString(2, observations);
             int nbMaj = creerDMRadio.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    return ok;
     }
 
     //TEST
