@@ -139,7 +139,7 @@ public class DMT_Radio extends DMT {
                     r_compteRendu = resultats_bd2.getString("compte_rendu");
                     r_date = resultats_bd2.getDate("date");
                     r_nrpps = resultats_bd2.getString("n_rpps");
-                    r_service_demandeur = resultats_bd.getString("service_demandeur");
+                    r_service_demandeur = resultats_bd2.getString("service_demandeur");
                 }
                 resultats_bd2.close();
 
