@@ -63,11 +63,12 @@ public class PrescriptionMedicamenteuse {
      /**
      * Ajout d'une prescription médicamenteuse
      */
-    public void creerUnePrescriptionMedicamenteuse(String listeMedic, String id, String identifiant) { //id du patient, identifiant de la personne connectée
+    public boolean creerUnePrescriptionMedicamenteuse(String listeMedic, String id, String identifiant) { //id du patient, identifiant de la personne connectée
         //L'interface envoie des informations
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerPresMedic = null;
         ResultSet resultats_bd = null;
+        boolean ok = false;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         String n_rpps = PH.returnNRPPS(identifiant);
@@ -81,10 +82,11 @@ public class PrescriptionMedicamenteuse {
             creerPresMedic.setString(4, id);
             int nbMaj = creerPresMedic.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    return ok;
     }
     
        //TEST
