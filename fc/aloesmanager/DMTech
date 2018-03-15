@@ -105,7 +105,6 @@ public abstract class DMT {
     /**
      * Mise à jour des observations d'un dossier
      */
-    //Penser à faire dma.ajouterExamen(new Examen.valueOf('radiologie')
     public void majObservations(String id, String observations, String secteur) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement majObs;
