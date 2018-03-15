@@ -74,6 +74,13 @@ public class PrescriptionExamen {
         return this.exigences_examen;
     }
     
+     /**
+     * Retourne le boolean
+     */
+    public boolean getDone() {
+        return this.done;
+    }
+    
     /**
      * Ajout d'une prescription d'examen
      */
