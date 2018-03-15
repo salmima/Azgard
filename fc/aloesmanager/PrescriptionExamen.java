@@ -84,11 +84,12 @@ public class PrescriptionExamen {
     /**
      * Ajout d'une prescription d'examen
      */
-    public void creerUnePrescriptionExamen(Examen examen, String id, String n_rpps, String exigences_examen) { //id du patient, identifiant de la personne connectée
+    public boolean creerUnePrescriptionExamen(Examen examen, String id, String n_rpps, String exigences_examen) { //id du patient, identifiant de la personne connectée
         //L'interface envoie des informations
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerPresExam = null;
         ResultSet resultats_bd = null;
+        boolean ok = false;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
         String n_rpps = PH.returnNRPPS(identifiant);
@@ -103,9 +104,11 @@ public class PrescriptionExamen {
             creerPresExam.setString(5, exigences_examen);
             int nbMaj = creerPresExam.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return ok;
     }
     
     public static ArrayList<PrescriptionExamen> retourneListePrescriptionExamen(String IPP, String secteur) {
