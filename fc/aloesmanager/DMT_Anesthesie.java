@@ -360,6 +360,23 @@ public class DMT_Anesthesie extends DMT {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
+        //On met à jour la prescription      
+        try {
+            String requete = "UPDATE Prescription_examen set done = 1 where id = ? and date_pres = ? and n_rpps = ? and examen = ? and exigences_examen = ? ";
+            ajouterResultat = con.prepareStatement(requete);
+            ajouterResultat.setString(1, id);
+            ajouterResultat.setDate(2, pres.getDate());
+            ajouterResultat.setString(3, pres.getPH().getNRPPS());
+            ajouterResultat.setString(4, pres.getLibelleExamen());
+            ajouterResultat.setString(5, pres.getExigences());
+
+            int nbMaj = ajouterResultat.executeUpdate();
+            System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
