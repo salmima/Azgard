@@ -189,7 +189,7 @@ public class DMT_Anesthesie extends DMT {
 
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatAnesthesie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatAnesthesie(r_compteRendu, r_date, r_observationsé, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
