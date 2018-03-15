@@ -105,7 +105,7 @@ public abstract class DMT {
     /**
      * Mise à jour des observations d'un dossier
      */
-    public void majObservations(String id, String observations, String secteur) {
+    public static void majObservations(String id, String observations, String secteur) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement majObs;
         String type_dossier = "";
