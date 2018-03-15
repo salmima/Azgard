@@ -140,10 +140,8 @@ public class DMT_Radio extends DMT {
                     r_date = resultats_bd2.getDate("date");
                     r_nrpps = resultats_bd2.getString("n_rpps");
                     r_service_demandeur = resultats_bd2.getString("service_demandeur");
-                }
-                resultats_bd2.close();
-
-                try {
+                    
+                     try {
                     //On cherche le PH
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
@@ -156,6 +154,10 @@ public class DMT_Radio extends DMT {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                }
+                resultats_bd2.close();
+
+               
 
 
             } catch (SQLException e) {
