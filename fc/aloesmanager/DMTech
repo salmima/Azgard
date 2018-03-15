@@ -68,7 +68,12 @@ public abstract class DMT {
         return this.liste_examens;
     }
     
-        /*
+    /**
+     * Ajouter un résultat
+     */
+    public abstract void ajouterResultat();
+    
+    /*
     * Méthode de recherche d'un DMT
      */
     public void rechercherUnDMT(String IPP, String identifiant, String secteur) {
