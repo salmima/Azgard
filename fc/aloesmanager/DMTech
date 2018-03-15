@@ -108,15 +108,12 @@ public abstract class DMT {
     public static void majObservations(String id, String observations, String secteur) {
          Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement majObs;
-        String type_dossier = "";
-
         try {
             if (secteur.equals("biologie")) {
                 String requete = "UPDATE DMT_Biologie set observations = ? WHERE id = ?";
                 majObs = con.prepareStatement(requete);
                 majObs.setString(1, observations);
                 majObs.setString(2, id);
-                System.out.println(majObs);
 
                 int nbMaj = majObs.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
@@ -125,7 +122,7 @@ public abstract class DMT {
                 majObs = con.prepareStatement(requete);
                 majObs.setString(1, observations);
                 majObs.setString(2, id);
-                System.out.println(majObs);
+
 
                 int nbMaj = majObs.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
@@ -134,7 +131,6 @@ public abstract class DMT {
                 majObs = con.prepareStatement(requete);
                 majObs.setString(1, observations);
                 majObs.setString(2, id);
-                System.out.println(majObs);
 
                 int nbMaj = majObs.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
@@ -143,7 +139,6 @@ public abstract class DMT {
                 majObs = con.prepareStatement(requete);
                 majObs.setString(1, observations);
                 majObs.setString(2, id);
-                System.out.println(majObs);
 
                 int nbMaj = majObs.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
@@ -152,7 +147,6 @@ public abstract class DMT {
                 majObs = con.prepareStatement(requete);
                 majObs.setString(1, observations);
                 majObs.setString(2, id);
-                System.out.println(majObs);
 
                 int nbMaj = majObs.executeUpdate();
                 System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
