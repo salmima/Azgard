@@ -49,6 +49,13 @@ public abstract class Resultat {
         return this.ph;
     }
     
+     /**
+     * Retourne le service demandeur
+     */
+    public String getDemandeur() {
+        return this.service_demandeur;
+    }
+    
     /**
      * Méthode renvoie la liste des résultats pour un patient dans tous les
      * services MT 
