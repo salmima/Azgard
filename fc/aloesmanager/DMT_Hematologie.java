@@ -149,7 +149,7 @@ public class DMT_Hematologie extends DMT {
                     r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
                     if (r_ph != null) {
                         //On crée le résultat
-                        resultat = new ResultatHematologie(r_compteRendu, r_date, r_observations, r_id, r_ph, r_service_demandeur);
+                        resultat = new ResultatHematologie(r_compteRendu, r_date, r_observations2, r_id, r_ph, r_service_demandeur);
                         this.ajouterResultat(resultat);
                     }
                 } catch (Exception e) {
