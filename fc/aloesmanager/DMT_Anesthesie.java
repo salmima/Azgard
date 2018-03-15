@@ -385,9 +385,10 @@ public class DMT_Anesthesie extends DMT {
     /**
      * Recherche d'un DMT de Radiologie d'un patient
      */
-    public void creerUnDMAnesthesie(String id, String observations) {
+    public boolean creerUnDMAnesthesie(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement creerDMRadio;
+        boolean ok = false;
         java.util.Date utilDate = new java.util.Date();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
@@ -400,10 +401,11 @@ public class DMT_Anesthesie extends DMT {
             creerDMRadio.setString(2, observations);
             int nbMaj = creerDMRadio.executeUpdate();
             System.out.println("nb mise a jour = " + nbMaj); //affiche le nombre de mises à jour
+            ok = true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+    return ok;
     }
 
     //TEST
