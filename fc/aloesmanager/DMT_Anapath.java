@@ -168,7 +168,7 @@ public class DMT_Anapath extends DMT {
 
             //----------- Requête 3: on cherche les demandes de prescription
             try {
-                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'anatomopathologie' ");
+                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'anatomopathologie' and done = 0");
                 recherchePrescription.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête 3");
