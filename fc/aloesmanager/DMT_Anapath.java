@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class DMT_Anapath extends DMT {
+public class DMT_Anapath extends DMTech {
 
     /**
      * Constructeur initialisant
