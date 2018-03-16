@@ -65,12 +65,13 @@ public class DossierTemporaire {
      */
     //ATTENTION: vérifier que la personne connectée est un PH et est urgentiste (services "urgences")
     //La vérification peut se faire dans l'interface, par le fait quu'après sa connexion, on lui affiche cette option
-    public void rechercherUnDMTemporaire(String id_urgence, String identifiant) {
+    public boolean rechercherUnDMTemporaire(String id_urgence, String identifiant) {
         Connection con = ConnexionBDD.obtenirConnection();
         PreparedStatement rechercheID = null;
         PreparedStatement rechercheVenue = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
         ResultSet resultats_bd2 = null;
+        boolean ok = false;
 
         //----------- Requêtes
         //Requête 1: informations du DM temporaire
@@ -129,6 +130,7 @@ public class DossierTemporaire {
             }
 
             if (this.id_urgence != null) {
+                ok = true;
                 //Requête 2: recherche du DMT du patient (contenant tous les DMT)
                 DossierMedicoTechnique dmt = new DossierMedicoTechnique();
                 dmt.creationDMT(id_urgence, identifiant); //tous les DMT du patient passé aux urgences sont dans le DossierMedicoTechnique
@@ -197,6 +199,7 @@ public class DossierTemporaire {
                 System.out.println("Le dossier temporaire des urgences n'existe pas");
         }
     }
+        return ok;
     }
 
     /**
