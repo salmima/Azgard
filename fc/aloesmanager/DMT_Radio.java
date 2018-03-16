@@ -173,7 +173,7 @@ public class DMT_Radio extends DMT {
 
             //----------- Requête 3: on cherche les demandes de prescription
             try {
-                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'radiologie' ");
+                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'radiologie' and done = 0");
                 recherchePrescription.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête 3");
