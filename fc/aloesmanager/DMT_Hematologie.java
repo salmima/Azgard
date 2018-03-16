@@ -173,7 +173,7 @@ public class DMT_Hematologie extends DMT {
 
             //----------- Requête 3: on cherche les demandes de prescription
             try {
-                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'hematologie' ");
+                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'hematologie' and done = 0 ");
                 recherchePrescription.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête 3");
