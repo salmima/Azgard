@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class DMT_Hematologie extends DMT {
+public class DMT_Hematologie extends DMTech {
 
     private ArrayList<ResultatHematologie> liste_resultats;
     private ArrayList<PrescriptionExamen> liste_examens;
