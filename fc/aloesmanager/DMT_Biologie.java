@@ -173,7 +173,7 @@ public class DMT_Biologie extends DossierMedicoTechnique {
 
             //----------- Requête 3: on cherche les demandes de prescription
             try {
-                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'biologie' ");
+                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'biologie' and done = 0");
                 recherchePrescription.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête 3");
