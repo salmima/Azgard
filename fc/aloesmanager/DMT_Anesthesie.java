@@ -6,6 +6,7 @@ import java.sql.*;
 public class DMT_Anesthesie extends DMTech {
 
     private ArrayList<PrescriptionMedicamenteuse> liste_presMedic;
+    private ArrayList<PrescriptionExamen> liste_demande_exam;
 
     /**
      * Constructeur initialisant
@@ -16,17 +17,19 @@ public class DMT_Anesthesie extends DMTech {
         this.liste_resultats = new ArrayList<Resultat>();
         this.liste_examens = new ArrayList<PrescriptionExamen>();
         this.liste_presMedic = new ArrayList<PrescriptionMedicamenteuse>();
+        this.liste_demande_exam = new ArrayList<PrescriptionExamen>();
     }
 
     /**
      * Constructeur complet
      */
-    public DMT_Anesthesie(String id, String observations, ArrayList<Resultat> liste, ArrayList<PrescriptionExamen> liste_exam, ArrayList<PrescriptionMedicamenteuse> liste_medic) {
+    public DMT_Anesthesie(String id, String observations, ArrayList<Resultat> liste, ArrayList<PrescriptionExamen> liste_exam, ArrayList<PrescriptionMedicamenteuse> liste_medic, ArrayList<PrescriptionExamen> liste_demande_exam) {
         this.id = id;
         this.observations = observations;
         this.liste_resultats = liste;
         this.liste_examens = liste_exam;
         this.liste_presMedic = liste_medic;
+        this.liste_demande_exam = liste_demande_exam;
     }
 
     /**
@@ -52,6 +55,13 @@ public class DMT_Anesthesie extends DMTech {
     }
 
     /**
+     * Récupération de la liste de prescription d'examen
+     */
+    public ArrayList<PrescriptionExamen> getListePresExam() {
+        return this.liste_examens;
+    }
+
+    /**
      * Récupération de la liste de prescription médicamenteuse
      */
     public ArrayList<PrescriptionMedicamenteuse> getListePresMedic() {
@@ -59,15 +69,15 @@ public class DMT_Anesthesie extends DMTech {
     }
 
     /**
-     * Récupération de la liste de prescription d'examen
+     * Récupération de la liste de prescription d'examen demandés par le service
+     * d'anesthésie
      */
-    public ArrayList<PrescriptionExamen> getListePresExam() {
-        return this.liste_examens;
+    public ArrayList<PrescriptionExamen> getListePresDemandeExam() {
+        return this.liste_demande_exam;
     }
 
-   
     /**
-     * Recherche d'un DMT d'Anesthésie d'un patient
+     * Recherche d'un DMTech d'Anesthésie d'un patient
      */
     //ATTENTION: il faut vérifier dans l'interface que la personne est bien de secteur "anesthesie" et que son statut est bien "PH" 
     public void rechercherUnDMAnesthesie(String IPP, String identifiant) { //identifiant de la personne connectée
@@ -76,12 +86,16 @@ public class DMT_Anesthesie extends DMTech {
         PreparedStatement rechercheResultat = null;
         PreparedStatement recherchePrescription = null;
         PreparedStatement rechercheResExam = null;
+        PreparedStatement rechercheDemandePresExam = null;
+        PreparedStatement recherchePresMedic = null;
         ResultSet resultats_bd = null; //ensemble des résultats retournés par la requête
         ResultSet resultats_bd2 = null;
         ResultSet resultats_bd3 = null;
         ResultSet resultats_bd4 = null;
+        ResultSet resultats_bd5 = null;
+        ResultSet resultats_bd6 = null;
 
-        //----------- Requête 1: recherche du DMT Anesthésie
+        //----------- Requête 1: recherche du DMTech Anesthésie
         try {
             rechercheDMAnesthesie = con.prepareStatement("select * from DMT_Anesthesie where id = ?");
             rechercheDMAnesthesie.setString(1, IPP);
@@ -113,7 +127,7 @@ public class DMT_Anesthesie extends DMTech {
                 r_observations = resultats_bd.getString("observations");
                 r_id = resultats_bd.getString("id");
 
-                //Création partielle d'un DMT de radiologie
+                //Création partielle d'un DMTech de radiologie
                 if (r_id != null) {
                     this.id = r_id;
                     this.observations = r_observations;
@@ -134,17 +148,24 @@ public class DMT_Anesthesie extends DMTech {
         if (r_id != null) {
             //----------- Requête 2: recherche des résultats d'examen anesthesie (correspondance pour le service demandeur)
             //----------- Requête 3: on cherche les demandes de prescription d'anesthésie
-            //----------- Requête 4: on cherche tous les résultats d'examen d'un patient
+            //----------- Requête 4: on cherche tous les résultats d'examen du patient
+            //----------- Requête 5: on cherche toutes les prescriptions d'examen demandées par le service d'anesthésie
+            //----------- Requête 6: on cherche toutes les prescriptions médicamenteuses demandées par le service
             try {
-                rechercheResultat = con.prepareStatement("select * from Resultat where id = ? and type_examen = ?");
+                rechercheResultat = con.prepareStatement("select * from Resultat where id = ? and type_examen = 'anesthesie' ");
                 rechercheResultat.setString(1, r_id);
-                rechercheResultat.setString(2, "anesthesie");
 
-                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'anesthesie' ");
+                recherchePrescription = con.prepareStatement("select * from Prescription_examen where id = ? and examen = 'anesthesie' and done = 0");
                 recherchePrescription.setString(1, r_id);
 
                 rechercheResExam = con.prepareStatement("select * from Resultat where id = ?");
                 rechercheResExam.setString(1, r_id);
+
+                rechercheDemandePresExam = con.prepareStatement("select * from Prescription_examen natural join personnelMedical where id = ? and service = 'anesthesie'");
+                rechercheDemandePresExam.setString(1, r_id);
+
+                recherchePresMedic = con.prepareStatement("select * from Prescription_medic natural join personnelMedical where id = ? and service = 'anesthesie'");
+                recherchePresMedic.setString(1, r_id);
             } catch (Exception e) {
                 System.out.println("Erreur de requête");
             }
@@ -182,23 +203,22 @@ public class DMT_Anesthesie extends DMTech {
                     r_date = resultats_bd2.getDate("date");
                     r_nrpps = resultats_bd2.getString("n_rpps");
                     r_service_demandeur = resultats_bd2.getString("service_demandeur");
-                    
-                    try {
-                    //On cherche le PH
-                    r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
 
-                    if (r_ph != null) {
-                        //On crée le résultat
-                        resultat = new ResultatAnesthesie(r_compteRendu, r_date, r_observationsé, r_id, r_ph, r_service_demandeur);
-                        this.ajouterResultat(resultat);
+                    try {
+                        //On cherche le PH
+                        r_ph = r_ph.rechercherUnMedecinRPPS(r_nrpps);
+
+                        if (r_ph != null) {
+                            //On crée le résultat
+                            resultat = new ResultatAnesthesie(r_compteRendu, r_date, r_observations2, r_id, r_ph, r_service_demandeur);
+                            this.ajouterResultat(resultat);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 }
 
                 resultats_bd2.close();
-                
 
             } catch (SQLException e) {
                 do {
@@ -266,7 +286,7 @@ public class DMT_Anesthesie extends DMTech {
                 } while (e != null);
             }
 
-            //------------------ Ajout des résultats d'examen demandés par le service d'anesthésie ------------------
+            //------------------ Ajout des résultats d'examen ou non demandés par le service d'anesthésie ------------------
             //-----------parcours des données retournées
             //---Variables temporaires
             String r_compteRendu3 = "";
@@ -281,26 +301,125 @@ public class DMT_Anesthesie extends DMTech {
                     r_observations3 = resultats_bd4.getString("observations");
                     r_compteRendu3 = resultats_bd4.getString("compte_rendu");
                     r_date3 = resultats_bd4.getDate("date");
-                    r_nrpps3 = resultats_bd4.getString("n_rpps");;
+                    r_nrpps3 = resultats_bd4.getString("n_rpps");
+                    System.out.println("n_rpps:" + r_nrpps3);
+
+                    try {
+                        //On cherche le PH 
+                        r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps);
+
+                        if (r_ph3 != null) {
+                            //On crée le résultat
+                            resultat3 = new ResultatAnesthesie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, "anesthesie");
+                            this.ajouterResultat(resultat3);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Pas de résultats.");
+                    }
                 }
                 resultats_bd4.close();
-
-                try {
-                    //On cherche le PH 
-                    r_ph3 = r_ph3.rechercherUnMedecinRPPS(r_nrpps);
-
-                    if (r_ph3 != null) {
-                        //On crée le résultat
-                        resultat3 = new ResultatAnesthesie(r_compteRendu3, r_date3, r_observations3, r_id, r_ph3, "anesthesie");
-                        this.ajouterResultat(resultat3);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
             } catch (SQLException e) {
                 do {
                     System.out.println("Accès aux résultats refusé 4");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //Recherche des prescriptions médicamenteuses et d'examen demandées par le service anesthésie
+            //-----------Accès à la base de données
+            try {
+                resultats_bd5 = rechercheDemandePresExam.executeQuery();
+                resultats_bd6 = recherchePresMedic.executeQuery();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Requête refusée");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //------------------ Ajout des prescriptions d'examen demandées par le service d'anesthésie ------------------
+            //-----------parcours des données retournées
+            //---Variables temporaires
+            r_date2 = null;
+            r_nrpps2 = null;
+            r_done = false;
+            r_ph2 = new PH();
+            String r_type = "";
+            PrescriptionExamen pres2 = new PrescriptionExamen();
+            
+            try {
+                while (resultats_bd5.next()) {
+                    r_date2 = resultats_bd5.getDate("date_pres");
+                    r_nrpps2 = resultats_bd5.getString("n_rpps");
+                    r_exigences = resultats_bd5.getString("exigences_examen");
+                    r_done = resultats_bd5.getBoolean("done");
+                    r_type = resultats_bd5.getString("examen");
+
+                    try {
+                        //On cherche le PH demandeur
+                        r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
+
+                        if (r_ph2 != null) {
+                            pres2 = new PrescriptionExamen(r_date2, Examen.valueOf(r_type), r_ph2, r_exigences, r_id, r_done);
+                            this.liste_demande_exam.add(pres2);
+
+                        }
+                    } catch (Exception e) {
+                        System.out.println("");
+                    }
+                }
+                resultats_bd5.close();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé 0");
+                    System.out.println("SQLState : " + e.getSQLState());
+                    System.out.println("Description : " + e.getMessage());
+                    System.out.println("code erreur : " + e.getErrorCode());
+                    System.out.println("");
+                    e = e.getNextException();
+                } while (e != null);
+            }
+
+            //------------------ Ajout des prescriptions médicamenteuses demandées par le service d'anesthésie ------------------
+            //-----------parcours des données retournées
+            //---Variables temporaires
+            r_date2 = null;
+            r_nrpps2 = null;
+            r_ph2 = new PH();
+            PrescriptionMedicamenteuse presMedic = null;
+            String liste_medic = "";
+
+            try {
+                while (resultats_bd6.next()) {
+                    r_date2 = resultats_bd6.getDate("date_pres");
+                    r_nrpps2 = resultats_bd6.getString("n_rpps");
+                    liste_medic = resultats_bd6.getString("liste_medic");
+
+                    try {
+                        //On cherche le PH demandeur
+                        r_ph2 = r_ph2.rechercherUnMedecinRPPS(r_nrpps2);
+
+                        if (r_ph2 != null) {
+                            presMedic = new PrescriptionMedicamenteuse(r_date2, r_ph2, liste_medic, r_id);
+                            this.liste_presMedic.add(presMedic);
+                        }
+                    } catch (Exception e) {
+                        System.out.println("");
+                    }
+                }
+                resultats_bd6.close();
+            } catch (SQLException e) {
+                do {
+                    System.out.println("Accès aux résultats refusé 0");
                     System.out.println("SQLState : " + e.getSQLState());
                     System.out.println("Description : " + e.getMessage());
                     System.out.println("code erreur : " + e.getErrorCode());
@@ -362,7 +481,7 @@ public class DMT_Anesthesie extends DMTech {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         //On met à jour la prescription      
         try {
             String requete = "UPDATE Prescription_examen set done = 1 where id = ? and date_pres = ? and n_rpps = ? and examen = ? and exigences_examen = ? ";
@@ -379,11 +498,10 @@ public class DMT_Anesthesie extends DMTech {
             e.printStackTrace();
         }
 
-
     }
 
     /**
-     * Recherche d'un DMT de Radiologie d'un patient
+     * Recherche d'un DMTech de Radiologie d'un patient
      */
     public boolean creerUnDMAnesthesie(String id, String observations) {
         Connection con = ConnexionBDD.obtenirConnection();
@@ -405,7 +523,7 @@ public class DMT_Anesthesie extends DMTech {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    return ok;
+        return ok;
     }
 
     //TEST
@@ -413,9 +531,8 @@ public class DMT_Anesthesie extends DMTech {
         DMT_Anesthesie da = new DMT_Anesthesie();
         Date dateTest = new Date(118, 2, 9);
 
-        PrescriptionExamen pres = new PrescriptionExamen(dateTest, Examen.valueOf("anesthesie"), PH.rechercherUnMedecin("house", "gregory"), "pres 2", "180000111", false);
-        da.rechercherUnDMAnesthesie("180000111", "ANNB"); //ça marche
-        System.out.println(da.getObs());
+        //PrescriptionExamen pres = new PrescriptionExamen(dateTest, Examen.valueOf("anesthesie"), PH.rechercherUnMedecin("house", "gregory"), "pres 2", "180000111", false);
+        da.rechercherUnDMAnesthesie("999123456", "ANNB"); //ça marche
         //       da.creerUnDMAnesthesie("180000111","anesthesie - bill gates"); //ça marche
         //       da.ajouterResultat(dateTest, pres, "180000111", "rien à redire sur les allergies - anesthésie", "chirurgie feu vert", "ANNB"); //ça marche
     }
