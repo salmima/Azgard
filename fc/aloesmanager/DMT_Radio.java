@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-public class DMT_Radio extends DMT {
+public class DMT_Radio extends DMTech {
 
 
     /**
