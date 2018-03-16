@@ -3,7 +3,7 @@ package fc.aloesmanager;
 import java.util.ArrayList;
 import java.sql.*;
 
-public class DMT_Anesthesie extends DMT {
+public class DMT_Anesthesie extends DMTech {
 
     private ArrayList<PrescriptionMedicamenteuse> liste_presMedic;
 
