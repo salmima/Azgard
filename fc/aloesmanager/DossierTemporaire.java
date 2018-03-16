@@ -60,6 +60,27 @@ public class DossierTemporaire {
     }
 
     /**
+     * Retourne le nom du patient
+     */
+    public String getNom() {
+        return this.nom;
+    }
+
+    /**
+     * Retourne le prénom du patient
+     */
+    public String getPrenom() {
+        return this.prenom;
+    }
+
+    /**
+     * Retourne la date de naissance
+     */
+    public Date getDateN() {
+        return this.dateNaissance;
+    }
+    
+    /**
      * Recherche d'un DM Temporaire à partir d'un identifiant de patient des
      * urgences
      */
